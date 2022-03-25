@@ -6,7 +6,7 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class LoginRequest extends FormRequest
+class ChangePasswordRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,8 +27,15 @@ class LoginRequest extends FormRequest
     {
         return [
             'email' => 'required|email',
-            'password' => 'required',
-            'fcm_token' => 'required'
+            'password' => 'required|confirmed|min:8',
+        ];
+    }
+
+    public function messages()
+    {
+        return[
+            'email.required' => 'Please Provide Email',
+            'password.required' => 'Please Provide Password',
         ];
     }
 

@@ -28,20 +28,6 @@ class LoginController extends Controller
 
     public function socialLogin(SocialLoginRequest $request,LoginService $loginService)
     {
-        $customMsg = [
-            'email.required_if' => 'The email field is required'
-        ];
-        $validator = Validator::make($request->all(), [
-            'full_name' => 'required',
-            'uuid' => 'required|string',
-            "provider" => "required|string|in:FACEBOOK,GMAIL,APPLE",
-            'image' => 'mimes:png,jpeg,jpg',
-            'email' => 'required_if:provider,GMAIL'
-        ],$customMsg);
-
-        if ($validator->fails()) {
-            return makeResponse('error',$validator->errors()->first(),422);
-        }
 
         return $loginService->socialLogin($request);
 

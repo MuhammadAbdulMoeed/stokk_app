@@ -26,6 +26,9 @@ Route::namespace('Api')->middleware('json.response')->group(function () {
     Route::post('register', [RegisterController::class,'register']);
     Route::post('social-login',[LoginController::class,'socialLogin']);
     Route::post('forgot-password',[ForgotPasswordController::class,'forgotPassword']);
+    Route::post('verify-otp',[ForgotPasswordController::class,'verifyOtp']);
+    Route::post('change-password',[ForgotPasswordController::class,'updatePassword']);
+    Route::post('resend-otp',[ForgotPasswordController::class,'resendOTP']);
 
     Route::middleware('auth:api')->group(function () {
 

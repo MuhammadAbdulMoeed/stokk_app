@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Api;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class SocialLoginRequest extends FormRequest
 {
@@ -28,7 +30,22 @@ class SocialLoginRequest extends FormRequest
             'uuid' => 'required|string',
             "provider" => "required|string|in:FACEBOOK,GMAIL,APPLE",
             'image' => 'mimes:png,jpeg,jpg',
-            'email' => 'required_if:provider,GMAIL'
+            'email' => 'required_if:provider,GMAIL',
+            'fcm_token' => 'required'
         ];
+    }
+
+    public function messages() //OPTIONAL
+    {
+        return [
+            'email.required_if' => 'The email field is required'
+        ];
+    }
+
+    public function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(
+            makeResponse('error', $validator->errors()->first(),422)
+        );
     }
 }
