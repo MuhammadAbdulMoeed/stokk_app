@@ -89,7 +89,7 @@
                                                     <div class="col-12">
                                                         <div class="form-group">
                                                             <label>Country</label>
-                                                            <input class="form-control" name="last_name" type="text"
+                                                            <input class="form-control" name="country" type="text"
                                                                    maxlength="50"
                                                                    required="" value="{{Auth::user()->country}}">
                                                         </div>

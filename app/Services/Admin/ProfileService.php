@@ -26,7 +26,8 @@ class ProfileService
                 $ext = $image->getClientOriginalExtension();
                 $fileName = $image->getClientOriginalName();
                 $fileNameUpload = time() . "-" . $fileName;
-                $path = public_path('upload/user/images/');
+                $drive = 'upload/user/images/';
+                $path = public_path($drive);
                 if (!file_exists($path)) {
                     File::makeDirectory($path, 0777, true);
                 }
@@ -41,7 +42,7 @@ class ProfileService
                     }
                 }
 
-                $imageSave = ImageUploadHelper::saveImage($image, $fileNameUpload, 'user/images/');
+                $imageSave = ImageUploadHelper::saveImage($image, $fileNameUpload, $drive);
                 $save_image = $imageSave;
                 Auth::user()->profile_image = $save_image;
             }
