@@ -23,24 +23,8 @@
 
 
     $(document).ready(function () {
-        getTitle();
     });
 
-    function getTitle() {
-        $.ajax({
-            type: 'GET',
-            url: '{{route("getTitle")}}',
-
-            success: function (response, status) {
-
-                if (response.result == 'success') {
-
-                    $('.site_name').text(response.data.name);
-                } else if (response.result == 'error') {
-                }
-            }
-        });
-    }
 
     function successMsg(_msg) {
         window.toastr.success(_msg);

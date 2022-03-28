@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\Auth\LoginController;
 use App\Http\Controllers\Admin\Auth\LogoutController;
 use App\Http\Controllers\Admin\Auth\ForgotPasswordController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,8 +40,9 @@ Route::namespace('Admin')->group(function () {
 
 
     Route::middleware(['Admin'])->group(function () {
+        Route::get('dashboard',[DashboardController::class,'index'])->name('adminDashboard');
 
-
-
+        Route::get('profile',[ProfileController::class,'index'])->name('adminProfile');
+        Route::post('save-profile',[ProfileController::class,'save'])->name('adminProfileSave');
     });
 });

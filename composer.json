@@ -11,6 +11,7 @@
         "laravel/framework": "^8.75",
         "laravel/passport": "^10.3",
         "laravel/sanctum": "^2.11",
+        "intervention/image": "dev-master",
         "laravel/tinker": "^2.5"
     },
     "require-dev": {
@@ -26,10 +27,7 @@
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
-        },
-        "files": [
-            "app/Helper/GeneralResponseHelper.php"
-        ]
+        }
     },
     "autoload-dev": {
         "psr-4": {

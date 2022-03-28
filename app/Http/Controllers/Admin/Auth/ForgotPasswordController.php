@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ForgotPasswordRequest;
-use App\Http\Requests\ResetPasswordRequest;
+use App\Http\Requests\Admin\ForgotPasswordRequest;
+use App\Http\Requests\Admin\ResetPasswordRequest;
 use App\Services\Admin\Auth\ForgotPasswordService;
 use Illuminate\Http\Request;
 

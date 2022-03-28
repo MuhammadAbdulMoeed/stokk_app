@@ -33,11 +33,11 @@
 
             <div class="row">
 
-                {{--                <div class="col-12">--}}
-                {{--                    <div class="card-header">--}}
-                {{--                        <h3> Admin Profile </h3>--}}
-                {{--                    </div>--}}
-                {{--                </div>--}}
+                {{--                                <div class="col-12">--}}
+                {{--                                    <div class="card-header">--}}
+                {{--                                        <h3> Admin Profile </h3>--}}
+                {{--                                    </div>--}}
+                {{--                                </div>--}}
 
                 <div class="dis_flx_991">
                     <form action="#" method="post" enctype="multipart/form-data" id="adminProfile">
@@ -70,10 +70,28 @@
 
                                                     <div class="col-12">
                                                         <div class="form-group">
-                                                            <label>UserName</label>
-                                                            <input class="form-control" name="username" type="text"
+                                                            <label>First Name</label>
+                                                            <input class="form-control" name="first_name" type="text"
                                                                    maxlength="50"
-                                                                   required="" value="{{Auth::user()->username}}">
+                                                                   required="" value="{{Auth::user()->first_name}}">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-12">
+                                                        <div class="form-group">
+                                                            <label>Last Name</label>
+                                                            <input class="form-control" name="last_name" type="text"
+                                                                   maxlength="50"
+                                                                   required="" value="{{Auth::user()->last_name}}">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-12">
+                                                        <div class="form-group">
+                                                            <label>Country</label>
+                                                            <input class="form-control" name="last_name" type="text"
+                                                                   maxlength="50"
+                                                                   required="" value="{{Auth::user()->country}}">
                                                         </div>
                                                     </div>
 
@@ -240,8 +258,6 @@
                 }
             }
         }
-
-
 
 
     </script>

@@ -9,7 +9,7 @@
 {{--                </a>--}}
 
 
-        <h1 class="logo"><a href="{{route('adminDashboard')}}" class="site_name"></a></h1>
+        <h1 class="logo"><a href="{{route('adminDashboard')}}" class="site_name">{{env('APP_NAME')}}</a></h1>
 
     </div>
 
@@ -21,13 +21,13 @@
                 <a class="nav-link dropdown-toggle nav-user" data-toggle="dropdown" href="#" role="button"
                    aria-haspopup="false" aria-expanded="false">
 
-{{--                    @if(Auth::user()->profile_image)--}}
-{{--                        <img src="{{asset(Auth::user()->profile_image)}}"--}}
-{{--                             alt="Profile image" class="avatar-rounded">--}}
-{{--                    @else--}}
+                    @if(Auth::user()->profile_image)
+                        <img src="{{asset(Auth::user()->profile_image)}}"
+                             alt="Profile image" class="avatar-rounded">
+                    @else
                         <img src="{{asset('custom/images/user (5).png')}}"
                              alt="Profile image" class="avatar-rounded">
-{{--                    @endif--}}
+                    @endif
 
 
                 </a>
@@ -37,8 +37,8 @@
                         <h5 class="text-overflow">
                             <small>
                                 {{--Hello, {{Auth::user()->name}}--}}
-                                @if(Auth::user()->username)
-                                    Hello, {{Auth::user()->username}}
+                                @if(Auth::user()->first_name)
+                                    Hello, {{Auth::user()->first_name .' '.Auth::user()->last_name}}
                                 @else
                                     Hello
                                 @endif
@@ -47,9 +47,9 @@
                     </div>
 
                     <!-- item-->
-{{--                    <a href="{{route('adminProfile')}}" class="dropdown-item notify-item">--}}
-{{--                        <i class="fa fa-user"></i> <span>Profile</span>--}}
-{{--                    </a>--}}
+                    <a href="{{route('adminProfile')}}" class="dropdown-item notify-item">
+                        <i class="fa fa-user"></i> <span>Profile</span>
+                    </a>
 
                     <!-- item-->
                     <a href="{{route('logoutUser')}}" class="dropdown-item notify-item">

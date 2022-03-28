@@ -172,7 +172,7 @@ img {
 }
 
 .breadcrumb-holder {
-    background-color: #de0101;
+    background-color: #404040;
     margin: 0px -20px 0px -20px;
     padding: 12px 25px 12px 25px;
     box-shadow: none;
@@ -1341,14 +1341,14 @@ a {
 }
 
 .headerbar .headerbar-left a {
-    color: #de0101;
+    color: #404040;
 }
 
 .main-sidebar {
     top: 50px;
     width: 250px;
     z-index: 10;
-    background: #de0101;
+    background: #404040;
     bottom: 70px;
     margin-bottom: -70px;
     margin-top: 0;
@@ -1381,7 +1381,7 @@ body.adminbody .main-sidebar.left {
 .button-menu-mobile {
     background: transparent;
     border: none;
-    color: #de0101;
+    color: #404040;
     font-size: 28px;
     line-height: 50px;
     padding: 0 5px;
@@ -1395,7 +1395,7 @@ body.adminbody .main-sidebar.left {
 }
 
 .button-menu-mobile:hover {
-    color: #b70a0a;
+    color: #B9BABB;
 }
 
 .sidebar-inner {
@@ -1414,7 +1414,7 @@ body.adminbody .main-sidebar.left {
     padding: 0;
     position: relative;
     text-decoration: none;
-    background-color: #de0101;
+    background-color: #404040;
 }
 
 #sidebar-menu {
@@ -1499,7 +1499,7 @@ body.adminbody .main-sidebar.left {
 #sidebar-menu ul ul a:hover {
     color: #fff !important;
     color: #FFF;
-    background: #b70a0a;
+    background: #B9BABB;
     border-left: 0px solid #fff;
 }
 
@@ -1517,8 +1517,8 @@ body.adminbody .main-sidebar.left {
 
 #sidebar-menu .subdrop {
     color: #fff !important;
-    background-color: #de0101;
-    border-left: 2px solid #fff;
+    background-color: #404040;
+    border-left: 2px solid #404040;
 }
 
 #sidebar-menu .submenu ul .submenu .menu-arrow {
@@ -1536,7 +1536,7 @@ body.adminbody .main-sidebar.left {
 
 #sidebar-menu > ul > li > a:hover {
     color: #FFF;
-    background: #b70a0a;
+    background: #404040 ;
     border-left: 2px solid #fff;
 }
 
@@ -1565,7 +1565,7 @@ body.adminbody .main-sidebar.left {
 
 #sidebar-menu > ul > li > a.active {
     color: #ffffff !important;
-    background-color: #b70a0a;
+    background-color: #B9BABB;
 }
 
 .menu-title {
@@ -1649,7 +1649,7 @@ body.adminbody .main-sidebar.left {
     position: relative;
     width: 190px;
     z-index: 6;
-    color: #de0101 !important;
+    color: #404040 !important;
 }
 
 #main.enlarged .left.main-sidebar #sidebar-menu ul > li:hover > ul a:hover {
@@ -1772,7 +1772,7 @@ body.adminbody .main-sidebar.left {
 
 .notif .noti-title {
     border-radius: 0;
-    background-color: #b70a0a;
+    background-color: #B9BABB;
     margin: 0;
     width: auto;
     padding: 8px 15px 12px 15px;
@@ -2436,7 +2436,7 @@ a.btn:focus {
 
 .dropdown-item.active,
 .dropdown-item:active {
-    background-color: #002e5b;
+    background-color: #B9BABB;
 }
 
 #sidebar-menu > ul > li > a.pro {
@@ -2537,25 +2537,25 @@ a.btn:focus {
 }
 
 .btn-primary {
-    background-color: #de0101;
-    border-color: #de0101;
+    background-color: #3F5DA8;
+    border-color: #3F5DA8;
 }
 
 .btn-primary:hover {
     background-color: #fff;
-    border-color: #de0101;
-    color: #de0101;
+    border-color: #3F5DA8;
+    color: #3F5DA8;
 }
 
 .btn-primary:focus {
     background-color: #fff;
-    border-color: #de0101;
-    color: #de0101 !important;
+    border-color: #3F5DA8;
+    color: #3F5DA8 !important;
 }
 
 .page-item.active .page-link {
-    background-color: #de0101;
-    border-color: #de0101;
+    background-color: #3F5DA8;
+    border-color: #3F5DA8;
 }
 
 .content-page .form-group label {

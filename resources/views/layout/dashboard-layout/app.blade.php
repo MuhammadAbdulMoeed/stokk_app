@@ -30,12 +30,6 @@
 <!-- End Navigation -->
 
 
-    <!-- Left Sidebar -->
-@include('admin.header.sidebar')
-
-<!-- End Sidebar -->
-
-
     <div class="content-page">
 
         <!-- Start content -->
