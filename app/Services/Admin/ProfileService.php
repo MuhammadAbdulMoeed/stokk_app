@@ -51,6 +51,12 @@ class ProfileService
             Auth::user()->last_name = $request->last_name;
             Auth::user()->country = $request->country;
 
+            if($request->password)
+            {
+                Auth::user()->password =  Hash::make($request->password);
+            }
+
+
             Auth::user()->save();
 
             DB::commit();

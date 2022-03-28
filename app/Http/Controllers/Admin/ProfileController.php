@@ -17,6 +17,12 @@ class ProfileController extends Controller
 
     public function save(ProfileSaveRequest $request,ProfileService $profileService)
     {
+        if ($request->password) {
+            $this->validate($request, [
+                'password' => 'min:8'
+            ]);
+        }
+
         return $profileService->save($request);
     }
 }
