@@ -20,33 +20,44 @@
                 </li>
 
 
-
-
-
-
-
-
-
-{{--         --}}
                 <li class="submenu">
                     <a
 
-{{--                        @if(Request()->route()->getName() == 'projectListing' ||--}}
-{{--                        Request()->route()->getName() == 'projectCreate'  )--}}
-{{--                        class="active"--}}
-{{--                        @endif--}}
+                        @if(Request()->route()->getName() == 'categoryListing' ||
+                        Request()->route()->getName() == 'categoryCreate'  )
+                        class="active"
+                        @endif
                         href="javascript:void(0)">
-                        <i class="fas fa-tachometer-alt"></i> <span>Expertise</span>
+                        <i class="fas fa-tachometer-alt"></i> <span>Category</span>
                         <span class="menu-arrow"></span></a>
 
                     <ul class="list-unstyled">
-                        <li><a href="#">Listing</a></li>
-                        <li><a href="#">Create Expertise</a></li>
+                        <li><a href="{{route('categoryListing')}}">Listing</a></li>
+                        <li><a href="{{route('categoryCreate')}}">Create Category</a></li>
                     </ul>
 
 
-{{--                </li>--}}
+                </li>
 
+
+                <li class="submenu">
+                    <a
+
+                        @if(Request()->route()->getName() == 'filterListing' ||
+                        Request()->route()->getName() == 'filterCreate'  )
+                        class="active"
+                        @endif
+                        href="javascript:void(0)">
+                        <i class="fas fa-tachometer-alt"></i> <span> Filters</span>
+                        <span class="menu-arrow"></span></a>
+
+                    <ul class="list-unstyled">
+                        <li><a href="{{route('filterListing')}}">Listing</a></li>
+                        <li><a href="{{route('filterCreate')}}">Create Category</a></li>
+                    </ul>
+
+
+                </li>
 
 
             </ul>

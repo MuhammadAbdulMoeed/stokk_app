@@ -2496,7 +2496,7 @@ a.btn:focus {
 .custom-modal .modal-header {
     padding: 10px !important;
     border-radius: 0;
-    background-color: #5ba2e6;
+    background-color: #404040;
     color: #fff;
 }
 
@@ -2654,7 +2654,7 @@ a.btn:focus {
 .breadcrumb-holder .float-right .btn-primary {
     background-color: #fff;
     border-color: #fff;
-    color: #de0101;
+    color: #404040;
 }
 
 .breadcrumb-holder .float-right .btn-primary:hover {
@@ -2664,7 +2664,7 @@ a.btn:focus {
 }
 
 .breadcrumb-holder .float-right .btn-primary:focus {
-    background-color: #de0101;
+    background-color: #404040;
     box-shadow: none !important;
 }
 
@@ -2688,11 +2688,11 @@ a.btn:focus {
 }
 
 .user_dash_custm p a {
-    color: #de0101;
+    color: #404040;
 }
 
 .user_dash_custm h6 strong {
-    color: #de0101;
+    color: #404040;
 }
 
 .user_dash_custm img {
@@ -2740,19 +2740,19 @@ a.btn:focus {
     margin-top: 30px;
 }
 
-.db-product-detail::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    background: url(../images/blur.svg);
-    background-size: contain;
-    left: 16%;
-    top: 50px;
-    width: 100px;
-    height: 100px;
-    fill: #002e5b;
-    z-index: -1;
-}
+/*.db-product-detail::after {*/
+/*    content: '';*/
+/*    position: absolute;*/
+/*    bottom: 0;*/
+/*    background: url(../images/blur.svg);*/
+/*    background-size: contain;*/
+/*    left: 16%;*/
+/*    top: 50px;*/
+/*    width: 100px;*/
+/*    height: 100px;*/
+/*    fill: #002e5b;*/
+/*    z-index: -1;*/
+/*}*/
 
 .inside-dbp {
     display: flex;
@@ -2762,11 +2762,11 @@ a.btn:focus {
 
 .inside-dbp input, .inside-dbp select {
     width: 50%;
-    border: 1px solid #f2b2b2;
+    border: 1px solid #B9BABB;
 }
 
 .sale_amount_section input {
-    border: 1px solid #f2b2b2;
+    border: 1px solid #B9BABB;
 }
 .produts-am {
     background: #ed0101;
@@ -2813,15 +2813,15 @@ a.btn:focus {
     left: 0;
     height: 20px;
     width: 20px;
-    border: 2px solid #f24d4d;
+    border: 2px solid #B9BABB;
 }
 
 .sc-featur:hover input ~ .checkmark {
-    background-color: #f24d4d;
+    background-color: #404040;
 }
 
 .sc-featur input:checked ~ .checkmark {
-    background-color: #f24d4d;
+    background-color: #B9BABB;
 }
 
 .sc-featur .checkmark:after {
@@ -2956,17 +2956,17 @@ a.btn:focus {
     height: 100%;
 }
 .list_canl{
-    background-color: #de0101;
-    border-color: #de0101;
+    background-color: #404040;
+    border-color: #404040;
     color: #fff;
     cursor: pointer;
     color: #fff;
-    border: 1px solid #de0101;
+    border: 1px solid #404040;
     border-radius: 2px;
     padding: 5px 8px;
 }
 .list_canl:hover{
-    color: #de0101;
+    color: #404040;
     background-color: #fff;
 }
 .custom-dbhome .form-group .db-bannerIMG{

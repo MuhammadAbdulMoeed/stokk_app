@@ -6,6 +6,8 @@ use App\Http\Controllers\Admin\Auth\LogoutController;
 use App\Http\Controllers\Admin\Auth\ForgotPasswordController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProfileController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\FilterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,5 +46,22 @@ Route::namespace('Admin')->group(function () {
 
         Route::get('profile',[ProfileController::class,'index'])->name('adminProfile');
         Route::post('save-profile',[ProfileController::class,'save'])->name('adminProfileSave');
+
+        Route::get('category-listing',[CategoryController::class,'index'])->name('categoryListing');
+        Route::get('create-category',[CategoryController::class,'create'])->name('categoryCreate');
+        Route::post('save-category',[CategoryController::class,'save'])->name('categorySave');
+        Route::get('edit-category/{id}',[CategoryController::class,'edit'])->name('categoryEdit');
+        Route::post('update-category',[CategoryController::class,'update'])->name('categoryUpdate');
+        Route::post('delete-category',[CategoryController::class,'delete'])->name('categoryDelete');
+        Route::get('category-change-status',[CategoryController::class,'status'])->name('categoryChangeStatus');
+
+        Route::get('filter-listing',[FilterController::class,'index'])->name('filterListing');
+        Route::get('create-filter',[FilterController::class,'create'])->name('filterCreate');
+        Route::post('save-filter',[FilterController::class,'save'])->name('filterSave');
+        Route::get('edit-filter/{id}',[FilterController::class,'edit'])->name('filterEdit');
+        Route::post('update-filter',[FilterController::class,'update'])->name('filterUpdate');
+        Route::post('delete-filter',[FilterController::class,'delete'])->name('filterDelete');
+        Route::get('filter-change-status',[FilterController::class,'status'])->name('filterChangeStatus');
+
     });
 });
