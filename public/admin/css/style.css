@@ -1536,7 +1536,7 @@ body.adminbody .main-sidebar.left {
 
 #sidebar-menu > ul > li > a:hover {
     color: #FFF;
-    background: #404040 ;
+    background: #404040;
     border-left: 2px solid #fff;
 }
 
@@ -1699,7 +1699,7 @@ body.adminbody .main-sidebar.left {
 #main.enlarged .left.main-sidebar #sidebar-menu ul > li:hover > a {
     position: relative;
     width: 260px;
-    background-color: #b70a0a;
+    background-color: #64b0f2;
     color: #ffffff;
 }
 
@@ -2436,7 +2436,7 @@ a.btn:focus {
 
 .dropdown-item.active,
 .dropdown-item:active {
-    background-color: #B9BABB;
+    background-color: #002e5b;
 }
 
 #sidebar-menu > ul > li > a.pro {
@@ -2496,7 +2496,7 @@ a.btn:focus {
 .custom-modal .modal-header {
     padding: 10px !important;
     border-radius: 0;
-    background-color: #404040;
+    background-color: #5ba2e6;
     color: #fff;
 }
 
@@ -2630,7 +2630,7 @@ a.btn:focus {
 .form-group .select2-container--default .select2-selection--multiple {
     border: 1px solid #ced4da;
     border-radius: .25rem;
-    height: calc(2.25rem + 2px);
+    height:auto;
     padding: .375rem .75rem;
 }
 
@@ -2740,19 +2740,19 @@ a.btn:focus {
     margin-top: 30px;
 }
 
-/*.db-product-detail::after {*/
-/*    content: '';*/
-/*    position: absolute;*/
-/*    bottom: 0;*/
-/*    background: url(../images/blur.svg);*/
-/*    background-size: contain;*/
-/*    left: 16%;*/
-/*    top: 50px;*/
-/*    width: 100px;*/
-/*    height: 100px;*/
-/*    fill: #002e5b;*/
-/*    z-index: -1;*/
-/*}*/
+.db-product-detail::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    background: url(../images/blur.svg);
+    background-size: contain;
+    left: 16%;
+    top: 50px;
+    width: 100px;
+    height: 100px;
+    fill: #002e5b;
+    z-index: -1;
+}
 
 .inside-dbp {
     display: flex;
@@ -2762,11 +2762,11 @@ a.btn:focus {
 
 .inside-dbp input, .inside-dbp select {
     width: 50%;
-    border: 1px solid #B9BABB;
+    border: 1px solid #f2b2b2;
 }
 
 .sale_amount_section input {
-    border: 1px solid #B9BABB;
+    border: 1px solid #f2b2b2;
 }
 .produts-am {
     background: #ed0101;
@@ -3047,9 +3047,88 @@ a.btn:focus {
     font-size: 32px;
     margin-bottom: 20px;
 }
-
+.rcard{
+    padding: 10px;
+    box-shadow: 0px 0px 4px rgb(0 0 0 / 20%);
+    width: 50%;
+    position: relative;
+    margin: auto;
+    margin-bottom: 40px;
+}
+.rcard .produts-am{
+    position: absolute;
+    right: 0;
+    top: -20px;
+    padding: 4px 8px;
+}
+.mycourses_slider_not {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.course_item {
+    padding: 5px;
+    box-shadow: 0px 0px 4px rgb(0 0 0 / 10%);
+    border-radius: 6px;
+    width: 100%;
+    margin-bottom: 15px;
+}
+.course_item iframe{
+    width: 100%;
+    height: 170px;
+}
+.citem_details {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding: 8px 15px 0px 15px;
+}
+.ci_txt {
+    color: #000;
+    font-size: 16px;
+    font-weight: 500;
+    min-height: 38px;
+}
+.course_item a {
+    display: block;
+    text-align: center;
+    border: 1px solid #404040;
+    padding: 5px;
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+    color: #404040;
+    transition: all .5s ease-in-out;
+    margin-bottom: 15px;
+}
+.course_item a::after {
+    content: '';
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-color: #404040 transparent transparent transparent;
+    position: absolute;
+    top: 0;
+    left: -5px;
+    border-top-color: #404040;
+    transition: all .5s ease-in-out;
+}
+.course_item a:hover {
+    color: #fff;
+    z-index: 9;
+    position: relative;
+}
+.course_item a:hover::after {
+    border-width: 355px 355px 0 0;
+    z-index: -1;
+}
 /* =================Responcive============== */
-
+@media only screen and (min-width: 1500px){
+    .course_item a:hover::after {
+        border-width: 355px 555px 0 0;
+        z-index: -1;
+    }
+}
 @media only screen and (max-width: 1199px) {
     .round-icn-div {
         align-content: center;
@@ -3087,6 +3166,21 @@ a.btn:focus {
     .dis_flx_991 {
         display: flex;
         flex-direction: column-reverse;
+    }
+    .profile_img .img-btn-div .edit-ubtn{
+        margin-top: 20px;
+    }
+    .img-div .edit-circle{
+        width: 130px;
+        height: 130px;
+        overflow: hidden;
+        border-radius: 50%;
+        box-shadow: 0px 0px 4px;
+    }
+    .img-div .edit-circle img{
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
     }
 
     .img-div .edit-circle {
@@ -3128,9 +3222,16 @@ a.btn:focus {
     .btn-icon {
         text-align: right;
     }
+    .course_item iframe{
+        height: auto;
+    }
+    .rcard{width: 100%;}
     .user_dash_custm{width: 100%;}
     .custom-dbhome .form-group{
         width: 100%;
+    }
+    .add_more_area{
+        margin-top: 20px;
     }
     .states-heading{
         font-size: 22px;
@@ -3173,7 +3274,4 @@ a.btn:focus {
         display: block;
         padding-right: 0px;
     }
-}
-.blockUI{
-    font-family: Arial, Helvetica, sans-serif !important;
 }

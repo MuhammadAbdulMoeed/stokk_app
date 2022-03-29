@@ -5,16 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class CategoryFilter extends Model
+class PivotCategoryFilter extends Model
 {
     use HasFactory;
-
-    protected $table = 'category_filters';
 
     protected $guarded = [];
 
     public function category()
     {
         return $this->belongsTo(Category::class,'category_id');
+    }
+
+    public function filter()
+    {
+        return $this->belongsTo(Filter::class,'filter_id');
     }
 }

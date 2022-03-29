@@ -30,7 +30,7 @@
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
                         <div class="form-group">
                             <label for="exampleInputEmail1">Category</label>
-                            <select name="parent_id" class="form-control">
+                            <select name="category_id" class="form-control">
                                 <option value="" selected disabled>Select</option>
                                 @foreach($categories as $category)
                                     <option value="{{$category->id}}">{{$category->name}}</option>
@@ -102,7 +102,7 @@
 
                                             <div class="inside-dbp">
                                                 <label for="exampleInputEmail">Name</label>
-                                                <input type="text" name="value['filter_1']['name']"
+                                                <input type="text" name="value[filter_1][name]"
                                                        class="form-control" placeholder="Enter Filter Name"
                                                        maxlength="50">
                                             </div>
@@ -110,7 +110,7 @@
                                             <div class="inside-dbp">
                                                 <label for="exampleInputEmail">Type</label>
                                                 <select class="form-control filterType"
-                                                        name="value['filter_1']['filterType']">
+                                                        name="value[filter_1][filterType]">
                                                     <option value="" selected disabled>Select</option>
                                                     <option value="price_range">Price Range</option>
                                                     <option value="input_field">Input Field</option>
@@ -119,20 +119,22 @@
                                                     <option value="multi_select_option">Multi Select Option</option>
                                                     <option value="date_picker">Date Picker</option>
                                                     <option value="time_picker">Time Picker</option>
+                                                    <option value="date_range_picker">Date Range Picker</option>
+                                                    <option value="time_range_picker">Time Range Picker</option>
                                                 </select>
                                             </div>
 
                                             <div class="price_range_section" style="display: none">
                                                 <div class="inside-dbp">
                                                     <label for="exampleInputEmail">Min Value</label>
-                                                    <input type="text" name="value['filter_1']['min']"
+                                                    <input type="text" name="value[filter_1][min]"
                                                            class="form-control" placeholder="Enter Min Value"
                                                            onkeypress="return isNumberKey(event)">
                                                 </div>
 
                                                 <div class="inside-dbp">
                                                     <label for="exampleInputEmail">Max Value</label>
-                                                    <input type="text" name="value['filter_1']['max']"
+                                                    <input type="text" name="value[filter_1][max]"
                                                            class="form-control" placeholder="Enter Max Value"
                                                            onkeypress="return isNumberKey(event)">
                                                 </div>
@@ -142,7 +144,7 @@
 
                                                 <div class="inside-dbp">
                                                     <label for="exampleInputEmail">Option</label>
-                                                    <input type="text" name="value['filter_1']['options'][]"
+                                                    <input type="text" name="value[filter_1][options][]"
                                                            class="form-control" placeholder="Enter Option">
 
                                                     <button data-section="1" type="button"
@@ -306,6 +308,8 @@
                 html += '<option value="multi_select_option">Multi Select Option</option>';
                 html += '<option value="date_picker">Date Picker</option>';
                 html += '<option value="time_picker">Time Picker</option>';
+                html += '<option value="date_range_picker">Date Range Picker</option>';
+                html += '<option value="time_range_picker">Time Range Picker</option>';
                 html += '</select>';
                 html += '</div>';
                 html += '<div class="price_range_section" style="display: none">';

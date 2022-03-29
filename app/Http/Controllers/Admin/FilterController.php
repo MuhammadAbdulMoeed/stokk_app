@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\FilterRequest;
 use App\Services\Admin\FilterService;
 use Illuminate\Http\Request;
 
