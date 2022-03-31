@@ -60,7 +60,8 @@ class CategoryService
             return view('admin.category.edit', compact('parents', 'data'));
 
         } else {
-            return response()->json(['result' => 'error', 'message' => 'Record Not Found']);
+            return redirect()->route('categoryListing')->with('error','Record Not Found');
+//            return response()->json(['result' => 'error', 'message' => 'Record Not Found']);
         }
     }
 

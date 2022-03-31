@@ -23,7 +23,7 @@ class CreatePivotCategoryFiltersTable extends Migration
             $table->foreign('filter_id')->references('id')->on('filters')
                 ->onDelete('cascade');
 
-            $table->integer('order');
+            $table->integer('order')->nullable();
             $table->timestamps();
         });
     }

@@ -13,8 +13,8 @@ class Filter extends Model
 
     protected $guarded = [];
 
-    public function category()
+    public function filterOptions()
     {
-        return $this->belongsTo(Category::class,'category_id');
+        return $this->hasMany(FilterValue::class,'filter_id');
     }
 }

@@ -53,11 +53,31 @@
 
                     <ul class="list-unstyled">
                         <li><a href="{{route('filterListing')}}">Listing</a></li>
-                        <li><a href="{{route('filterCreate')}}">Create Category</a></li>
+                        <li><a href="{{route('filterCreate')}}">Create Filter</a></li>
                     </ul>
 
 
                 </li>
+
+                <li class="submenu">
+                    <a
+
+                        @if(Request()->route()->getName() == 'categoryFilterListing' ||
+                        Request()->route()->getName() == 'categoryFilterCreate'  )
+                        class="active"
+                        @endif
+                        href="javascript:void(0)">
+                        <i class="fas fa-tachometer-alt"></i> <span> Category Filters</span>
+                        <span class="menu-arrow"></span></a>
+
+                    <ul class="list-unstyled">
+                        <li><a href="{{route('categoryFilterListing')}}">Listing</a></li>
+                        <li><a href="{{route('categoryFilterCreate')}}">Create</a></li>
+                    </ul>
+
+
+                </li>
+
 
 
             </ul>

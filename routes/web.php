@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\FilterController;
+use App\Http\Controllers\Admin\CategoryFilterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +20,7 @@ use App\Http\Controllers\Admin\FilterController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
 
 Route::namespace('Admin')->group(function () {
     Route::namespace("Auth")->group(function () {
@@ -62,6 +64,14 @@ Route::namespace('Admin')->group(function () {
         Route::post('update-filter',[FilterController::class,'update'])->name('filterUpdate');
         Route::post('delete-filter',[FilterController::class,'delete'])->name('filterDelete');
         Route::get('filter-change-status',[FilterController::class,'status'])->name('filterChangeStatus');
+
+        Route::get('category-filter-listing',[CategoryFilterController::class,'index'])->name('categoryFilterListing');
+        Route::get('create-category-filter',[CategoryFilterController::class,'create'])->name('categoryFilterCreate');
+        Route::post('save-category-filter',[CategoryFilterController::class,'save'])->name('categoryFilterSave');
+        Route::get('edit-category-filter/{id}',[CategoryFilterController::class,'edit'])->name('categoryFilterEdit');
+        Route::post('update-category-filter',[CategoryFilterController::class,'update'])->name('categoryFilterUpdate');
+        Route::post('delete-category-filter',[CategoryFilterController::class,'delete'])->name('categoryFilterDelete');
+        Route::get('category-filter-change-status',[CategoryFilterController::class,'status'])->name('categoryFilterChangeStatus');
 
     });
 });

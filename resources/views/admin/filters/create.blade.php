@@ -316,16 +316,16 @@
             });
 
 
-            $(document).on('click', '.add_more_option', function () {
-                var html = '<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 parent_remove">';
-                html += '<div class="form-group">';
-                html += '<label for="exampleInputEmail">Option</label>';
-                html += '<input type="text" name="option_value[]" class="form-control" placeholder="Enter Option">';
-                html += '<button type="button" class="delete_select_option btn-sm btn-outline-primary"><i class="fa fa-trash"></i></button>';
-                html += '</div>';
-
-                $(this).parents('.select_option_section').append(html);
-            });
+            // $(document).on('click', '.add_more_option', function () {
+            //     var html = '<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 parent_remove">';
+            //     html += '<div class="form-group">';
+            //     html += '<label for="exampleInputEmail">Option</label>';
+            //     html += '<input type="text" name="option_value[]" class="form-control" placeholder="Enter Option">';
+            //     html += '<button type="button" class="delete_select_option btn-sm btn-outline-primary"><i class="fa fa-trash"></i></button>';
+            //     html += '</div>';
+            //
+            //     $(this).parents('.select_option_section').append(html);
+            // });
 
 
             $(document).on('click', '.delete_select_option', function () {

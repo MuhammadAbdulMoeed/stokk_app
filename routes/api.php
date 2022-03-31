@@ -21,18 +21,23 @@ use App\Http\Controllers\Api\Auth\ForgotPasswordController;
 //    return $request->user();
 //});
 
-Route::namespace('Api')->middleware('json.response')->group(function () {
-    Route::post('login', [LoginController::class,'emailLogin']);
-    Route::post('register', [RegisterController::class,'register']);
-    Route::post('social-login',[LoginController::class,'socialLogin']);
-    Route::post('forgot-password',[ForgotPasswordController::class,'forgotPassword']);
-    Route::post('verify-otp',[ForgotPasswordController::class,'verifyOtp']);
-    Route::post('change-password',[ForgotPasswordController::class,'updatePassword']);
-    Route::post('resend-otp',[ForgotPasswordController::class,'resendOTP']);
+Route::group(['middleware' => ['json.response'], ['namespace' => 'Api']], function () {
+//    Route::namespace('Api')->group(function () {
+    Route::post('login', [LoginController::class, 'emailLogin']);
+    Route::post('register', [RegisterController::class, 'register']);
+    Route::post('social-login', [LoginController::class, 'socialLogin']);
+    Route::post('forgot-password', [ForgotPasswordController::class, 'forgotPassword']);
+    Route::post('verify-otp', [ForgotPasswordController::class, 'verifyOtp']);
+    Route::post('change-password', [ForgotPasswordController::class, 'updatePassword']);
+    Route::post('resend-otp', [ForgotPasswordController::class, 'resendOTP']);
 
     Route::middleware('auth:api')->group(function () {
 
+        Route::post('check', function () {
+            dd('i am auth');
+        });
 
     });
 
+//    });
 });

@@ -14,7 +14,6 @@ class LoginService
     {
         try {
             if (Auth::attempt(['email' => request('email'), 'password' => request('password')])) {
-                $user = Auth::user();
 
                 Auth::user()->fcm_token = $request->fcm_token;
 
@@ -22,11 +21,12 @@ class LoginService
 
                 $token = Auth::user()->createToken('ClassifiedMarketplace-' . rand(0, 9))->accessToken;
 
+
                 $data = [
-                    'first_name' => $user->first_name,
-                    'last_name' => $user->last_name,
-                    'email' => $user->email,
-                    'fcm_token' => $user->fcm_token
+                    'first_name' => Auth::user()->first_name,
+                    'last_name' => Auth::user()->last_name,
+                    'email' => Auth::user()->email,
+                    'fcm_token' => Auth::user()->fcm_token
 
                 ];
 

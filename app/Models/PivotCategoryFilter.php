@@ -20,4 +20,5 @@ class PivotCategoryFilter extends Model
     {
         return $this->belongsTo(Filter::class,'filter_id');
     }
+
 }

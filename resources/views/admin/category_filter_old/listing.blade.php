@@ -21,11 +21,11 @@
             <div class="row">
                 <div class="col-xl-12 bh-mb">
                     <div class="breadcrumb-holder">
-                        <h1 class="main-title float-left">Category Filters Listing</h1>
+                        <h1 class="main-title float-left">Filters Listing</h1>
 
                         <div class="float-right">
-                            <a href="{{route('categoryFilterCreate')}}">
-                                <button class="btn btn-primary">Create New Category Filters</button>
+                            <a href="{{route('filterCreate')}}">
+                                <button class="btn btn-primary">Create New Filters</button>
                             </a>
                         </div>
                         <div class="clearfix"></div>
@@ -49,52 +49,40 @@
                                     <tr>
                                         <th>#</th>
                                         <th>Category Name</th>
-                                        <th>Filter Name</th>
                                         <th>Status</th>
                                         <th>Action</th>
                                     </tr>
                                     </thead>
 
                                     <tbody>
-                                    @foreach($data as $category)
-                                        @if(sizeof($category->categoryFilters) >0)
-                                            <tr>
-                                                <td>{{$loop->iteration}}</td>
-                                                <td>{{$category->name}}</td>
-                                                <td>
-                                                    @foreach($category->categoryFilters as $category_filter)
-                                                        @if($loop->last)
-                                                            {{$category_filter->filter_name}}
-                                                        @else
-                                                            {{$category_filter->filter_name}},
-                                                        @endif
-                                                    @endforeach
-                                                </td>
-                                                <td>
-                                                    <button class="btn-sm {{$category->is_active == 1 ? 'btn btn-outline-success':'btn btn-outline-danger'}}">
-                                                        {{$category->is_active == 1 ? 'Active':'Inactive'}}
-                                                    </button>
-                                                </td>
-                                                <td>
-                                                    <a title="Edit"
-                                                       href="{{route('categoryFilterEdit',['id'=>$category->id])}}"
-                                                       class="btn btn-outline-primary btn-sm"><i
-                                                            class="fas fa-pencil-alt"></i></a>
+                                    @foreach($data as $filter)
+                                        <tr>
+                                            <td>{{$loop->iteration}}</td>
+                                            <td>{{$filter->category->name}}</td>
+                                            <td>
+                                                <button
+                                                    class="btn-sm {{$filter->is_active == 1 ? 'btn btn-outline-success':'btn btn-outline-danger'}}">
+                                                    {{$filter->is_active == 1 ? 'Active':'Inactive'}}
+                                                </button>
+                                            </td>
+                                            <td>
+                                                <a title="Edit" href="{{route('filterEdit',['id'=>$filter->id])}}"
+                                                   class="btn btn-outline-primary btn-sm"><i
+                                                        class="fas fa-pencil-alt"></i></a>
 
-                                                    <a title="Delete" data-id="{{$category->id}}"
-                                                       href="javascript:void(0)"
-                                                       class="btn btn-outline-danger btn-sm deleteRecord">
-                                                        <i class="fas fa-trash-alt"></i></a>
+                                                <a title="Delete" data-id="{{$filter->id}}"
+                                                   href="javascript:void(0)"
+                                                   class="btn btn-outline-danger btn-sm deleteRecord">
+                                                    <i class="fas fa-trash-alt"></i></a>
 
-{{--                                                    <a title="Change Status" href="javascript:void(0)"--}}
-{{--                                                       data-id="{{$category->id}}"--}}
-{{--                                                       class="btn btn-outline-primary btn-sm changeStatus"><i--}}
-{{--                                                            class="fa fa-retweet"></i>--}}
-{{--                                                    </a>--}}
-                                                </td>
+                                                <a title="Change Status" href="javascript:void(0)"
+                                                   data-id="{{$filter->id}}"
+                                                   class="btn btn-outline-primary btn-sm changeStatus"><i
+                                                        class="fa fa-retweet"></i>
+                                                </a>
+                                            </td>
 
-                                            </tr>
-                                        @endif
+                                        </tr>
                                     @endforeach
 
                                     </tbody>
@@ -116,7 +104,7 @@
         </div>
     </div>
 
-    @include('admin.category_filter.modal.delete_modal')
+    @include('admin.category.modal.delete_modal')
 
 
 @endsection

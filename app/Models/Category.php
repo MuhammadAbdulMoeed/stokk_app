@@ -15,4 +15,14 @@ class Category extends Model
     {
         return $this->belongsTo(Category::class,'parent_id');
     }
+
+    public function categoryFilter()
+    {
+        return $this->hasMany(PivotCategoryFilter::class,'category_id');
+    }
+
+    public function categoryFilters()
+    {
+        return $this->belongsToMany(Filter::class,PivotCategoryFilter::class,'category_id','filter_id');
+    }
 }

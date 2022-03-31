@@ -106,7 +106,7 @@
         </div>
     </div>
 
-    @include('admin.category.modal.delete_modal')
+    @include('admin.filters.modal.delete_modal')
 
 
 @endsection
