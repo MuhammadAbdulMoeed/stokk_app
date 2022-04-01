@@ -21,13 +21,21 @@ class LoginService
             $remember = true;
             if (Auth::attempt($credentials, $remember)) {
                 //save user status
-                $url = '';
+                $url = route('adminDashboard');
+                $result = 'success';
+
                 if (Auth::user()->role->name == 'Admin') {
 //                    $url = route('adminDashboard');
                     $message = 'Login Successful';
+
+                }
+                else{
+                    $message = 'You are not Authorize for making this request';
+                    $result = 'error';
+
                 }
 
-                return response()->json(['result' => 'success', 'message' => $message,
+                return response()->json(['result' => $result, 'message' => $message,
                     'data' => Auth::user()->role_id,
                     'url' => $url
                 ], 200);
@@ -40,13 +48,19 @@ class LoginService
         }
         else {
             if (Auth::attempt($credentials)) {
-                $url = '';
+                $url = route('adminDashboard');
+                $result = 'success';
                 if (Auth::user()->role->name == 'Admin') {
 //                    $url = route('adminDashboard');
                     $message = 'Login Successful';
                 }
+                else{
+                    $message = 'You are not Authorize for making this request';
+                    $result = 'error';
 
-                return response()->json(['result' => 'success', 'message' => $message,
+                }
+
+                return response()->json(['result' => $result, 'message' => $message,
                     'data' => Auth::user()->role_id,
                     'url' => $url
                 ], 200);

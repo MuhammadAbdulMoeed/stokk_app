@@ -50,6 +50,7 @@
                                         <th>#</th>
                                         <th> Name</th>
                                         <th> Parent Name</th>
+                                        <th>Icon</th>
                                         <th>Image</th>
                                         <th>Status</th>
                                         <th>Action</th>
@@ -63,6 +64,15 @@
                                             <td>{{$category->name}}</td>
                                             <td>{{isset($category->parent) ? $category->parent->name:'N/A'}}</td>
                                             <td><img width="50%" height="50%" src="{{asset($category->icon)}}"></td>
+                                            <td>
+                                                @if($category->image)
+                                                    <img width="50%" height="50%" src="{{asset($category->image)}}">
+                                                @else
+                                                    N/A
+                                                @endif
+                                                
+                                            </td>
+
                                             <td>
                                                 <button class="btn-sm {{$category->is_active == 1 ? 'btn btn-outline-success':'btn btn-outline-danger'}}">
                                                     {{$category->is_active == 1 ? 'Active':'Inactive'}}

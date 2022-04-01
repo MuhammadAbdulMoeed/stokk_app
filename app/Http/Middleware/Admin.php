@@ -29,7 +29,7 @@ class Admin
 
         }
         else {
-            return redirect()->route('loginPage');
+            return redirect()->route('loginPage')->with('error','You are not Authorize for making this Request');
         }
     }
 

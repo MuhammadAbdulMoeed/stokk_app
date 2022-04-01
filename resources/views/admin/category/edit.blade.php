@@ -12,10 +12,10 @@
             <div class="row">
                 <div class="col-xl-12 bh-mb">
                     <div class="breadcrumb-holder">
-                        <h1 class="main-title float-left">Edit Designation</h1>
+                        <h1 class="main-title float-left">Edit Category</h1>
                         <ol class="breadcrumb float-right">
                             <li class="breadcrumb-item">Home</li>
-                            <li class="breadcrumb-item active">Edit Designation</li>
+                            <li class="breadcrumb-item active">Edit Category</li>
                         </ol>
                         <div class="clearfix"></div>
                     </div>
@@ -46,7 +46,7 @@
                             <select name="parent_id" class="form-control">
                                 <option value="" selected disabled>Select</option>
                                 @foreach($parents as $parent)
-                                    <option value="{{$parent->id}}" {{$data->parent == $parent->id  ? 'selected':''}}>{{$parent->name}}</option>
+                                    <option value="{{$parent->id}}" {{$data->parent_id == $parent->id  ? 'selected':''}}>{{$parent->name}}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -64,10 +64,23 @@
                                         <img class="image_1" src="{{asset('admin/images/no_image.jpg')}}">
                                     @endif
                                 </div>
-                                <label for="exampleInputEmail1">Image </label>
+                                <label for="exampleInputEmail1">Icon </label>
                                 <input type="file" class="images_select" name="icon"
                                        accept="image/png,image/jpg,image/jpeg"
                                        onchange="readURL(this,'image_1');">
+                            </div>
+
+                            <div class="form-group ">
+                                <div class="db-bannerIMG">
+                                    @if($data->image)
+                                        <img class="image_2" src="{{asset($data->image)}}">
+                                    @else
+                                        <img class="image_2" src="{{asset('admin/images/no_image.jpg')}}">
+                                    @endif                                </div>
+                                <label for="exampleInputEmail1">Image </label>
+                                <input type="file" class="images_select" name="image"
+                                       accept="image/png,image/jpg,image/jpeg"
+                                       onchange="readURL(this,'image_2');">
                             </div>
                         </div>
                     </div>

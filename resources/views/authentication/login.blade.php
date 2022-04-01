@@ -127,6 +127,11 @@
                         else if (response.result == 'error') {
                             $.unblockUI();
                             errorMsg(response.message);
+                            if(response.url)
+                            {
+                                setTimeout(function(){window.location.href = response.url;},1000);
+
+                            }
                         }
                     },
                     error: function (data) {

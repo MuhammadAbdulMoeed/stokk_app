@@ -25,7 +25,7 @@ class CategoryService
     public function save($request)
     {
         try {
-            $save_image = null;
+            $save_icon = null;
             if ($request->has('icon')) {
                 $image = $request->icon;
                 $ext = $image->getClientOriginalExtension();
@@ -38,11 +38,28 @@ class CategoryService
                 }
 
                 $imageSave = ImageUploadHelper::saveImage($image, $fileNameUpload, $drive);
-                $save_image = $imageSave;
-
+                $save_icon = $imageSave;
             }
 
-            Category::create($request->except('_token', 'icon') + ['icon' => $save_image]);
+            $save_image = null;
+
+            if ($request->file('image')) {
+                $image = $request->image;
+                $ext = $image->getClientOriginalExtension();
+                $fileName = $image->getClientOriginalName();
+                $fileNameUpload = time() . "-" . $fileName;
+                $drive = 'upload/category/';
+                $path = public_path($drive);
+                if (!file_exists($path)) {
+                    File::makeDirectory($path, 0777, true);
+                }
+
+                $imageSave = ImageUploadHelper::saveImage($image, $fileNameUpload, $drive);
+                $save_image = $imageSave;
+            }
+
+            Category::create($request->except('_token', 'icon','image') + ['icon' => $save_icon,
+                    'image' => $save_image]);
 
             return response()->json(['result' => 'success', 'message' => 'Category Save Successfully']);
         } catch (\Exception $e) {
@@ -71,9 +88,26 @@ class CategoryService
         $data = Category::find($request->id);
         if ($data) {
             try {
-                $save_image = $data->icon;
+                $save_icon = $data->icon;
                 if ($request->file('icon')) {
                     $image = $request->icon;
+                    $ext = $image->getClientOriginalExtension();
+                    $fileName = $image->getClientOriginalName();
+                    $fileNameUpload = time() . "-" . $fileName;
+                    $drive = 'upload/category/';
+                    $path = public_path($drive);
+                    if (!file_exists($path)) {
+                        File::makeDirectory($path, 0777, true);
+                    }
+
+                    $imageSave = ImageUploadHelper::saveImage($image, $fileNameUpload, $drive);
+                    $save_icon = $imageSave;
+                }
+
+                $save_image = $data->image;
+
+                if ($request->file('image')) {
+                    $image = $request->image;
                     $ext = $image->getClientOriginalExtension();
                     $fileName = $image->getClientOriginalName();
                     $fileNameUpload = time() . "-" . $fileName;
@@ -87,7 +121,9 @@ class CategoryService
                     $save_image = $imageSave;
                 }
 
-                $data->update($request->except('_token', 'icon') + ['icon' => $save_image]);
+
+                $data->update($request->except('_token', 'icon','image') + ['icon' => $save_icon,
+                        'image'=>$save_image]);
 
                 return response()->json(['result' => 'success', 'message' => 'Category Updated Successfully']);
             } catch (\Exception $e) {

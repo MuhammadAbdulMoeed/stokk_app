@@ -57,10 +57,21 @@
                                 <div class="db-bannerIMG">
                                     <img class="image_1" src="{{asset('admin/images/no_image.jpg')}}">
                                 </div>
-                                <label for="exampleInputEmail1">Image </label>
+                                <label for="exampleInputEmail1">Icon </label>
                                 <input type="file" class="images_select" name="icon"
                                        accept="image/png,image/jpg,image/jpeg"
                                        onchange="readURL(this,'image_1');">
+                            </div>
+
+
+                            <div class="form-group ">
+                                <div class="db-bannerIMG">
+                                    <img class="image_2" src="{{asset('admin/images/no_image.jpg')}}">
+                                </div>
+                                <label for="exampleInputEmail1">Image </label>
+                                <input type="file" class="images_select" name="image"
+                                       accept="image/png,image/jpg,image/jpeg"
+                                       onchange="readURL(this,'image_2');">
                             </div>
                         </div>
                     </div>
