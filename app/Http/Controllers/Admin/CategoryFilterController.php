@@ -43,4 +43,14 @@ class CategoryFilterController extends Controller
     {
         return $filterService->changeStatus($request);
     }
+
+    public function changePosition($id, CategoryFilterService $filterService)
+    {
+        return $filterService->changePosition($id);
+    }
+
+    public function updatePosition(Request $request, CategoryFilterService $filterService)
+    {
+        return $filterService->updatePosition($request);
+    }
 }

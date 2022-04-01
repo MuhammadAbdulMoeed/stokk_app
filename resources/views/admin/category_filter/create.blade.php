@@ -76,7 +76,7 @@
 
             $('#createBtn').click(function () {
 
-                // var data = $('#categoryForm').serialize();
+                var data = $('#categoryForm').serialize();
                 // var data = new FormData($('#categoryForm')[0]);
 
                 $.blockUI({
@@ -94,58 +94,39 @@
 
                 $.ajax({
 
-                    type: 'GET',
-                    url: 'http://services.ticketmaster.com/api/ismds/event/0E005B9E487F4235/facets?show=count+row+listpricerange+places+maxQuantity+sections+shape&q=available&apikey=b462oi7fic6pehcdkzony5bxhe&apisecret=pquzpfrfz7zd2ylvtz3w5dtyse&resaleChannelId=internal.ecommerce.consumer.desktop.web.browser.ticketmaster.us',
-                    // data: data,
+                    type: 'POST',
+                    url: '{{route('categoryFilterSave')}}',
+                    data: data,
                     // cache: false,
                     // contentType: false,
                     // processData: false,
 
 
-                    beforeSend: function(xhr){
-                        xhr.setRequestHeader("content-type","application/json;charset=utf-8")
-                        xhr.setRequestHeader("Access-Control-Allow-Origin","*");
-                        xhr.setRequestHeader("Access-Control-Allow-Credentials",true);
-                        xhr.setRequestHeader("Access-Control-Allow-Headers","*");
-                        xhr.setRequestHeader("Access-Control-Allow-Methods","GET, POST, DELETE, HEAD, OPTIONS, PATCH, PROPFIND, PROPPATCH, MKCOL, COPY, MOVE, LOCK, PUT");
-                        // xhr.setRequestHeader("Access-Control-Allow-Origin","*");
-                        // xhr.setRequestHeader("Access-Control-Expose-Headers","*");
 
-                        // xhr.setRequestHeader("Access-Control-Allow-Headers","Origin, X-Requested-With,Content-Type,Accept");
-
-
-                        xhr.setRequestHeader("TMPS-Correlation-Id", uuidv4());
-
-                    },
-                    // dataType: 'jsonp',
 
                     success: function (response, status) {
                         $.unblockUI();
-                        console.log(response,status);
 
-                        {{--if (response.result == 'success') {--}}
-                        {{--    $.unblockUI();--}}
-                        {{--    successMsg(response.message);--}}
+                        if (response.result == 'success') {
+                            successMsg(response.message);
 
-                        {{--    setTimeout(function () {--}}
-                        {{--            window.location.href = '{{route('categoryFilterListing')}}'--}}
-                        {{--        }--}}
-                        {{--        , 2000);--}}
-                        {{--} else if (response.result == 'error') {--}}
-                        {{--    $.unblockUI();--}}
-                        {{--    errorMsg(response.message);--}}
-                        {{--}--}}
+                            setTimeout(function () {
+                                    window.location.href = '{{route('categoryFilterListing')}}'
+                                }
+                                , 2000);
+                        } else if (response.result == 'error') {
+                            errorMsg(response.message);
+                        }
 
 
                     },
                     error: function (data) {
 
-                        $.unblockUI();
-                        console.log(data);
-                        // $.each(data.responseJSON.errors, function (key, value) {
-                        //     $.unblockUI();
-                        //     errorMsg(value);
-                        // });
+
+                        $.each(data.responseJSON.errors, function (key, value) {
+                            $.unblockUI();
+                            errorMsg(value);
+                        });
                     }
 
 

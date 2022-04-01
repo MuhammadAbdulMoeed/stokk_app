@@ -82,11 +82,31 @@ class CategoryFilterService
         DB::beginTransaction();
         try{
             PivotCategoryFilter::where('category_id',$request->id)->delete();
-            foreach($request->filters as $filter)
+
+
+            $check = PivotCategoryFilter::where('category_id',$request->category_id)
+                ->where('category_id','!=',$request->id)
+                ->first();
+
+            if(!$check)
             {
-                PivotCategoryFilter::create(['category_id'=>$request->category_id,
-                    'filter_id'=>$filter]);
+                foreach($request->filters as $filter)
+                {
+                    PivotCategoryFilter::create(['category_id'=>$request->category_id,
+                        'filter_id'=>$filter]);
+                }
             }
+            else{
+                DB::rollBack();
+                return response()->json(['result'=>'error','message'=>'Category Filter Already Added Edit That']);
+            }
+
+
+//            foreach($request->filters as $filter)
+//            {
+//                PivotCategoryFilter::create(['category_id'=>$request->category_id,
+//                    'filter_id'=>$filter]);
+//            }
 
             DB::commit();
             return response()->json(['result'=>'success','message'=>'Category Filters Updated Successfully']);
@@ -120,6 +140,45 @@ class CategoryFilterService
         }
         else{
             return response()->json(['result'=>'error','message'=>'Record Not Found']);
+        }
+    }
+
+    public function changePosition($id)
+    {
+        $data =  PivotCategoryFilter::where('category_id',$id)->orderBy('order','asc')->get();
+
+
+        if(sizeof($data) > 0 )
+        {
+            return view('admin.category_filter.change_order',compact('data'));
+        }
+        else{
+            return redirect()->route('categoryFilterListing')->with('error','Record Not Found');
+        }
+    }
+
+    public function updatePosition($request)
+    {
+        if (sizeof($request->data) > 0) {
+            foreach ($request->data as $key => $filter) {
+                $find = PivotCategoryFilter::find($filter);
+                if ($find) {
+                    if($key + 1 > 9)
+                    {
+                        $find->order = $key+1;
+                    }
+                    else{
+//                        $find->order = 0 . $key+1;
+                        $find->order = str_pad($key+1, 2, '0', STR_PAD_LEFT);
+                    }
+
+                    $find->save();
+                }
+            }
+
+            return response()->json(['result' => 'success', 'message' => 'Category Filter Order Updated']);
+        } else {
+            return response()->json(['result' => 'error', 'message' => 'Data Not Found']);
         }
     }
 

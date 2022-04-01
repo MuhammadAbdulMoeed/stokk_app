@@ -72,6 +72,8 @@ Route::namespace('Admin')->group(function () {
         Route::post('update-category-filter',[CategoryFilterController::class,'update'])->name('categoryFilterUpdate');
         Route::post('delete-category-filter',[CategoryFilterController::class,'delete'])->name('categoryFilterDelete');
         Route::get('category-filter-change-status',[CategoryFilterController::class,'status'])->name('categoryFilterChangeStatus');
+        Route::get('category-filter-change-position/{id}',[CategoryFilterController::class,'changePosition'])->name('categoryFilterChangePosition');
+        Route::post('category-filter-update-position',[CategoryFilterController::class,'updatePosition'])->name('categoryFilterUpdatePosition');
 
     });
 });
