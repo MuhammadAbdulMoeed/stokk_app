@@ -9,6 +9,10 @@ use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\FilterController;
 use App\Http\Controllers\Admin\CategoryFilterController;
+use App\Http\Controllers\Admin\BrandController;
+use App\Http\Controllers\Admin\ClassController;
+use App\Http\Controllers\Admin\ItemConditionController;
+use App\Http\Controllers\Admin\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -74,6 +78,40 @@ Route::namespace('Admin')->group(function () {
         Route::get('category-filter-change-status',[CategoryFilterController::class,'status'])->name('categoryFilterChangeStatus');
         Route::get('category-filter-change-position/{id}',[CategoryFilterController::class,'changePosition'])->name('categoryFilterChangePosition');
         Route::post('category-filter-update-position',[CategoryFilterController::class,'updatePosition'])->name('categoryFilterUpdatePosition');
+
+        Route::get('brand-listing',[BrandController::class,'index'])->name('brandListing');
+        Route::get('create-brand',[BrandController::class,'create'])->name('brandCreate');
+        Route::post('save-brand',[BrandController::class,'save'])->name('brandSave');
+        Route::get('edit-brand/{id}',[BrandController::class,'edit'])->name('brandEdit');
+        Route::post('update-brand',[BrandController::class,'update'])->name('brandUpdate');
+        Route::post('delete-brand',[BrandController::class,'delete'])->name('brandDelete');
+        Route::get('brand-change-status',[BrandController::class,'status'])->name('brandChangeStatus');
+
+        Route::get('get-subCategory',[BrandController::class,'getSubCategory'])->name('getSubCategory');
+
+        Route::get('class-listing',[ClassController::class,'index'])->name('classListing');
+        Route::get('create-class',[ClassController::class,'create'])->name('classCreate');
+        Route::post('save-class',[ClassController::class,'save'])->name('classSave');
+        Route::get('edit-class/{id}',[ClassController::class,'edit'])->name('classEdit');
+        Route::post('update-class',[ClassController::class,'update'])->name('classUpdate');
+        Route::post('delete-class',[ClassController::class,'delete'])->name('classDelete');
+        Route::get('class-change-status',[ClassController::class,'status'])->name('classChangeStatus');
+
+        Route::get('item-condition-listing',[ItemConditionController::class,'index'])->name('itemConditionListing');
+        Route::get('create-item-condition',[ItemConditionController::class,'create'])->name('itemConditionCreate');
+        Route::post('save-item-condition',[ItemConditionController::class,'save'])->name('itemConditionSave');
+        Route::get('edit-item-condition/{id}',[ItemConditionController::class,'edit'])->name('itemConditionEdit');
+        Route::post('update-item-condition',[ItemConditionController::class,'update'])->name('itemConditionUpdate');
+        Route::post('delete-item-condition',[ItemConditionController::class,'delete'])->name('itemConditionDelete');
+        Route::get('item-condition-change-status',[ItemConditionController::class,'status'])->name('itemConditionChangeStatus');
+
+        Route::get('user-listing',[UserController::class,'index'])->name('userListing');
+        Route::get('create-user',[UserController::class,'create'])->name('userCreate');
+        Route::post('save-user',[UserController::class,'save'])->name('userSave');
+        Route::get('edit-user/{id}',[UserController::class,'edit'])->name('userEdit');
+        Route::post('update-user',[UserController::class,'update'])->name('userUpdate');
+        Route::post('delete-user',[UserController::class,'delete'])->name('userDelete');
+        Route::get('user-change-status',[UserController::class,'status'])->name('userChangeStatus');
 
     });
 });

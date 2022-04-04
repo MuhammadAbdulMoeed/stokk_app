@@ -16,6 +16,11 @@ class Category extends Model
         return $this->belongsTo(Category::class,'parent_id');
     }
 
+    public function subCategory()
+    {
+        return $this->hasMany(Category::class,'parent_id');
+    }
+
     public function categoryFilter()
     {
         return $this->hasMany(PivotCategoryFilter::class,'category_id');

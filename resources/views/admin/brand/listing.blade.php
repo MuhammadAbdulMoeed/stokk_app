@@ -1,7 +1,7 @@
 @extends('layout.dashboard-layout.app')
 
 @section('title')
-    Category Listing
+    Brand Listing
 @endsection
 
 @section('style')
@@ -21,11 +21,11 @@
             <div class="row">
                 <div class="col-xl-12 bh-mb">
                     <div class="breadcrumb-holder">
-                        <h1 class="main-title float-left">Category Listing</h1>
+                        <h1 class="main-title float-left">Brand Listing</h1>
 
                         <div class="float-right">
-                            <a href="{{route('categoryCreate')}}">
-                                <button class="btn btn-primary">Create New Category</button>
+                            <a href="{{route('brandCreate')}}">
+                                <button class="btn btn-primary">Create New Brand</button>
                             </a>
                         </div>
                         <div class="clearfix"></div>
@@ -48,49 +48,49 @@
                                     <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th> Name</th>
-                                        <th> Parent Name</th>
+                                        <th>Name</th>
+                                        <th>Category</th>
                                         <th>Icon</th>
-                                        <th>Image</th>
                                         <th>Status</th>
                                         <th>Action</th>
                                     </tr>
                                     </thead>
 
                                     <tbody>
-                                    @foreach($data as $category)
+                                    @foreach($data as $brand)
                                         <tr>
                                             <td>{{$loop->iteration}}</td>
-                                            <td>{{$category->name}}</td>
-                                            <td>{{isset($category->parent) ? $category->parent->name:'N/A'}}</td>
-                                            <td><img width="50%" height="50%" src="{{asset($category->icon)}}"></td>
+                                            <td>{{$brand->name}}</td>
+                                            <td>{{isset($brand->category) ? $brand->category->name:'N/A'}}</td>
                                             <td>
-                                                @if($category->image)
-                                                    <img width="50%" height="50%" src="{{asset($category->image)}}">
+                                                @if($brand->icon)
+                                                    <img width="50%" height="50%" src="{{asset($brand->icon)}}">
                                                 @else
                                                     N/A
                                                 @endif
-
                                             </td>
 
                                             <td>
-                                                <button class="btn-sm {{$category->is_active == 1 ? 'btn btn-outline-success':'btn btn-outline-danger'}}">
-                                                    {{$category->is_active == 1 ? 'Active':'Inactive'}}
+                                                <button
+                                                    class="btn-sm {{$brand->is_active == 1 ? 'btn btn-outline-success':'btn btn-outline-danger'}}">
+                                                    {{$brand->is_active == 1 ? 'Active':'Inactive'}}
                                                 </button>
                                             </td>
                                             <td>
-                                                <a title="Edit" href="{{route('categoryEdit',['id'=>$category->id])}}"
-                                                   class="btn btn-outline-primary btn-sm"><i class="fas fa-pencil-alt"></i></a>
+                                                <a title="Edit" href="{{route('brandEdit',['id'=>$brand->id])}}"
+                                                   class="btn btn-outline-primary btn-sm"><i
+                                                        class="fas fa-pencil-alt"></i></a>
 
-                                                <a title="Delete" data-id="{{$category->id}}"
+                                                <a title="Delete" data-id="{{$brand->id}}"
                                                    href="javascript:void(0)"
                                                    class="btn btn-outline-danger btn-sm deleteRecord">
                                                     <i class="fas fa-trash-alt"></i></a>
 
                                                 <a title="Change Status" href="javascript:void(0)"
-                                                   data-id="{{$category->id}}"
-                                                   data-value="{{$category->is_active}}"
-                                                   class="btn btn-outline-primary btn-sm changeStatus"><i class="fa fa-retweet"></i>
+                                                   data-id="{{$brand->id}}"
+                                                   data-value="{{$brand->is_active}}"
+                                                   class="btn btn-outline-primary btn-sm changeStatus"><i
+                                                        class="fa fa-retweet"></i>
                                                 </a>
                                             </td>
 
@@ -116,7 +116,7 @@
         </div>
     </div>
 
-    @include('admin.category.modal.delete_modal')
+    @include('admin.brand.modal.delete_modal')
 
 
 @endsection
@@ -164,7 +164,7 @@
                 $.ajax({
 
                     type: 'POST',
-                    url: '{{route("categoryDelete")}}',
+                    url: '{{route("brandDelete")}}',
                     data: data,
 
                     success: function (response, status) {
@@ -212,7 +212,7 @@
                 $.ajax({
 
                     type: 'GET',
-                    url: '{{route("categoryChangeStatus")}}',
+                    url: '{{route("brandChangeStatus")}}',
                     data: {'id': data},
 
                     success: function (response, status) {

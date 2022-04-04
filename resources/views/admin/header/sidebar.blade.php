@@ -19,6 +19,25 @@
                     </a>
                 </li>
 
+                <li class="submenu">
+                    <a
+
+                        @if(Request()->route()->getName() == 'userListing' ||
+                        Request()->route()->getName() == 'userCreate'  )
+                        class="active"
+                        @endif
+                        href="javascript:void(0)">
+                        <i class="fas fa-tachometer-alt"></i> <span>Users</span>
+                        <span class="menu-arrow"></span></a>
+
+                    <ul class="list-unstyled">
+                        <li><a href="{{route('userListing')}}">Listing</a></li>
+                        <li><a href="{{route('userCreate')}}">Create User</a></li>
+                    </ul>
+
+
+                </li>
+
 
                 <li class="submenu">
                     <a
@@ -78,6 +97,63 @@
 
                 </li>
 
+                <li class="submenu">
+                    <a
+
+                        @if(Request()->route()->getName() == 'brandListing' ||
+                        Request()->route()->getName() == 'brandCreate'  )
+                        class="active"
+                        @endif
+                        href="javascript:void(0)">
+                        <i class="fas fa-tachometer-alt"></i> <span> Brands </span>
+                        <span class="menu-arrow"></span></a>
+
+                    <ul class="list-unstyled">
+                        <li><a href="{{route('brandListing')}}">Listing</a></li>
+                        <li><a href="{{route('brandCreate')}}">Create</a></li>
+                    </ul>
+
+
+                </li>
+
+                <li class="submenu">
+                    <a
+
+                        @if(Request()->route()->getName() == 'classListing' ||
+                        Request()->route()->getName() == 'classCreate'  )
+                        class="active"
+                        @endif
+                        href="javascript:void(0)">
+                        <i class="fas fa-tachometer-alt"></i> <span> Class </span>
+                        <span class="menu-arrow"></span></a>
+
+                    <ul class="list-unstyled">
+                        <li><a href="{{route('classListing')}}">Listing</a></li>
+                        <li><a href="{{route('classCreate')}}">Create</a></li>
+                    </ul>
+
+
+                </li>
+
+
+                <li class="submenu">
+                    <a
+
+                        @if(Request()->route()->getName() == 'itemConditionListing' ||
+                        Request()->route()->getName() == 'itemConditionCreate'  )
+                        class="active"
+                        @endif
+                        href="javascript:void(0)">
+                        <i class="fas fa-tachometer-alt"></i> <span> Item Condition </span>
+                        <span class="menu-arrow"></span></a>
+
+                    <ul class="list-unstyled">
+                        <li><a href="{{route('itemConditionListing')}}">Listing</a></li>
+                        <li><a href="{{route('itemConditionCreate')}}">Create</a></li>
+                    </ul>
+
+
+                </li>
 
 
             </ul>
