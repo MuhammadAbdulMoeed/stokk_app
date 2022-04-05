@@ -156,6 +156,46 @@
                 </li>
 
 
+                <li class="submenu">
+                    <a
+
+                        @if(Request()->route()->getName() == 'sizeListing' ||
+                        Request()->route()->getName() == 'sizeCreate'  )
+                        class="active"
+                        @endif
+                        href="javascript:void(0)">
+                        <i class="fas fa-tachometer-alt"></i> <span> Size </span>
+                        <span class="menu-arrow"></span></a>
+
+                    <ul class="list-unstyled">
+                        <li><a href="{{route('sizeListing')}}">Listing</a></li>
+                        <li><a href="{{route('sizeCreate')}}">Create</a></li>
+                    </ul>
+
+
+                </li>
+
+                <li class="submenu">
+                    <a
+
+                        @if(Request()->route()->getName() == 'additionalOptionListing' ||
+                        Request()->route()->getName() == 'additionalOptionCreate'  )
+                        class="active"
+                        @endif
+                        href="javascript:void(0)">
+                        <i class="fas fa-tachometer-alt"></i> <span> Additional Option </span>
+                        <span class="menu-arrow"></span></a>
+
+                    <ul class="list-unstyled">
+                        <li><a href="{{route('additionalOptionListing')}}">Listing</a></li>
+                        <li><a href="{{route('additionalOptionCreate')}}">Create</a></li>
+                    </ul>
+
+
+                </li>
+
+
+
             </ul>
 
 

@@ -15,9 +15,9 @@ class UserService
 {
     public function index()
     {
-        $data = User::where('role_id',2)->get();
+        $data = User::where('role_id', 2)->get();
 
-        return view('admin.user.listing',compact('data'));
+        return view('admin.user.listing', compact('data'));
     }
 
     public function create()
@@ -28,10 +28,9 @@ class UserService
     public function save($request)
     {
         DB::beginTransaction();
-        try{
+        try {
             $save_image = null;
-            if($request->has('profile_image'))
-            {
+            if ($request->has('profile_image')) {
                 $image = $request->profile_image;
                 $ext = $image->getClientOriginalExtension();
                 $fileName = $image->getClientOriginalName();
@@ -46,19 +45,17 @@ class UserService
                 $save_image = $imageSave;
             }
 
-            User::create($request->except('_token','profile_image','password','date_of_birth') +
-                ['profile_image'=>$save_image, 'password'=>Hash::make('password'),
+            User::create($request->except('_token', 'profile_image', 'password', 'date_of_birth') +
+                ['profile_image' => $save_image, 'password' => Hash::make('password'),
                     'role_id' => 2,
-                    'date_of_birth'=>Carbon::parse($request->date_of_birth)->format('Y-m-d')]);
+                    'date_of_birth' => Carbon::parse($request->date_of_birth)->format('Y-m-d')]);
 
             DB::commit();
-            return response()->json(['result'=>'success','message'=>'User Saved Successfully']);
+            return response()->json(['result' => 'success', 'message' => 'User Saved Successfully']);
 
-        }
-        catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
             DB::rollBack();
-            return response()->json(['result'=>'error','message'=>'Error in Creating User: '.$e]);
+            return response()->json(['result' => 'error', 'message' => 'Error in Creating User: ' . $e]);
         }
     }
 
@@ -66,19 +63,16 @@ class UserService
     {
         $data = User::find($id);
 
-        if($data)
-        {
-            return view('admin.user.edit',compact('data'));
-        }
-        else{
-            return redirect()->route('userListing')->with('error',"Record Not Found");
+        if ($data) {
+            return view('admin.user.edit', compact('data'));
+        } else {
+            return redirect()->route('userListing')->with('error', "Record Not Found");
         }
     }
 
     public function update($request)
     {
-        if($request->password)
-        {
+        if ($request->password) {
             $request->validate([
                 'password' => 'required|min:8',
             ]);
@@ -88,7 +82,7 @@ class UserService
 
         $data = User::find($request->id);
 
-        if($data) {
+        if ($data) {
             DB::beginTransaction();
             try {
                 $save_image = $data->profile_image;
@@ -107,9 +101,8 @@ class UserService
                     $save_image = $imageSave;
                 }
 
-                if($request->password)
-                {
-                   $data->password = Hash::make($request->password);
+                if ($request->password) {
+                    $data->password = Hash::make($request->password);
                 }
 
                 $data->update($request->except('_token', 'profile_image', 'password', 'date_of_birth') +
@@ -124,8 +117,7 @@ class UserService
                 DB::rollBack();
                 return response()->json(['result' => 'error', 'message' => 'Error in Updating User: ' . $e]);
             }
-        }
-        else{
+        } else {
             return response()->json(['result' => 'error', 'message' => 'Record Not Found']);
 
         }
@@ -135,29 +127,24 @@ class UserService
     public function delete($request)
     {
         DB::beginTransaction();
-        $data =  User::find($request->id);
+        $data = User::find($request->id);
 
-        if($data)
-        {
-            try{
+        if ($data) {
+            try {
                 $data->delete();
 
                 DB::commit();
                 return response()->json(['result' => 'success', 'message' => 'User Deleted Successfully']);
 
-            }
-            catch (\Exception $e)
-            {
+            } catch (\Exception $e) {
                 DB::rollBack();
-                return response()->json(['result' => 'error', 'message' => 'Error in Deleting User: '.$e]);
+                return response()->json(['result' => 'error', 'message' => 'Error in Deleting User: ' . $e]);
             }
-        }
-        else{
+        } else {
             DB::rollBack();
             return response()->json(['result' => 'error', 'message' => 'Record Not Found']);
         }
     }
-
 
 
 }

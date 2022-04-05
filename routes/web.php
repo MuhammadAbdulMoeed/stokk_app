@@ -13,7 +13,8 @@ use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\ClassController;
 use App\Http\Controllers\Admin\ItemConditionController;
 use App\Http\Controllers\Admin\UserController;
-
+use App\Http\Controllers\Admin\SizeController;
+use App\Http\Controllers\Admin\AdditionalOptionController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -111,7 +112,24 @@ Route::namespace('Admin')->group(function () {
         Route::get('edit-user/{id}',[UserController::class,'edit'])->name('userEdit');
         Route::post('update-user',[UserController::class,'update'])->name('userUpdate');
         Route::post('delete-user',[UserController::class,'delete'])->name('userDelete');
-        Route::get('user-change-status',[UserController::class,'status'])->name('userChangeStatus');
+
+        Route::get('size-listing',[SizeController::class,'index'])->name('sizeListing');
+        Route::get('create-size',[SizeController::class,'create'])->name('sizeCreate');
+        Route::post('save-size',[SizeController::class,'save'])->name('sizeSave');
+        Route::get('edit-size/{id}',[SizeController::class,'edit'])->name('sizeEdit');
+        Route::post('update-size',[SizeController::class,'update'])->name('sizeUpdate');
+        Route::post('delete-size',[SizeController::class,'delete'])->name('sizeDelete');
+        Route::get('size-change-status',[SizeController::class,'status'])->name('sizeChangeStatus');
+
+
+        Route::get('additional-option-listing',[AdditionalOptionController::class,'index'])->name('additionalOptionListing');
+        Route::get('create-additional-option',[AdditionalOptionController::class,'create'])->name('additionalOptionCreate');
+        Route::post('save-additional-option',[AdditionalOptionController::class,'save'])->name('additionalOptionSave');
+        Route::get('edit-additional-option/{id}',[AdditionalOptionController::class,'edit'])->name('additionalOptionEdit');
+        Route::post('update-additional-option',[AdditionalOptionController::class,'update'])->name('additionalOptionUpdate');
+        Route::post('delete-additional-option',[AdditionalOptionController::class,'delete'])->name('additionalOptionDelete');
+        Route::get('additional-option-change-status',[AdditionalOptionController::class,'status'])->name('additionalOptionChangeStatus');
+
 
     });
 });
