@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\UpdateUserRequest;
 use App\Http\Requests\Admin\UserRequest;
+use App\Models\User;
 use App\Services\Admin\UserService;
 use Illuminate\Http\Request;
 
@@ -24,4 +26,21 @@ class UserController extends Controller
     {
         return $userService->save($request);
     }
+
+    public function edit($id,UserService $userService)
+    {
+        return $userService->edit($id);
+    }
+
+    public function update(UpdateUserRequest $request,UserService $userService)
+    {
+        return $userService->update($request);
+    }
+
+    public function delete(Request $request,UserService $userService)
+    {
+        return $userService->delete($request);
+    }
+
+
 }

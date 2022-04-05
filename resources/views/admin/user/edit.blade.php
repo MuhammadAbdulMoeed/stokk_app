@@ -1,7 +1,7 @@
 @extends('layout.dashboard-layout.app')
 
 @section('title')
-    Edit Class
+    Edit User
 @endsection
 
 
@@ -12,10 +12,10 @@
             <div class="row">
                 <div class="col-xl-12 bh-mb">
                     <div class="breadcrumb-holder">
-                        <h1 class="main-title float-left">Edit Class</h1>
+                        <h1 class="main-title float-left">Edit User</h1>
                         <ol class="breadcrumb float-right">
                             <li class="breadcrumb-item">Home</li>
-                            <li class="breadcrumb-item active">Edit Class</li>
+                            <li class="breadcrumb-item active">Edit User</li>
                         </ol>
                         <div class="clearfix"></div>
                     </div>
@@ -30,53 +30,85 @@
 
                     <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">
                         <div class="form-group">
-                            <label for="exampleInputEmail1">Name</label>
-                            <input type="text" name="name" class="form-control" value="{{$data->name}}"
-                                   placeholder="Enter Class Name">
+                            <label for="exampleInputEmail1">First Name</label>
+                            <input type="text" value="{{$data->first_name}}" name="first_name" class="form-control"
+                                   placeholder="Enter First Name">
                         </div>
 
                     </div>
 
                     <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">
                         <div class="form-group">
-                            <label for="exampleInputEmail1">Category</label>
-                            <select class="form-control category">
+                            <label for="exampleInputEmail1">Last Name</label>
+                            <input type="text" value="{{$data->last_name}}" name="last_name" class="form-control"
+                                   placeholder="Enter Last Name">
+                        </div>
+
+                    </div>
+
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">UserName</label>
+                            <input type="text" value="{{$data->user_name}}" name="user_name" class="form-control"
+                                   placeholder="Enter User Name">
+                        </div>
+
+                    </div>
+
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Email</label>
+                            <input type="text" value="{{$data->email}}" name="email" class="form-control"
+                                   placeholder="Enter Email">
+                        </div>
+
+                    </div>
+
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Password(leave empty not to change)</label>
+                            <input type="password"  name="password" class="form-control"
+                                   placeholder="Enter Password">
+                        </div>
+
+                    </div>
+
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Gender</label>
+                            <select name="gender" class="form-control">
                                 <option value="" selected disabled>Select</option>
-                                @foreach($categories as $category)
-                                    <option value="{{$category->id}}" {{isset($data->category) ? $data->category->parent->id == $category->id ? 'selected':'':''}}>{{$category->name}}</option>
-                                @endforeach
+                                <option value="male" {{$data->gender == 'male'? 'selected':''}}>Male</option>
+                                <option value="female" {{$data->gender == 'female'? 'selected':''}}>Female</option>
                             </select>
                         </div>
 
                     </div>
 
                     <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">
-
                         <div class="form-group">
-                            <label for="exampleInputEmail1">Sub Category</label>
-                            <select name="category_id" class="form-control subCategory">
-                                @foreach($subCategories as $subCategory)
-                                    <option value="{{$subCategory->id}}" {{$subCategory->id == $data->category_id ? 'selected':''}}>{{$subCategory->name}}</option>
-                                @endforeach
+                            <label for="exampleInputEmail1">Date of Birth</label>
+                            <input type="text" name="date_of_birth" class="form-control dob"
+                                   placeholder="Enter Date Of Birth"
+                                   value="{{\Carbon\Carbon::parse($data->date_of_birth)->format('m/d/Y')}}">
 
-                            </select>
                         </div>
 
-
                     </div>
+
 
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
                         <div class="custom-dbhome">
                             <div class="form-group ">
                                 <div class="db-bannerIMG">
-                                    @if($data->icon)
-                                        <img class="image_1" src="{{asset($data->icon)}}">
+                                    @if($data->profile_image)
+                                        <img class="image_1" src="{{asset($data->profile_image)}}">'
                                     @else
-                                        <img class="image_1" src="{{asset('admin/images/no_image.jpg')}}">
+                                        <img class="image_1" src="{{asset('admin/images/no_image.jpg')}}">'
                                     @endif
                                 </div>
                                 <label for="exampleInputEmail1">Icon </label>
-                                <input type="file" class="images_select" name="icon"
+                                <input type="file" class="images_select" name="profile_image"
                                        accept="image/png,image/jpg,image/jpeg"
                                        onchange="readURL(this,'image_1');">
                             </div>
@@ -89,7 +121,7 @@
                 <button class="btn btn-primary" type="button" id="createBtn">Update</button>
 
 
-                <a href="{{route('classListing')}}">
+                <a href="{{route('userListing')}}">
                     <button class="btn btn-danger" type="button">Cancel</button>
                 </a>
 
@@ -110,6 +142,8 @@
     <script>
 
         $(document).ready(function () {
+            $(".dob").datepicker();
+
 
             $('#createBtn').click(function () {
 
@@ -131,7 +165,7 @@
                 $.ajax({
 
                     type: 'POST',
-                    url: '{{route("classUpdate")}}',
+                    url: '{{route("userUpdate")}}',
                     data: data,
                     cache: false,
                     contentType: false,
@@ -143,7 +177,7 @@
                             successMsg(response.message);
 
                             setTimeout(function () {
-                                    window.location.href = '{{route('classListing')}}'
+                                    window.location.href = '{{route('userListing')}}'
                                 }
                                 , 2000);
                         } else if (response.result == 'error') {
@@ -162,63 +196,6 @@
 
 
                 });
-
-            });
-
-            $('.category').change(function(){
-                var data = $(this).val();
-
-                $.blockUI({
-                    css: {
-                        border: 'none',
-                        padding: '15px',
-                        backgroundColor: '#000',
-                        '-webkit-border-radius': '10px',
-                        '-moz-border-radius': '10px',
-                        opacity: .5,
-                        color: '#fff'
-                    }
-                });
-
-                $.ajax({
-
-                    type: 'GET',
-                    url: '{{route("getSubCategory")}}',
-                    data: {'category_id':data},
-
-                    success: function (response, status) {
-
-                        if (response.result == 'success') {
-                            $.unblockUI();
-
-                            var html = '<option value="" selected disabled>Select</option>';
-                            $.each(response.data,function(index,value){
-
-                                html += '<option value="'+value.id+'">'+value.name+'</option>'
-
-                            });
-
-                            $('.subCategory').html(html);
-
-
-                        } else if (response.result == 'error') {
-                            $.unblockUI();
-                            errorMsg(response.message);
-                        }
-
-
-                    },
-                    error: function (data) {
-                        $.each(data.responseJSON.errors, function (key, value) {
-                            $.unblockUI();
-                            errorMsg(value);
-                        });
-                    }
-
-
-                });
-
-
 
             });
 
