@@ -49,4 +49,9 @@ class ItemConditionController extends Controller
         return $itemConditionService->getSubCategory($request);
     }
 
+    public function getCategoryItemConditon(Request $request,ItemConditionService $itemConditionService)
+    {
+        return $itemConditionService->getCategoryItemConditon($request);
+    }
+
 }

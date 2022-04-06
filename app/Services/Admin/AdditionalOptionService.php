@@ -108,4 +108,12 @@ class AdditionalOptionService
         }
     }
 
+    public function getCategoryAdditionalOption($request)
+    {
+        $data = AdditionalOption::where('category_id',$request->category_id)->get();
+
+        return response()->json(['result' => 'success', 'data' => $data]);
+
+    }
+
 }

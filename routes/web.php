@@ -15,6 +15,9 @@ use App\Http\Controllers\Admin\ItemConditionController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\SizeController;
 use App\Http\Controllers\Admin\AdditionalOptionController;
+use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\ClothingTypeController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -121,7 +124,6 @@ Route::namespace('Admin')->group(function () {
         Route::post('delete-size',[SizeController::class,'delete'])->name('sizeDelete');
         Route::get('size-change-status',[SizeController::class,'status'])->name('sizeChangeStatus');
 
-
         Route::get('additional-option-listing',[AdditionalOptionController::class,'index'])->name('additionalOptionListing');
         Route::get('create-additional-option',[AdditionalOptionController::class,'create'])->name('additionalOptionCreate');
         Route::post('save-additional-option',[AdditionalOptionController::class,'save'])->name('additionalOptionSave');
@@ -130,6 +132,29 @@ Route::namespace('Admin')->group(function () {
         Route::post('delete-additional-option',[AdditionalOptionController::class,'delete'])->name('additionalOptionDelete');
         Route::get('additional-option-change-status',[AdditionalOptionController::class,'status'])->name('additionalOptionChangeStatus');
 
+        Route::get('cloth-type-listing',[ClothingTypeController::class,'index'])->name('clothTypeListing');
+        Route::get('create-cloth-type',[ClothingTypeController::class,'create'])->name('clothTypeCreate');
+        Route::post('save-cloth-type',[ClothingTypeController::class,'save'])->name('clothTypeSave');
+        Route::get('edit-cloth-type/{id}',[ClothingTypeController::class,'edit'])->name('clothTypeEdit');
+        Route::post('update-cloth-type',[ClothingTypeController::class,'update'])->name('clothTypeUpdate');
+        Route::post('delete-cloth-type',[ClothingTypeController::class,'delete'])->name('clothTypeDelete');
+        Route::get('cloth-type-change-status',[ClothingTypeController::class,'status'])->name('clothTypeChangeStatus');
+
+
+
+        Route::get('product-listing',[ProductController::class,'index'])->name('productListing');
+        Route::get('create-product',[ProductController::class,'create'])->name('productCreate');
+        Route::post('save-product',[ProductController::class,'save'])->name('productSave');
+        Route::get('edit-product/{id}',[ProductController::class,'edit'])->name('productEdit');
+        Route::post('update-product',[ProductController::class,'update'])->name('productUpdate');
+        Route::post('delete-product',[ProductController::class,'delete'])->name('productDelete');
+
+        Route::get('category-brand',[BrandController::class,'getCategoryBrand'])->name('getCategoryBrand');
+        Route::get('category-class',[ClassController::class,'getCategoryClass'])->name('getCategoryClass');
+        Route::get('category-additional-option',[AdditionalOptionController::class,'getCategoryAdditionalOption'])->name('getCategoryAdditionalOption');
+        Route::get('category-item-condition',[ItemConditionController::class,'getCategoryItemConditon'])->name('getCategoryItemConditon');
+        Route::get('category-size',[SizeController::class,'getCategorySize'])->name('getCategorySize');
+        Route::get('category-cloth-size',[ClothingTypeController::class,'getCategoryCloth'])->name('getCategoryCloth');
 
     });
 });

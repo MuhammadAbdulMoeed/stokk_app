@@ -111,5 +111,11 @@ class ItemConditionService
         }
     }
 
+    public function getCategoryItemConditon($request){
+        $data = ItemCondition::where('category_id',$request->category_id)->get();
+
+        return response()->json(['result' => 'success', 'data' => $data]);
+    }
+
 
 }

@@ -5,28 +5,28 @@ namespace App\Services\Admin;
 
 
 use App\Models\Category;
-use App\Models\Size;
+use App\Models\ClothingType;
 
-class SizeService
+class ClothingService
 {
     public function index()
     {
-        $data = Size::all();
-        return view('admin.size.listing', compact('data'));
+        $data = ClothingType::all();
+        return view('admin.cloth_type.listing', compact('data'));
     }
 
     public function create()
     {
         $categories = Category::whereNull('parent_id')->where('is_active', 1)->get();
-        return view('admin.size.create', compact('categories'));
+        return view('admin.cloth_type.create', compact('categories'));
     }
 
     public function save($request)
     {
         try {
-            Size::create($request->except('_token'));
+            ClothingType::create($request->except('_token'));
 
-            return response()->json(['result' => 'success', 'message' => 'Size Save Successfully']);
+            return response()->json(['result' => 'success', 'message' => 'Clothing Type Save Successfully']);
         } catch (\Exception $e) {
             return response()->json(['result' => 'error', 'message' => 'Server Error in Saving Data: ' . $e]);
         }
@@ -35,29 +35,29 @@ class SizeService
 
     public function edit($id)
     {
-        $data = Size::find($id);
+        $data = ClothingType::find($id);
 
         if ($data) {
             $categories = Category::whereNull('parent_id')->where('is_active', 1)->get();
 
 
-            return view('admin.size.edit', compact('data', 'categories'));
+            return view('admin.cloth_type.edit', compact('data', 'categories'));
 
         } else {
-            return redirect()->route('sizeListing')->with('error', 'Record Not Found');
+            return redirect()->route('clothTypeListing')->with('error', 'Record Not Found');
         }
     }
 
     public function update($request)
     {
 
-        $data = Size::find($request->id);
+        $data = ClothingType::find($request->id);
         if ($data) {
             try {
 
                 $data->update($request->except('_token'));
 
-                return response()->json(['result' => 'success', 'message' => 'Size Updated Successfully']);
+                return response()->json(['result' => 'success', 'message' => 'Clothing Type Updated Successfully']);
             } catch (\Exception $e) {
                 return response()->json(['result' => 'error', 'message' => 'Server Error in Updating Data: ' . $e]);
             }
@@ -68,7 +68,7 @@ class SizeService
 
     public function delete($request)
     {
-        $data = Size::find($request->id);
+        $data = ClothingType::find($request->id);
 
         if ($data) {
             try {
@@ -86,7 +86,7 @@ class SizeService
 
     public function changeStatus($request)
     {
-        $data = Size::find($request->id);
+        $data = ClothingType::find($request->id);
 
         if ($data) {
             try {
@@ -108,11 +108,10 @@ class SizeService
         }
     }
 
-    public function getCategorySize($request)
+    public function getCategoryCloth($request)
     {
-        $data = Size::where('category_id',$request->category_id)->get();
+        $data = ClothingType::where('category_id',$request->category_id)->get();
 
         return response()->json(['result' => 'success', 'data' => $data]);
     }
-
 }

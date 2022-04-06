@@ -44,4 +44,9 @@ class ClassController extends Controller
         return $classService->changeStatus($request);
     }
 
+    public function getCategoryClass(Request $request,ClassService $classService)
+    {
+        return $classService->getCategoryClass($request);
+    }
+
 }

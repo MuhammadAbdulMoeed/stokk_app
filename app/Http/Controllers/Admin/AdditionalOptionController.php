@@ -43,4 +43,9 @@ class AdditionalOptionController extends Controller
     {
         return $additionalOptionService->changeStatus($request);
     }
+
+    public function getCategoryAdditionalOption(Request $request,AdditionalOptionService $additionalOptionService)
+    {
+        return $additionalOptionService->getCategoryAdditionalOption($request);
+    }
 }

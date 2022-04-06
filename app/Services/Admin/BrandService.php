@@ -168,4 +168,13 @@ class BrandService
             return response()->json(['result' => 'error', 'message' => 'SubCategory Not Found']);
         }
     }
+
+    public function getCategoryBrand($request)
+    {
+        $data =  Brand::where('category_id',$request->category_id)->get();
+
+        return response()->json(['result'=>'success','data'=>$data]);
+
+
+    }
 }

@@ -44,4 +44,9 @@ class SizeController extends Controller
         return $sizeService->changeStatus($request);
     }
 
+    public function getCategorySize(Request $request,SizeService  $sizeService)
+    {
+        return $sizeService->getCategorySize($request);
+    }
+
 }

@@ -153,5 +153,13 @@ class ClassService
         }
     }
 
+    public function getCategoryClass($request)
+    {
+        $data = ClassModel::where('category_id',$request->category_id)->get();
+
+        return response()->json(['result' => 'success', 'data' => $data]);
+
+    }
+
 
 }

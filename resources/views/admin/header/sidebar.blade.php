@@ -27,7 +27,7 @@
                         class="active"
                         @endif
                         href="javascript:void(0)">
-                        <i class="fas fa-tachometer-alt"></i> <span>Users</span>
+                        <i class="fa fa-users"></i> <span>Users</span>
                         <span class="menu-arrow"></span></a>
 
                     <ul class="list-unstyled">
@@ -47,7 +47,7 @@
                         class="active"
                         @endif
                         href="javascript:void(0)">
-                        <i class="fas fa-tachometer-alt"></i> <span>Category</span>
+                        <i class="fas fa-signal"></i> <span>Category</span>
                         <span class="menu-arrow"></span></a>
 
                     <ul class="list-unstyled">
@@ -67,7 +67,7 @@
                         class="active"
                         @endif
                         href="javascript:void(0)">
-                        <i class="fas fa-tachometer-alt"></i> <span> Filters</span>
+                        <i class="fa fa-filter"></i> <span> Filters</span>
                         <span class="menu-arrow"></span></a>
 
                     <ul class="list-unstyled">
@@ -86,7 +86,7 @@
                         class="active"
                         @endif
                         href="javascript:void(0)">
-                        <i class="fas fa-tachometer-alt"></i> <span> Category Filters</span>
+                        <i class="fa fa-filter"></i> <span> Category Filters</span>
                         <span class="menu-arrow"></span></a>
 
                     <ul class="list-unstyled">
@@ -105,7 +105,7 @@
                         class="active"
                         @endif
                         href="javascript:void(0)">
-                        <i class="fas fa-tachometer-alt"></i> <span> Brands </span>
+                        <i class="fas fa-check-square"></i> <span> Brands </span>
                         <span class="menu-arrow"></span></a>
 
                     <ul class="list-unstyled">
@@ -124,7 +124,7 @@
                         class="active"
                         @endif
                         href="javascript:void(0)">
-                        <i class="fas fa-tachometer-alt"></i> <span> Class </span>
+                        <i class="fas fa-chalkboard"></i> <span> Class </span>
                         <span class="menu-arrow"></span></a>
 
                     <ul class="list-unstyled">
@@ -144,7 +144,7 @@
                         class="active"
                         @endif
                         href="javascript:void(0)">
-                        <i class="fas fa-tachometer-alt"></i> <span> Item Condition </span>
+                        <i class="fab fa-leanpub"></i> <span> Item Condition </span>
                         <span class="menu-arrow"></span></a>
 
                     <ul class="list-unstyled">
@@ -164,7 +164,7 @@
                         class="active"
                         @endif
                         href="javascript:void(0)">
-                        <i class="fas fa-tachometer-alt"></i> <span> Size </span>
+                        <i class="fas fa-sort-amount-up"></i> <span> Size </span>
                         <span class="menu-arrow"></span></a>
 
                     <ul class="list-unstyled">
@@ -183,12 +183,52 @@
                         class="active"
                         @endif
                         href="javascript:void(0)">
-                        <i class="fas fa-tachometer-alt"></i> <span> Additional Option </span>
+                        <i class="fa fa-plus-square"></i> <span> Additional Option </span>
                         <span class="menu-arrow"></span></a>
 
                     <ul class="list-unstyled">
                         <li><a href="{{route('additionalOptionListing')}}">Listing</a></li>
                         <li><a href="{{route('additionalOptionCreate')}}">Create</a></li>
+                    </ul>
+
+
+                </li>
+
+                <li class="submenu">
+                    <a
+
+                        @if(Request()->route()->getName() == 'clothTypeListing' ||
+                        Request()->route()->getName() == 'clothTypeCreate'  )
+                        class="active"
+                        @endif
+                        href="javascript:void(0)">
+                        <i class="fa fa-plus-square"></i> <span> Clothing Type </span>
+                        <span class="menu-arrow"></span></a>
+
+                    <ul class="list-unstyled">
+                        <li><a href="{{route('clothTypeListing')}}">Listing</a></li>
+                        <li><a href="{{route('clothTypeCreate')}}">Create</a></li>
+                    </ul>
+
+
+                </li>
+
+
+
+                <li class="submenu">
+                    <a
+
+                        @if(Request()->route()->getName() == 'productListing' ||
+                        Request()->route()->getName() == 'productCreate'  )
+                        class="active"
+                        @endif
+                        href="javascript:void(0)">
+                        <i class="fab fa-product-hunt"></i> <span> Product </span>
+                        <span class="menu-arrow"></span></a>
+
+                    <ul class="list-unstyled">
+                        <li><a href="{{route('productListing')}}">Listing</a></li>
+                        <li><a href="{{route('productCreate')}}">Create</a></li>
                     </ul>
 
 

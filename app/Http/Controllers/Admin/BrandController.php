@@ -49,4 +49,9 @@ class BrandController extends Controller
         return $brandService->getSubCategory($request);
     }
 
+    public function getCategoryBrand(Request $request,BrandService $brandService)
+    {
+        return $brandService->getCategoryBrand($request);
+    }
+
 }
