@@ -17,7 +17,7 @@ use App\Http\Controllers\Admin\SizeController;
 use App\Http\Controllers\Admin\AdditionalOptionController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ClothingTypeController;
-
+use App\Http\Controllers\Admin\CustomFieldController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -139,6 +139,14 @@ Route::namespace('Admin')->group(function () {
         Route::post('update-cloth-type',[ClothingTypeController::class,'update'])->name('clothTypeUpdate');
         Route::post('delete-cloth-type',[ClothingTypeController::class,'delete'])->name('clothTypeDelete');
         Route::get('cloth-type-change-status',[ClothingTypeController::class,'status'])->name('clothTypeChangeStatus');
+
+        Route::get('custom-field-listing',[CustomFieldController::class,'index'])->name('customFieldsListing');
+        Route::get('create-custom-field',[CustomFieldController::class,'create'])->name('customFieldsCreate');
+        Route::post('save-custom-field',[CustomFieldController::class,'save'])->name('customFieldsSave');
+        Route::get('edit-custom-field/{id}',[CustomFieldController::class,'edit'])->name('customFieldsEdit');
+        Route::post('update-custom-field',[CustomFieldController::class,'update'])->name('customFieldsUpdate');
+        Route::post('delete-custom-field',[CustomFieldController::class,'delete'])->name('customFieldsDelete');
+        Route::get('custom-field-change-status',[CustomFieldController::class,'status'])->name('customFieldsChangeStatus');
 
 
 

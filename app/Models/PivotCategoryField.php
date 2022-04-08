@@ -5,11 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ProductDetail extends Model
+class PivotCategoryField extends Model
 {
     use HasFactory;
 
-    protected $table = 'product_details';
-
+    protected $table = 'pivot_categories_fields';
     protected $guarded = [];
 }

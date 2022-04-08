@@ -5,11 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ProductOption extends Model
+class CustomFieldOption extends Model
 {
     use HasFactory;
 
-    protected $table = 'product_options';
-
+    protected $table = 'custom_field_options';
     protected $guarded = [];
 }

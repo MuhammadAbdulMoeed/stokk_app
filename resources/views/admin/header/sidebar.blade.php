@@ -213,6 +213,26 @@
 
                 </li>
 
+                <li class="submenu">
+                    <a
+
+                        @if(Request()->route()->getName() == 'customFieldsListing' ||
+                        Request()->route()->getName() == 'customFieldsCreate'  )
+                        class="active"
+                        @endif
+                        href="javascript:void(0)">
+                        <i class="fab fa-product-hunt"></i> <span> Custom Fields </span>
+                        <span class="menu-arrow"></span></a>
+
+                    <ul class="list-unstyled">
+                        <li><a href="{{route('customFieldsListing')}}">Listing</a></li>
+                        <li><a href="{{route('customFieldsCreate')}}">Create</a></li>
+                    </ul>
+
+
+                </li>
+
+
 
 
                 <li class="submenu">
