@@ -18,6 +18,7 @@ use App\Http\Controllers\Admin\AdditionalOptionController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ClothingTypeController;
 use App\Http\Controllers\Admin\CustomFieldController;
+use App\Http\Controllers\Admin\CategoryCustomFieldController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -148,6 +149,18 @@ Route::namespace('Admin')->group(function () {
         Route::post('delete-custom-field',[CustomFieldController::class,'delete'])->name('customFieldsDelete');
         Route::get('custom-field-change-status',[CustomFieldController::class,'status'])->name('customFieldsChangeStatus');
         Route::get('get-field-option',[CustomFieldController::class,'getFieldOption'])->name('getFieldOption');
+
+        Route::get('category-custom-field-listing',[CategoryCustomFieldController::class,'index'])->name('categoryCustomFieldsListing');
+        Route::get('create-category-custom-field',[CategoryCustomFieldController::class,'create'])->name('categoryCustomFieldsCreate');
+        Route::post('save-category-custom-field',[CategoryCustomFieldController::class,'save'])->name('categoryCustomFieldsSave');
+        Route::get('edit-category-custom-field/{id}',[CategoryCustomFieldController::class,'edit'])->name('categoryCustomFieldsEdit');
+        Route::post('update-category-custom-field',[CategoryCustomFieldController::class,'update'])->name('categoryCustomFieldsUpdate');
+        Route::post('delete-category-custom-field',[CategoryCustomFieldController::class,'delete'])->name('categoryCustomFieldsDelete');
+        Route::get('category-custom-field-change-status',[CategoryCustomFieldController::class,'status'])->name('categoryCustomFieldsChangeStatus');
+        Route::get('category-custom-field-change-position/{id}',[CategoryCustomFieldController::class,'changePosition'])->name('categoryCustomFieldsChangePosition');
+        Route::post('category-custom-field-update-position',[CategoryCustomFieldController::class,'updatePosition'])->name('categoryCustomFieldsUpdatePosition');
+
+
 
         Route::get('product-listing',[ProductController::class,'index'])->name('productListing');
         Route::get('create-product',[ProductController::class,'create'])->name('productCreate');

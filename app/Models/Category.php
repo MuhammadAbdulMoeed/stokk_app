@@ -36,4 +36,20 @@ class Category extends Model
         return $this->belongsToMany(Filter::class,PivotCategoryFilter::class,'category_id','filter_id')
             ->orderBy('order','asc');
     }
+
+    public function categoryField()
+    {
+        return $this->hasMany(PivotCategoryField::class,'category_id');
+    }
+
+    public function categoryFields()
+    {
+        return $this->belongsToMany(CustomField::class,PivotCategoryField::class,'category_id','custom_field_id');
+    }
+
+    public function categoryFieldsOrder()
+    {
+        return $this->belongsToMany(CustomField::class,PivotCategoryField::class,'category_id','custom_field_id')
+            ->orderBy('order','asc');
+    }
 }

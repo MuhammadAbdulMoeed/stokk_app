@@ -159,7 +159,7 @@
                             <label>Parent Option ID</label>
                             <select class="form-control custom_field_option" name="option_id">
                                 @foreach($selected as $fieldOption)
-                                    <option value="{{$fieldOption->id}}" {{$fieldOption->id == $data->option_id ? 'selected':''}}>{{$field->name}}</option>
+                                    <option value="{{$fieldOption->id}}" {{$fieldOption->id == $data->option_id ? 'selected':''}}>{{$fieldOption->name}}</option>
                                 @endforeach
                             </select>
                         </div>

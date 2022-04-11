@@ -76,6 +76,7 @@ class CustomFieldService
             $fields = CustomField::whereNull('parent_id')->where('is_active',1)->get();
             $selected = CustomFieldOption::where('custom_field_id',$data->parent_id)->get();
 
+
             return view('admin.custom_fields.edit', compact('data','fields','selected'));
         } else {
             return redirect()->route('customFieldsListing')->with(['message', 'Record Not Found']);
