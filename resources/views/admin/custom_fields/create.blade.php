@@ -154,6 +154,30 @@
                 </div>
 
 
+                <div class="row">
+                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                        <div class="form-group">
+                            <label>Parent</label>
+                            <select class="form-control parentID" name="parent_id">
+                                <option value="" selected disabled>Select</option>
+                                @foreach($fields as $field)
+                                    <option value="{{$field->id}}">{{$field->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                        <div class="form-group">
+                            <label>Related Option ID</label>
+                            <select class="form-control custom_field_option" name="option_id">
+
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+
 
                 <button class="btn btn-primary" type="button" id="createBtn">Create</button>
 
@@ -335,6 +359,62 @@
                 $(this).parents('div.rcard').remove();
                 // number = number-1;
             });
+
+            $(document).on('change','.parentID',function(){
+                var data = $(this).val();
+
+                $.blockUI({
+                    css: {
+                        border: 'none',
+                        padding: '15px',
+                        backgroundColor: '#000',
+                        '-webkit-border-radius': '10px',
+                        '-moz-border-radius': '10px',
+                        opacity: .5,
+                        color: '#fff'
+                    }
+                });
+
+                $.ajax({
+
+                    type: 'GET',
+                    url: '{{route("getFieldOption")}}',
+                    data: {'field_id':data},
+
+                    success: function (response, status) {
+
+                        if (response.result == 'success') {
+                            $.unblockUI();
+
+                            var html = '<option value="" selected disabled>Select</option>';
+                            $.each(response.data,function(index,value){
+
+                                html += '<option value="'+value.id+'">'+value.name+'</option>'
+
+                            });
+
+                            $('.custom_field_option').html(html);
+
+
+                        } else if (response.result == 'error') {
+                            $.unblockUI();
+                            errorMsg(response.message);
+                        }
+
+
+                    },
+                    error: function (data) {
+                        $.each(data.responseJSON.errors, function (key, value) {
+                            $.unblockUI();
+                            errorMsg(value);
+                        });
+                    }
+
+
+                });
+
+            });
+
 
 
         });

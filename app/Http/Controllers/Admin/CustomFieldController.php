@@ -43,4 +43,9 @@ class CustomFieldController extends Controller
     {
         return $customFieldService->changeStatus($request);
     }
+
+    public function getFieldOption(Request $request, CustomFieldService $customFieldService)
+    {
+        return $customFieldService->getFieldOption($request);
+    }
 }

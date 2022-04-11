@@ -147,8 +147,7 @@ Route::namespace('Admin')->group(function () {
         Route::post('update-custom-field',[CustomFieldController::class,'update'])->name('customFieldsUpdate');
         Route::post('delete-custom-field',[CustomFieldController::class,'delete'])->name('customFieldsDelete');
         Route::get('custom-field-change-status',[CustomFieldController::class,'status'])->name('customFieldsChangeStatus');
-
-
+        Route::get('get-field-option',[CustomFieldController::class,'getFieldOption'])->name('getFieldOption');
 
         Route::get('product-listing',[ProductController::class,'index'])->name('productListing');
         Route::get('create-product',[ProductController::class,'create'])->name('productCreate');
