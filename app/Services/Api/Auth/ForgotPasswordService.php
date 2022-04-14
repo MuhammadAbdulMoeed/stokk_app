@@ -7,12 +7,14 @@ namespace App\Services\Api\Auth;
 use App\Models\PasswordReset;
 use App\Models\User;
 use App\Notifications\ResetPasswordNotification;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
 
 class ForgotPasswordService
 {
     public function forgetPasswordForm($request)
     {
+        DB::beginTransaction();
         try {
             $user = User::where('email', $request->email)->first();
             if (!$user) {
@@ -42,10 +44,12 @@ class ForgotPasswordService
             Notification::send($user, new ResetPasswordNotification($data));
 
 
+            DB::commit();
             return makeResponse('success', 'OTP Code is Send to your Email Address', 200);
         }
         catch (\Exception $e)
         {
+            DB::rollBack();
             return makeResponse('error','Error Occur During Sending Email: '.$e,500);
         }
 
@@ -54,25 +58,29 @@ class ForgotPasswordService
     public function verifyOtp($request)
     {
 
+        DB::beginTransaction();
         $otp = PasswordReset::where('email', $request->email)->where('token', $request->otp)
             ->first();
 
         if (!$otp) {
+            DB::rollBack();
             return makeResponse('error', 'Invalid OTP Code', 401);
         }
 
         $otp->delete();
 
+        DB::commit();
         return makeResponse('success', 'OTP Verified Successfully', 200);
 
     }
 
     public function changePassword($request)
     {
-
+        DB::beginTransaction();
         $user = User::where('email', $request->email)->first();
 
         if (!$user) {
+            DB::rollBack();
             return makeResponse('error', "Email does not Exist", 401);
         }
 
@@ -80,6 +88,7 @@ class ForgotPasswordService
         $user->password = bcrypt($request->password);
         $user->save();
 
+        DB::commit();
         return makeResponse('success', "Password Updated Successfully", 200);
 
 
@@ -87,10 +96,11 @@ class ForgotPasswordService
 
     public function resendOtp($request)
     {
-
+        DB::beginTransaction();
         $user = User::where('email', $request->email)->first();
 
         if (!$user) {
+            DB::rollBack();
             return makeResponse('error', 'Email does not Exist', 401);
         }
 
@@ -112,7 +122,7 @@ class ForgotPasswordService
         ];
 
         Notification::route('mail', env('MAIL_FROM_ADDRESS'))->notify(new ResetPasswordNotification($data));
-
+        DB::commit();
         return makeResponse('success', 'OTP Code is Send to your Email Address', '200');
     }
 }

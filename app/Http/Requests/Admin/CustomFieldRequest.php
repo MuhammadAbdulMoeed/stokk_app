@@ -26,7 +26,18 @@ class CustomFieldRequest extends FormRequest
         return [
             'field_type' => 'required',
             'name' => 'required',
-            'is_required' => 'required'
+            'is_required' => 'required',
+            'type' => 'required',
+            'value_taken_from' => 'required_if:type,pre_included_field',
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'value_taken_from.required_if' => 'Select Where Should be take data from'
+        ];
+    }
+
+
 }

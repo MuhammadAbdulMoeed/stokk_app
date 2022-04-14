@@ -6,7 +6,7 @@
 
 @section('style')
 
-{{--    <link rel="stylesheet" href="https://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css"/>--}}
+    {{--    <link rel="stylesheet" href="https://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css"/>--}}
 
     <meta name="_token" content="{{ csrf_token() }}"/>
 
@@ -71,7 +71,7 @@
 @section('script')
 
 
-{{--    <script type="text/javascript" src="https://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>--}}
+    {{--    <script type="text/javascript" src="https://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>--}}
 
 
     <script>

@@ -147,7 +147,6 @@ class CategoryFilterService
     {
         $data =  PivotCategoryFilter::where('category_id',$id)->orderBy('order','asc')->get();
 
-
         if(sizeof($data) > 0 )
         {
             return view('admin.category_filter.change_order',compact('data'));

@@ -150,6 +150,7 @@ class CategoryCustomFieldService
         $data =  PivotCategoryField::where('category_id',$id)->orderBy('order','asc')->get();
 
 
+
         if(sizeof($data) > 0 )
         {
             return view('admin.category_custom_field.change_order',compact('data'));

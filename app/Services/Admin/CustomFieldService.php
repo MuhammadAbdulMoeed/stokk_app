@@ -44,7 +44,9 @@ class CustomFieldService
                 'name' => $request->name,
                 'field_type' => $request->field_type,
                 'is_required' => $request->is_required,'slug'=>$slug,
-                'parent_id' => $request->parent_id, 'option_id' => $request->option_id
+                'parent_id' => $request->parent_id, 'option_id' => $request->option_id,
+                'value_taken_from' => isset($request->value_taken_from) ? $request->value_taken_from:null,
+                'type' => $request->type
             ]);
         } catch (\Exception $e) {
             DB::rollBack();

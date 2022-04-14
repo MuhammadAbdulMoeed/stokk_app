@@ -55,6 +55,7 @@ class LoginService
                 $user->email = isset($request->email) ? $request->email : null;
                 $user->uuid = $request->uuid;
                 $user->provider = $request->provider;
+                $user->fcm_token  = $request->fcm_token;
                 $user->save();
 
                 $message = "Login Successfully";
@@ -73,8 +74,15 @@ class LoginService
             Auth::loginUsingId($user->id);
             $token = Auth::user()->createToken('ClassifiedMarketplace-' . rand(0, 9))->accessToken;
 
+            $data = [
+                'first_name' => Auth::user()->first_name,
+                'last_name' => Auth::user()->last_name,
+                'email' => Auth::user()->email,
+                'fcm_token' => Auth::user()->fcm_token
+            ];
+
             DB::commit();
-            return makeResponse('success', $message, 200, $user, $token);
+            return makeResponse('success', $message, 200, $data, $token);
         } catch (\Exception $e) {
             DB::rollBack();
             return makeResponse('error', 'Server Error During Social Login: ' .$e, 500);
@@ -93,7 +101,8 @@ class LoginService
             'profile_image' => $request->image,
             'uuid' => $request->uuid,
             'role_id' => 2,
-            'provider' => $request->provider
+            'provider' => $request->provider,
+            'fcm_token' => $request->fcm_token,
 
         ]);
         return $user;
@@ -109,7 +118,8 @@ class LoginService
             'email' => $request->email,
             'uuid' => $request->uuid,
             'role_id' => 2,
-            'provider' => $request->provider
+            'provider' => $request->provider,
+            'fcm_token' => $request->fcm_token,
 
         ]);
         return $user;
@@ -126,7 +136,9 @@ class LoginService
             'email' => $request->email,
             'uuid' => $request->uuid,
             'role_id' => 2,
-            'provider' => $request->provider
+            'provider' => $request->provider,
+            'fcm_token' => $request->fcm_token,
+
         ]);
         return $user;
     }

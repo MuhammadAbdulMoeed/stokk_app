@@ -26,6 +26,18 @@
                 @csrf
                 <div class="row">
 
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                        <div class="form-group">
+                            <label>Type</label>
+                            <select name="type" class="form-control type">
+                                <option value="" selected disabled>Select</option>
+                                <option value="pre_included_field">Pre-Included </option>
+                                <option value="custom_field">Custom </option>
+                            </select>
+                        </div>
+                    </div>
+
+
                     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
                         <div class="form-group">
                             <label>Field Name</label>
@@ -74,56 +86,6 @@
 
                 </div>
 
-{{--                <div class="pre-included-filter-section" style="display: none">--}}
-{{--                    <div class="row">--}}
-{{--                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">--}}
-{{--                            <h5>Pre-Included Filters</h5>--}}
-{{--                        </div>--}}
-
-{{--                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 col-xl-3">--}}
-{{--                            <label class="sc-featur">Sub Category--}}
-{{--                                <input type="radio" class="sale-checkbox" value="sub_category"--}}
-{{--                                       name="filter">--}}
-{{--                                <span class="checkmark"></span>--}}
-{{--                            </label>--}}
-{{--                        </div>--}}
-
-{{--                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 col-xl-3">--}}
-{{--                            <label class="sc-featur">Brand--}}
-{{--                                <input type="radio" class="sale-checkbox" value="brand"--}}
-{{--                                       name="filter">--}}
-{{--                                <span class="checkmark"></span>--}}
-{{--                            </label>--}}
-{{--                        </div>--}}
-
-{{--                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 col-xl-3">--}}
-{{--                            <label class="sc-featur">Class--}}
-{{--                                <input type="radio" class="sale-checkbox" value="class"--}}
-{{--                                       name="filter">--}}
-{{--                                <span class="checkmark"></span>--}}
-{{--                            </label>--}}
-{{--                        </div>--}}
-
-{{--                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 col-xl-3">--}}
-{{--                            <label class="sc-featur">Rating--}}
-{{--                                <input type="radio" class="sale-checkbox" value="rating"--}}
-{{--                                       name="filter">--}}
-{{--                                <span class="checkmark"></span>--}}
-{{--                            </label>--}}
-{{--                        </div>--}}
-
-
-{{--                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">--}}
-{{--                            <div class="form-group">--}}
-{{--                                <label>Filter Name</label>--}}
-{{--                                <input type="text" name="filter_name" class="form-control">--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-
-{{--                    </div>--}}
-
-{{--                </div>--}}
-
                 <div class="select_option_section row" style="display: none">
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
 
@@ -154,7 +116,7 @@
                 </div>
 
 
-                <div class="row">
+                <div class="row parent_section_row">
                     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
                         <div class="form-group">
                             <label>Parent</label>
@@ -256,53 +218,6 @@
             });
 
 
-            $(document).on('change', '.filter_type', function () {
-
-                var data = $(this).val();
-
-
-                if (data == 'pre_included_filter') {
-                    $('.pre-included-filter-section').css('display', 'block');
-
-                    $('.custom_filter_section').css('display', 'none');
-                    $('.select_option_section').css('display','none');
-                    $('.price_range_section').css('display', 'none');
-                    $('.select_option_section').css('display', 'none');
-
-                    // $("input[name=filter_name]").val();
-                    // $("input[name=filter]").val();
-                    // $("input[name=field_type]").val();
-                    // $("input[name=min]").val();
-                    // $("input[name=max]").val();
-                    // $("input[name=value]").val();
-
-
-                    var val = $('.filter_type').val();
-                    $('#categoryForm')[0].reset();
-                    $('.filter_type').val(val);
-
-                } else if (data == 'custom_filter') {
-                    $('.custom_filter_section').css('display', 'block');
-
-                    $('.pre-included-filter-section').css('display', 'none');
-                    $('.select_option_section').css('display','none');
-                    $('.price_range_section').css('display', 'none');
-                    $('.select_option_section').css('display', 'none');
-
-
-                    // $("input[name=filter_name]").val();
-                    // $("input[name=filter]").val();
-                    // $("input[name=field_type]").val();
-                    // $("input[name=min]").val();
-                    // $("input[name=max]").val();
-                    // $("input[name=value]").val();
-
-                    var val = $('.filter_type').val();
-                    $('#categoryForm')[0].reset();
-                    $('.filter_type').val(val);
-
-                }
-            });
 
             $(document).on('change', '.field_type', function () {
 
@@ -321,17 +236,6 @@
                 }
             });
 
-
-            // $(document).on('click', '.add_more_option', function () {
-            //     var html = '<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 parent_remove">';
-            //     html += '<div class="form-group">';
-            //     html += '<label for="exampleInputEmail">Option</label>';
-            //     html += '<input type="text" name="option_value[]" class="form-control" placeholder="Enter Option">';
-            //     html += '<button type="button" class="delete_select_option btn-sm btn-outline-primary"><i class="fa fa-trash"></i></button>';
-            //     html += '</div>';
-            //
-            //     $(this).parents('.select_option_section').append(html);
-            // });
 
 
             $(document).on('click', '.delete_select_option', function () {
@@ -413,6 +317,19 @@
 
                 });
 
+            });
+
+
+            $('.type').click(function(){
+               var data = $(this).val();
+
+               if(data == 'pre_included_field')
+               {
+                   $('.parent_section_row').after( `@include('admin.custom_fields.section.pre_included_filter_section')`);
+               }
+               else{
+                   $('.pre-included-filter-section').remove();
+               }
             });
 
 

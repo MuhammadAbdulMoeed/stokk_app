@@ -19,6 +19,8 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ClothingTypeController;
 use App\Http\Controllers\Admin\CustomFieldController;
 use App\Http\Controllers\Admin\CategoryCustomFieldController;
+use Illuminate\Support\Facades\Artisan;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -29,6 +31,10 @@ use App\Http\Controllers\Admin\CategoryCustomFieldController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::get('migrate', function () {
+    Artisan::call('migrate');
+});
 
 
 Route::namespace('Admin')->group(function () {
