@@ -31,8 +31,8 @@
                             <label>Type</label>
                             <select name="type" class="form-control type">
                                 <option value="" selected disabled>Select</option>
-                                <option value="pre_included_field">Pre-Included </option>
-                                <option value="custom_field">Custom </option>
+                                <option value="pre_included_field">Pre-Included</option>
+                                <option value="custom_field">Custom</option>
                             </select>
                         </div>
                     </div>
@@ -48,7 +48,8 @@
                     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
                         <div class="form-group">
                             <label>Slug</label>
-                            <input type="text" class="form-control" name="slug" placeholder="Enter Slug If you don't know leave it empty">
+                            <input type="text" class="form-control" name="slug"
+                                   placeholder="Enter Slug If you don't know leave it empty">
                         </div>
                     </div>
 
@@ -70,7 +71,6 @@
                             </select>
                         </div>
                     </div>
-
 
 
                     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
@@ -138,7 +138,6 @@
                         </div>
                     </div>
                 </div>
-
 
 
                 <button class="btn btn-primary" type="button" id="createBtn">Create</button>
@@ -218,11 +217,11 @@
             });
 
 
-
             $(document).on('change', '.field_type', function () {
 
                 var data = $(this).val();
 
+                var type = $('.type').val();
 
                 if (data == 'price_range') {
                     $('.price_range_section').removeAttr('style');
@@ -230,12 +229,17 @@
                 } else if (data == 'simple_select_option' || data == 'multi_select_option') {
                     $('.price_range_section').css('display', 'none');
                     $('.select_option_section').removeAttr('style');
+
+                    if (type == 'custom_field') {
+                        $('.select_option_section').removeAttr('style');
+                    } else if (type == 'pre_included_field') {
+                        $('.select_option_section').css('display', 'none');
+                    }
                 } else {
                     $('.price_range_section').css('display', 'none');
                     $('.select_option_section').css('display', 'none');
                 }
             });
-
 
 
             $(document).on('click', '.delete_select_option', function () {
@@ -264,7 +268,7 @@
                 // number = number-1;
             });
 
-            $(document).on('change','.parentID',function(){
+            $(document).on('change', '.parentID', function () {
                 var data = $(this).val();
 
                 $.blockUI({
@@ -283,7 +287,7 @@
 
                     type: 'GET',
                     url: '{{route("getFieldOption")}}',
-                    data: {'field_id':data},
+                    data: {'field_id': data},
 
                     success: function (response, status) {
 
@@ -291,9 +295,9 @@
                             $.unblockUI();
 
                             var html = '<option value="" selected disabled>Select</option>';
-                            $.each(response.data,function(index,value){
+                            $.each(response.data, function (index, value) {
 
-                                html += '<option value="'+value.id+'">'+value.name+'</option>'
+                                html += '<option value="' + value.id + '">' + value.name + '</option>'
 
                             });
 
@@ -320,18 +324,27 @@
             });
 
 
-            $('.type').click(function(){
-               var data = $(this).val();
+            $('.type').click(function () {
+                var data = $(this).val();
 
-               if(data == 'pre_included_field')
-               {
-                   $('.parent_section_row').after( `@include('admin.custom_fields.section.pre_included_filter_section')`);
-               }
-               else{
-                   $('.pre-included-filter-section').remove();
-               }
+                var type = $('.field_type').val();
+
+                if (data == 'pre_included_field') {
+                    $('.parent_section_row').after(`@include('admin.custom_fields.section.pre_included_filter_section')`);
+                    if(type)
+                    {
+                        $('.select_option_section').css('display', 'none');
+                    }
+
+                } else {
+                    $('.pre-included-filter-section').remove();
+                    if(type)
+                    {
+                        $('.select_option_section').removeAttr('style');
+                    }
+
+                }
             });
-
 
 
         });

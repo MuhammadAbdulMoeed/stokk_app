@@ -26,10 +26,10 @@
                 @csrf
                 <div class="row">
 
-                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">
                         <div class="form-group">
                             <label>Category</label>
-                            <select name="category_id" class="form-control">
+                            <select name="category_id" class="form-control category">
                                 <option value="" selected disabled>Select</option>
                                 @foreach($categories as $category)
                                     <option value="{{$category->id}}">{{$category->name}}</option>
@@ -38,7 +38,16 @@
                         </div>
                     </div>
 
-                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">
+                        <div class="form-group">
+                            <label>Sub Category</label>
+                            <select name="sub_category_id" class="form-control subCategory">
+                                <option value="" selected disabled>Select</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">
                         <div class="form-group">
                             <label>Filter</label>
                             <select multiple name="fields[]" class="form-control multiSelectOption">
@@ -132,6 +141,65 @@
 
                 });
 
+            });
+
+            $('.category').change(function(){
+                var data = $(this).val();
+
+                $.blockUI({
+                    css: {
+                        border: 'none',
+                        padding: '15px',
+                        backgroundColor: '#000',
+                        '-webkit-border-radius': '10px',
+                        '-moz-border-radius': '10px',
+                        opacity: .5,
+                        color: '#fff'
+                    }
+                });
+
+
+                $.ajax({
+
+                    type: 'GET',
+                    url: '{{route('getSubCategory')}}',
+                    data: {'category_id':data},
+                    // cache: false,
+                    // contentType: false,
+                    // processData: false,
+
+
+
+
+                    success: function (response, status) {
+                        $.unblockUI();
+
+                        if (response.result == 'success') {
+
+                            var html = '<option value="" selected disabled>Select</option>';
+                            $.each(response.data,function(index,value){
+                                html += '<option value="'+value.id+'">'+value.name+'</option>';
+                            });
+
+                            $('.subCategory').html(html);
+
+                        } else if (response.result == 'error') {
+                            errorMsg(response.message);
+                        }
+
+
+                    },
+                    error: function (data) {
+
+
+                        $.each(data.responseJSON.errors, function (key, value) {
+                            $.unblockUI();
+                            errorMsg(value);
+                        });
+                    }
+
+
+                });
             });
 
 

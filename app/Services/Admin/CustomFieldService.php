@@ -20,9 +20,9 @@ class CustomFieldService
 
     public function create()
     {
-        $fields = CustomField::whereNull('parent_id')->where('is_active',1)->get();
+        $fields = CustomField::whereNull('parent_id')->where('is_active', 1)->get();
 
-        return view('admin.custom_fields.create',compact('fields'));
+        return view('admin.custom_fields.create', compact('fields'));
     }
 
     public function save($request)
@@ -31,11 +31,9 @@ class CustomFieldService
         try {
 
             $slug = null;
-            if(!$request->slug)
-            {
+            if (!$request->slug) {
                 $slug = str_slug($request->name, "_");
-            }
-            else{
+            } else {
                 $slug = $request->slug;
 
             }
@@ -43,9 +41,9 @@ class CustomFieldService
             $field = CustomField::create([
                 'name' => $request->name,
                 'field_type' => $request->field_type,
-                'is_required' => $request->is_required,'slug'=>$slug,
+                'is_required' => $request->is_required, 'slug' => $slug,
                 'parent_id' => $request->parent_id, 'option_id' => $request->option_id,
-                'value_taken_from' => isset($request->value_taken_from) ? $request->value_taken_from:null,
+                'value_taken_from' => isset($request->value_taken_from) ? $request->value_taken_from : null,
                 'type' => $request->type
             ]);
         } catch (\Exception $e) {
@@ -53,12 +51,13 @@ class CustomFieldService
             return response()->json(['result' => 'error', 'message' => 'Error in Saving Custom Field Record: ' . $e]);
         }
         try {
-            if ($request->field_type == 'simple_select_option' || $request->field_type == 'multi_select_option') {
-                foreach ($request->value as $value) {
-                    CustomFieldOption::create(['custom_field_id' => $field->id, 'name' => $value]);
+            if ($request->type == 'custom_field') {
+                if ($request->field_type == 'simple_select_option' || $request->field_type == 'multi_select_option') {
+                    foreach ($request->value as $value) {
+                        CustomFieldOption::create(['custom_field_id' => $field->id, 'name' => $value]);
+                    }
                 }
             }
-
 
         } catch (\Exception $e) {
             DB::rollBack();
@@ -75,11 +74,11 @@ class CustomFieldService
         $data = CustomField::find($id);
 
         if ($data) {
-            $fields = CustomField::whereNull('parent_id')->where('is_active',1)->get();
-            $selected = CustomFieldOption::where('custom_field_id',$data->parent_id)->get();
+            $fields = CustomField::whereNull('parent_id')->where('is_active', 1)->get();
+            $selected = CustomFieldOption::where('custom_field_id', $data->parent_id)->get();
 
 
-            return view('admin.custom_fields.edit', compact('data','fields','selected'));
+            return view('admin.custom_fields.edit', compact('data', 'fields', 'selected'));
         } else {
             return redirect()->route('customFieldsListing')->with(['message', 'Record Not Found']);
         }
@@ -94,41 +93,44 @@ class CustomFieldService
                 $slug = str_slug($request->name, "_");
                 $field = $data->update(['name' => $request->name,
                     'field_type' => $request->field_type,
-                    'is_required' => $request->is_required,'slug'=>$slug,
-                    'parent_id' => $request->parent_id, 'option_id' => $request->option_id
-                   ]);
+                    'is_required' => $request->is_required, 'slug' => $slug,
+                    'parent_id' => $request->parent_id, 'option_id' => $request->option_id,
+                    'value_taken_from' => isset($request->value_taken_from) ? $request->value_taken_from : null,
+                    'type' => $request->type
+                ]);
             } catch (\Exception $e) {
                 DB::rollBack();
                 return response()->json(['result' => 'error', 'message' => 'Error in Updating Custom Field: ' . $e]);
             }
 
-            try{
-                if ($request->field_type == 'simple_select_option' || $request->field_type == 'multi_select_option') {
+            try {
+                if ($request->type == 'custom_field') {
+                    if ($request->field_type == 'simple_select_option' || $request->field_type == 'multi_select_option') {
 //                    CustomFieldOption::where('custom_field_id', $data->id)->delete();
-                    foreach ($request->value as $value) {
+                        foreach ($request->value as $value) {
 
-                        $getRecord = CustomFieldOption::where('custom_field_id', $data->id)
-                            ->where('name',$value)->first();
+                            $getRecord = CustomFieldOption::where('custom_field_id', $data->id)
+                                ->where('name', $value)->first();
 
-                        if($getRecord)
-                        {
-                            $saveOption = CustomFieldOption::create(['custom_field_id' => $data->id, 'name' => $value]);
+                            if ($getRecord) {
+                                $saveOption = CustomFieldOption::create(['custom_field_id' => $data->id, 'name' => $value]);
 
-                            $check = CustomField::where('option_id',$getRecord->id)->pluck('id')->toArray();
+                                $check = CustomField::where('option_id', $getRecord->id)->pluck('id')->toArray();
 
-                            if(sizeof($check) > 0)
-                            {
-                                $updateAll = CustomField::whereIn('id',$check)->update(['option_id'=>$saveOption->id]);
+                                if (sizeof($check) > 0) {
+                                    $updateAll = CustomField::whereIn('id', $check)->update(['option_id' => $saveOption->id]);
+                                }
+
+                                $getRecord->delete();
+
+
                             }
 
-                            $getRecord->delete();
-
-
                         }
-
                     }
+                } elseif ($data->type == 'custom_field' && $request->type == 'pre_included_field') {
+                    CustomFieldOption::where('custom_field_id', $data->id)->delete();
                 }
-
 
             } catch (\Exception $e) {
                 DB::rollBack();
@@ -145,7 +147,7 @@ class CustomFieldService
 
     public function delete($request)
     {
-        $data = Filter::find($request->id);
+        $data = CustomField::find($request->id);
 
         if ($data) {
             try {
@@ -187,7 +189,7 @@ class CustomFieldService
 
     public function getFieldOption($request)
     {
-        $data = CustomFieldOption::where('custom_field_id',$request->field_id)->get();
+        $data = CustomFieldOption::where('custom_field_id', $request->field_id)->get();
 
         return response()->json(['result' => 'success', 'data' => $data]);
     }

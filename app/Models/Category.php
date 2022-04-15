@@ -50,6 +50,7 @@ class Category extends Model
     public function categoryFieldsOrder()
     {
         return $this->belongsToMany(CustomField::class,PivotCategoryField::class,'category_id','custom_field_id')
+            ->withPivot('sub_category_id')
             ->orderBy('order','asc');
     }
 }

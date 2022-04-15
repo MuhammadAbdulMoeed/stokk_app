@@ -49,53 +49,43 @@
                                     <tr>
                                         <th>#</th>
                                         <th>Category Name</th>
+                                        <th>Sub Category</th>
                                         <th>Field Name</th>
-{{--                                        <th>Status</th>--}}
                                         <th>Action</th>
                                     </tr>
                                     </thead>
 
                                     <tbody>
-                                    @foreach($data as $category)
-                                        @if(sizeof($category->categoryFields) >0)
-                                            <tr>
-                                                <td>{{$loop->iteration}}</td>
-                                                <td>{{$category->name}}</td>
-                                                <td>
-                                                    @foreach($category->categoryFieldsOrder as $category_field)
-                                                        @if($loop->last)
-                                                            {{$category_field->name}}
-                                                        @else
-                                                            {{$category_field->name}},
-                                                        @endif
-                                                    @endforeach
-                                                </td>
-{{--                                                <td>--}}
-{{--                                                    <button class="btn-sm {{$category->is_active == 1 ? 'btn btn-outline-success':'btn btn-outline-danger'}}">--}}
-{{--                                                        {{$category->is_active == 1 ? 'Active':'Inactive'}}--}}
-{{--                                                    </button>--}}
-{{--                                                </td>--}}
-                                                <td>
-                                                    <a title="Edit"
-                                                       href="{{route('categoryCustomFieldsEdit',['id'=>$category->id])}}"
-                                                       class="btn btn-outline-primary btn-sm"><i
-                                                            class="fas fa-pencil-alt"></i></a>
+                                    @foreach($data as $key => $categoryRecord)
+                                        @php
+                                            $categoryName = explode('-',$key);
+                                            $fieldName =  implode(' ,',$categoryRecord);
+                                        @endphp
+                                        <tr>
+                                            <td>{{$loop->iteration}}</td>
+                                            <td>{{$categoryName[0]}}</td>
+                                            <td>{{isset($categoryName[2]) ? $categoryName[2]:'N/A'}}</td>
+                                            <td>{{$fieldName}}</td>
 
-                                                    <a title="Delete" data-id="{{$category->id}}"
-                                                       href="javascript:void(0)"
-                                                       class="btn btn-outline-danger btn-sm deleteRecord">
-                                                        <i class="fas fa-trash-alt"></i></a>
+                                            <td>
+                                                <a title="Edit"
+                                                   href="{{route('categoryCustomFieldsEdit',['id'=>$categoryName[1]])}}"
+                                                   class="btn btn-outline-primary btn-sm"><i class="fas fa-pencil-alt"></i></a>
 
-                                                    <a title="Change Order" href="{{route('categoryCustomFieldsChangePosition',['id'=>$category->id])}}"
-                                                       data-id="{{$category->id}}"
-                                                       class="btn btn-outline-primary btn-sm ">
-                                                        <i class="fa fa-sort" aria-hidden="true"></i>
-                                                    </a>
+                                                <a title="Delete" data-id="{{$categoryName[1]}}"
+                                                   href="javascript:void(0)"
+                                                   class="btn btn-outline-danger btn-sm deleteRecord">
+                                                    <i class="fas fa-trash-alt"></i></a>
 
-                                                </td>
+                                                <a title="Change Order" href="{{route('categoryCustomFieldsChangePosition',['id'=>$categoryName[1]])}}"
+                                                   data-id="{{$categoryName[1]}}"
+                                                   class="btn btn-outline-primary btn-sm ">
+                                                    <i class="fa fa-sort" aria-hidden="true"></i>
+                                                </a>
 
-                                            </tr>
-                                        @endif
+                                            </td>
+
+                                        </tr>
                                     @endforeach
 
                                     </tbody>

@@ -28,6 +28,23 @@
 
                 <div class="row">
 
+
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                        <div class="form-group">
+                            <label>Type</label>
+                            <select name="type" class="form-control type">
+                                <option value="" selected disabled>Select</option>
+                                <option
+                                    value="pre_included_field" {{$data->type == 'pre_included_field' ? 'selected':''}}>
+                                    Pre-Included
+                                </option>
+                                <option value="custom_field" {{$data->type == 'custom_field' ? 'selected':''}}>Custom
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+
                     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
                         <div class="form-group">
                             <label>Field Name</label>
@@ -48,19 +65,40 @@
                             <label>Field Type</label>
                             <select class="form-control field_type"
                                     name="field_type">
-                                <option value="price_range" {{$data->field_type == "price_range" ? 'selected':''}}>Price Range</option>
-                                <option value="input_field" {{$data->field_type == "input_field" ? 'selected':''}}>Input Field</option>
-                                <option value="number_field" {{$data->field_type == "number_field" ? 'selected':''}}>Number Field</option>
-                                <option value="simple_select_option" {{$data->field_type == "simple_select_option" ? 'selected':''}}>Simple Select Option</option>
-                                <option value="multi_select_option" {{$data->field_type == "multi_select_option" ? 'selected':''}}>Multi Select Option</option>
-                                <option value="date_picker" {{$data->field_type == "date_picker" ? 'selected':''}}>Date Picker</option>
-                                <option value="time_picker" {{$data->field_type == "time_picker" ? 'selected':''}}>Time Picker</option>
-                                <option value="date_range_picker" {{$data->field_type == "date_range_picker" ? 'selected':''}}>Date Range Picker</option>
-                                <option value="time_range_picker" {{$data->field_type == "time_range_picker" ? 'selected':''}}>Time Range Picker</option>
+                                <option value="price_range" {{$data->field_type == "price_range" ? 'selected':''}}>Price
+                                    Range
+                                </option>
+                                <option value="input_field" {{$data->field_type == "input_field" ? 'selected':''}}>Input
+                                    Field
+                                </option>
+                                <option value="number_field" {{$data->field_type == "number_field" ? 'selected':''}}>
+                                    Number Field
+                                </option>
+                                <option
+                                    value="simple_select_option" {{$data->field_type == "simple_select_option" ? 'selected':''}}>
+                                    Simple Select Option
+                                </option>
+                                <option
+                                    value="multi_select_option" {{$data->field_type == "multi_select_option" ? 'selected':''}}>
+                                    Multi Select Option
+                                </option>
+                                <option value="date_picker" {{$data->field_type == "date_picker" ? 'selected':''}}>Date
+                                    Picker
+                                </option>
+                                <option value="time_picker" {{$data->field_type == "time_picker" ? 'selected':''}}>Time
+                                    Picker
+                                </option>
+                                <option
+                                    value="date_range_picker" {{$data->field_type == "date_range_picker" ? 'selected':''}}>
+                                    Date Range Picker
+                                </option>
+                                <option
+                                    value="time_range_picker" {{$data->field_type == "time_range_picker" ? 'selected':''}}>
+                                    Time Range Picker
+                                </option>
                             </select>
                         </div>
                     </div>
-
 
 
                     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
@@ -77,42 +115,42 @@
                 </div>
 
 
-
                 <div class="select_option_section row"
 
                      @if(($data->field_type == 'simple_select_option') || ($data->field_type == 'multi_select_option'))
-                        style=""
+                     style=""
                      @else
-                        style="display: none"
-                     @endif
+                     style="display: none"
+                    @endif
                 >
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
 
                         <div class="add_more_area">
-                            @if(isset($data->customFieldOption) && sizeof($data->customFieldOption) > 0)
+                            @if($data->type == 'custom_field' && isset($data->customFieldOption) && sizeof($data->customFieldOption) > 0)
                                 @foreach($data->customFieldOption as $key => $option)
                                     <div class="row rcard">
                                         <div class="col-11 col-md-11">
-                                        <div class="form-group">
-                                            <label for="exampleInputEmail1">Option</label>
-                                            <input type="text" class="form-control" name="value[]"
-                                                   placeholder="Enter Value" maxlength="100" value="{{$option->name}}">
-                                        </div>
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Option</label>
+                                                <input type="text" class="form-control" name="value[]"
+                                                       placeholder="Enter Value" maxlength="100"
+                                                       value="{{$option->name}}">
+                                            </div>
 
-                                    </div>
-                                            @if($loop->first)
-                                                <div class="col-1 col-md-1">
-                                                    <button type="button" class="add_more add_more_btn produts-am">
-                                                        <i class="fas fa-plus"></i>
-                                                    </button>
-                                                </div>
-                                            @else
-                                                <div class="col-1 col-md-1">
-                                                    <button type="button" class="add_more remove_options_btn produts-am">
-                                                        <i class="fas fa-trash"></i>
-                                                    </button>
-                                                </div>
-                                            @endif
+                                        </div>
+                                        @if($loop->first)
+                                            <div class="col-1 col-md-1">
+                                                <button type="button" class="add_more add_more_btn produts-am">
+                                                    <i class="fas fa-plus"></i>
+                                                </button>
+                                            </div>
+                                        @else
+                                            <div class="col-1 col-md-1">
+                                                <button type="button" class="add_more remove_options_btn produts-am">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        @endif
 
                                     </div>
                                 @endforeach
@@ -126,11 +164,11 @@
                                         </div>
 
                                     </div>
-                                        <div class="col-1 col-md-1">
-                                            <button type="button" class="add_more add_more_btn produts-am">
-                                                <i class="fas fa-plus"></i>
-                                            </button>
-                                        </div>
+                                    <div class="col-1 col-md-1">
+                                        <button type="button" class="add_more add_more_btn produts-am">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
                                 </div>
                             @endif
 
@@ -148,7 +186,8 @@
                             <select class="form-control parentID" name="parent_id">
                                 <option value="" selected disabled>Select</option>
                                 @foreach($fields as $field)
-                                    <option value="{{$field->id}}" {{$field->id == $data->parent_id ? 'selected':''}}>{{$field->name}}</option>
+                                    <option
+                                        value="{{$field->id}}" {{$field->id == $data->parent_id ? 'selected':''}}>{{$field->name}}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -159,12 +198,17 @@
                             <label>Parent Option ID</label>
                             <select class="form-control custom_field_option" name="option_id">
                                 @foreach($selected as $fieldOption)
-                                    <option value="{{$fieldOption->id}}" {{$fieldOption->id == $data->option_id ? 'selected':''}}>{{$fieldOption->name}}</option>
+                                    <option
+                                        value="{{$fieldOption->id}}" {{$fieldOption->id == $data->option_id ? 'selected':''}}>{{$fieldOption->name}}</option>
                                 @endforeach
                             </select>
                         </div>
                     </div>
                 </div>
+
+                @if($data->type == 'pre_included_field')
+                    @include('admin.custom_fields.section.pre_included_filter_section')
+                @endif
 
                 <button class="btn btn-primary" type="button" id="createBtn">Update</button>
 
@@ -244,58 +288,11 @@
             });
 
 
-            $(document).on('change', '.filter_type', function () {
-
-                var data = $(this).val();
-
-
-                if (data == 'pre_included_filter') {
-                    $('.pre-included-filter-section').css('display', 'block');
-
-                    $('.custom_filter_section').css('display', 'none');
-                    $('.select_option_section').css('display','none');
-                    $('.price_range_section').css('display', 'none');
-                    $('.select_option_section').css('display', 'none');
-
-                    // $("input[name=filter_name]").val();
-                    // $("input[name=filter]").val();
-                    // $("input[name=field_type]").val();
-                    // $("input[name=min]").val();
-                    // $("input[name=max]").val();
-                    // $("input[name=value]").val();
-
-
-                    var val = $('.filter_type').val();
-                    $('#updateCategory')[0].reset();
-                    $('.filter_type').val(val);
-
-                } else if (data == 'custom_filter') {
-                    $('.custom_filter_section').css('display', 'block');
-
-                    $('.pre-included-filter-section').css('display', 'none');
-                    $('.select_option_section').css('display','none');
-                    $('.price_range_section').css('display', 'none');
-                    $('.select_option_section').css('display', 'none');
-
-
-                    // $("input[name=filter_name]").val();
-                    // $("input[name=filter]").val();
-                    // $("input[name=field_type]").val();
-                    // $("input[name=min]").val();
-                    // $("input[name=max]").val();
-                    // $("input[name=value]").val();
-
-                    var val = $('.filter_type').val();
-                    $('#updateCategory')[0].reset();
-                    $('.filter_type').val(val);
-
-                }
-            });
-
             $(document).on('change', '.field_type', function () {
 
                 var data = $(this).val();
 
+                var type = $('.type').val();
 
 
                 if (data == 'price_range') {
@@ -304,6 +301,13 @@
                 } else if (data == 'simple_select_option' || data == 'multi_select_option') {
                     $('.price_range_section').css('display', 'none');
                     $('.select_option_section').removeAttr('style');
+
+                    if (type == 'custom_field') {
+                        $('.select_option_section').removeAttr('style');
+                    } else if (type == 'pre_included_field') {
+                        $('.select_option_section').css('display', 'none');
+                    }
+
                 } else {
                     $('.price_range_section').css('display', 'none');
                     $('.select_option_section').css('display', 'none');
@@ -350,8 +354,7 @@
             });
 
 
-
-            $(document).on('change','.parentID',function(){
+            $(document).on('change', '.parentID', function () {
                 var data = $(this).val();
 
                 $.blockUI({
@@ -370,7 +373,7 @@
 
                     type: 'GET',
                     url: '{{route("getFieldOption")}}',
-                    data: {'field_id':data},
+                    data: {'field_id': data},
 
                     success: function (response, status) {
 
@@ -378,9 +381,9 @@
                             $.unblockUI();
 
                             var html = '<option value="" selected disabled>Select</option>';
-                            $.each(response.data,function(index,value){
+                            $.each(response.data, function (index, value) {
 
-                                html += '<option value="'+value.id+'">'+value.name+'</option>'
+                                html += '<option value="' + value.id + '">' + value.name + '</option>'
 
                             });
 
@@ -405,6 +408,29 @@
                 });
 
             });
+
+
+            $('.type').change(function () {
+                var data = $(this).val();
+
+                var type = $('.field_type').val();
+
+
+                if (data == 'pre_included_field') {
+                    $('.parent_section_row').after(`@include('admin.custom_fields.section.pre_included_filter_section')`);
+                    if (type) {
+                        $('.select_option_section').css('display', 'none');
+                    }
+
+                } else {
+                    $('.pre-included-filter-section').remove();
+                    if (type) {
+                        $('.select_option_section').removeAttr('style');
+                    }
+
+                }
+            });
+
 
         });
 

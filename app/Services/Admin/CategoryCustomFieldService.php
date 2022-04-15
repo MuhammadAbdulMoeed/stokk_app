@@ -16,91 +16,105 @@ class CategoryCustomFieldService
 {
     public function index()
     {
-        $data =  Category::with('categoryFields')->get();
-        return view('admin.category_custom_field.listing',compact('data'));
+        $data = array();
+        $pivotTableRecords = PivotCategoryField::all();
+
+        foreach ($pivotTableRecords as $key => $pivotTableRecord) {
+
+//            $data [$category->category->name][] = ['category_name'=>$category->category->name,
+//                'sub_cat_name'=>isset($category->subCategory) ? $category->subCategory->name:null,
+//                'field_name'=>$category->field->name,'cat_id'=>$category->id];
+
+            if($pivotTableRecord->subCategory)
+            {
+                $data[$pivotTableRecord->category->name.'-'.$pivotTableRecord->category->id.'-'.$pivotTableRecord->subCategory->name][] = $pivotTableRecord->field->name;
+            }
+            else{
+                $data[$pivotTableRecord->category->name.'-'.$pivotTableRecord->category->id][] = $pivotTableRecord->field->name;
+
+            }
+
+
+        }
+
+
+
+        return view('admin.category_custom_field.listing', compact('data'));
     }
 
     public function create()
     {
 
-        $categories =  Category::whereNull('parent_id')->get();
-        $fields =  CustomField::whereNull('parent_id')->get();
+        $categories = Category::whereNull('parent_id')->get();
+        $fields = CustomField::whereNull('parent_id')->get();
 
-        return view('admin.category_custom_field.create',compact('categories','fields'));
+        return view('admin.category_custom_field.create', compact('categories', 'fields'));
     }
 
     public function save($request)
     {
         DB::beginTransaction();
-        try{
+        try {
 
-            $check = PivotCategoryField::where('category_id',$request->category_id)->first();
+            $check = PivotCategoryField::where('category_id', $request->category_id)->first();
 
-            if(!$check)
-            {
-                foreach($request->fields as $field)
-                {
-                    PivotCategoryField::create(['category_id'=>$request->category_id,
-                        'custom_field_id'=>$field]);
+            if (!$check) {
+                foreach ($request->fields as $field) {
+                    PivotCategoryField::create(['category_id' => $request->category_id,
+                        'sub_category_id' => $request->sub_category_id,
+                        'custom_field_id' => $field]);
                 }
-            }
-            else{
+            } else {
                 DB::rollBack();
-                return response()->json(['result'=>'error','message'=>'Category Field Already Added Edit That']);
+                return response()->json(['result' => 'error', 'message' => 'Category Field Already Added Edit That']);
             }
 
 
             DB::commit();
-            return response()->json(['result'=>'success','message'=>'Category Field Save Successfully']);
+            return response()->json(['result' => 'success', 'message' => 'Category Field Save Successfully']);
 
-        }
-        catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
             DB::rollBack();
-            return response()->json(['result'=>'error','message'=>'Error in Saving Category Field: '.$e]);
+            return response()->json(['result' => 'error', 'message' => 'Error in Saving Category Field: ' . $e]);
         }
     }
 
     public function edit($id)
     {
-        $data =  PivotCategoryField::where('category_id',$id)->first();
+        $data = PivotCategoryField::where('category_id', $id)->first();
 
-        if($data)
-        {
-            $categories =  Category::whereNull('parent_id')->get();
-            $fields =  CustomField::all();
+        if ($data) {
+            $categories = Category::whereNull('parent_id')->get();
+            $fields = CustomField::all();
 
-            $selectedFilters = PivotCategoryField::where('category_id',$id)->pluck('custom_field_id')->toArray();
+            $selectedFilters = PivotCategoryField::where('category_id', $id)->pluck('custom_field_id')->toArray();
 
-            return view('admin.category_custom_field.edit',compact('data','categories','fields','selectedFilters'));
-        }
-        else{
-            return redirect()->route('categoryCustomFieldsListing')->with('error','Record Not Found');
+            return view('admin.category_custom_field.edit', compact('data', 'categories', 'fields', 'selectedFilters'));
+        } else {
+            return redirect()->route('categoryCustomFieldsListing')->with('error', 'Record Not Found');
         }
     }
 
     public function update($request)
     {
         DB::beginTransaction();
-        try{
-            PivotCategoryField::where('category_id',$request->id)->delete();
+        try {
+            PivotCategoryField::where('category_id', $request->id)->delete();
 
 
-            $check = PivotCategoryField::where('category_id',$request->category_id)
-                ->where('category_id','!=',$request->id)
+            $check = PivotCategoryField::where('category_id', $request->category_id)
+                ->where('category_id', '!=', $request->id)
                 ->first();
 
-            if(!$check)
-            {
-                foreach($request->fields as $field)
-                {
-                    PivotCategoryField::create(['category_id'=>$request->category_id,
-                        'custom_field_id'=>$field]);
+            if (!$check) {
+                foreach ($request->fields as $field) {
+                    PivotCategoryField::create(['category_id' => $request->category_id,
+                        'sub_category_id' => $request->sub_category_id,
+                        'custom_field_id' => $field]);
                 }
-            }
-            else{
+            } else {
                 DB::rollBack();
-                return response()->json(['result'=>'error','message'=>'Category Filter Already Added Edit That']);
+                return response()->json(['result' => 'error', 'message' => 'Category Filter Already Added Edit That']);
             }
 
 
@@ -111,52 +125,43 @@ class CategoryCustomFieldService
 //            }
 
             DB::commit();
-            return response()->json(['result'=>'success','message'=>'Category Fields Updated Successfully']);
+            return response()->json(['result' => 'success', 'message' => 'Category Fields Updated Successfully']);
 
-        }
-        catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
             DB::rollBack();
-            return response()->json(['result'=>'error','message'=>'Error in Updating Category Fields: '.$e]);
+            return response()->json(['result' => 'error', 'message' => 'Error in Updating Category Fields: ' . $e]);
         }
     }
 
     public function delete($request)
     {
-        $data =  PivotCategoryField::where('category_id',$request->category_id)->first();
+        $data = PivotCategoryField::where('category_id', $request->category_id)->first();
 
-        if($data)
-        {
-            try{
-                PivotCategoryField::where('category_id',$request->category_id)->delete();
-            }
-            catch (\Exception $e)
-            {
-                return response()->json(['result'=>'error','message'=>'Error in Deleting Category Field: '.$e]);
+        if ($data) {
+            try {
+                PivotCategoryField::where('category_id', $request->category_id)->delete();
+            } catch (\Exception $e) {
+                return response()->json(['result' => 'error', 'message' => 'Error in Deleting Category Field: ' . $e]);
 
             }
 
 
-            return response()->json(['result'=>'success','message'=>"Category Field Deleted Successfully"]);
+            return response()->json(['result' => 'success', 'message' => "Category Field Deleted Successfully"]);
 
-        }
-        else{
-            return response()->json(['result'=>'error','message'=>'Record Not Found']);
+        } else {
+            return response()->json(['result' => 'error', 'message' => 'Record Not Found']);
         }
     }
 
     public function changePosition($id)
     {
-        $data =  PivotCategoryField::where('category_id',$id)->orderBy('order','asc')->get();
+        $data = PivotCategoryField::where('category_id', $id)->orderBy('order', 'asc')->get();
 
 
-
-        if(sizeof($data) > 0 )
-        {
-            return view('admin.category_custom_field.change_order',compact('data'));
-        }
-        else{
-            return redirect()->route('categoryCustomFieldsListing')->with('error','Record Not Found');
+        if (sizeof($data) > 0) {
+            return view('admin.category_custom_field.change_order', compact('data'));
+        } else {
+            return redirect()->route('categoryCustomFieldsListing')->with('error', 'Record Not Found');
         }
     }
 
@@ -166,13 +171,11 @@ class CategoryCustomFieldService
             foreach ($request->data as $key => $filter) {
                 $find = PivotCategoryField::find($filter);
                 if ($find) {
-                    if($key + 1 > 9)
-                    {
-                        $find->order = $key+1;
-                    }
-                    else{
+                    if ($key + 1 > 9) {
+                        $find->order = $key + 1;
+                    } else {
 //                        $find->order = 0 . $key+1;
-                        $find->order = str_pad($key+1, 2, '0', STR_PAD_LEFT);
+                        $find->order = str_pad($key + 1, 2, '0', STR_PAD_LEFT);
                     }
 
                     $find->save();
