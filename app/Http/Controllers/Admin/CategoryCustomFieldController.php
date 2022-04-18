@@ -54,4 +54,10 @@ class CategoryCustomFieldController extends Controller
     {
         return $categoryCustomFieldService->updatePosition($request);
     }
+
+
+    public function getCategoryField(Request $request,CategoryCustomFieldService $categoryCustomFieldService)
+    {
+        return $categoryCustomFieldService->getCategoryField($request);
+    }
 }

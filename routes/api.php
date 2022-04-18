@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\Auth\RegisterController;
 use App\Http\Controllers\Api\Auth\ForgotPasswordController;
-
+use App\Http\Controllers\Api\Auth\LogoutController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -36,6 +36,8 @@ Route::group(['middleware' => ['json.response'], ['namespace' => 'Api']], functi
         Route::post('check', function () {
             dd('i am auth');
         });
+
+        Route::post('logout',[LogoutController::class,'logout']);
 
     });
 

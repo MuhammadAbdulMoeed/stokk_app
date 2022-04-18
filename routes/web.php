@@ -182,5 +182,7 @@ Route::namespace('Admin')->group(function () {
         Route::get('category-size',[SizeController::class,'getCategorySize'])->name('getCategorySize');
         Route::get('category-cloth-size',[ClothingTypeController::class,'getCategoryCloth'])->name('getCategoryCloth');
 
+
     });
 });
+Route::get('category-field',[CategoryCustomFieldController::class,'getCategoryField'])->name('getCategoryField');

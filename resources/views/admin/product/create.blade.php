@@ -237,38 +237,6 @@
             $('.category').change(function () {
                 var data = $(this).val();
 
-                var text = $('.category option:selected').text();
-
-
-                if (text == 'Real Estate') {
-                    $('.mainRow').after(`@include('admin.product.sections.real_estate_section')`);
-                    $('.vehicle_car_section').remove();
-                    $('.fashion_section').remove();
-                } else if (text == 'Vehicles') {
-                    $('.real_estate_section').remove();
-                    $('.fashion_section').remove();
-                    $('.mainRow').after(`@include('admin.product.sections.vehicle_car_section')`);
-                    $('.multiSelectOption').select2();
-                    brand($('.subCategory').val());
-                    getClass($('.subCategory').val());
-                    getAdditionalOption(data);
-                } else if (text == 'Bike') {
-                    $('.vehicle_car_section').remove();
-                    $('.real_estate_section').remove();
-                    $('.fashion_section').remove();
-
-                } else if (text == 'Fashion') {
-                    $('.vehicle_car_section').remove();
-                    $('.real_estate_section').remove();
-                    $('.mainRow').after(`@include('admin.product.sections.fashion_section')`);
-                    size(data);
-                    item_condition(data);
-                    brand($('.subCategory').val());
-                    cloth_type(data);
-                    $('.multiSelectOption').select2();
-
-                }
-
                 $.blockUI({
                     css: {
                         border: 'none',
@@ -336,23 +304,56 @@
             });
 
             $('.subCategory').change(function () {
-                var data =  $(this).val();
+                var data = $(this).val();
 
                 var text = $('.category option:selected').text();
 
+                var category = $('.category').val();
 
-                if (text == 'Real Estate') {
-                } else if (text == 'Vehicles') {
-                    brand(data);
-                    getClass(data);
-                    getAdditionalOption($('.category').val());
-                    $('.multiSelectOption').select2();
+                $.blockUI({
+                    css: {
+                        border: 'none',
+                        padding: '15px',
+                        backgroundColor: '#000',
+                        '-webkit-border-radius': '10px',
+                        '-moz-border-radius': '10px',
+                        opacity: .5,
+                        color: '#fff'
+                    }
+                });
 
-                } else if (text == 'Bike') {
-                } else if (text == 'Fashion') {
-                    brand(data);
+                $.ajax({
 
-                }
+                    type: 'GET',
+                    url: '{{route("getCategoryField")}}',
+                    data: {'sub_category_id': data,'category_id':category},
+
+                    success: function (response, status) {
+
+                        if (response.result == 'success') {
+                            $.unblockUI();
+
+
+
+
+
+                        } else if (response.result == 'error') {
+                            $.unblockUI();
+                            errorMsg(response.message);
+                        }
+
+
+                    },
+                    error: function (data) {
+                        $.each(data.responseJSON.errors, function (key, value) {
+                            $.unblockUI();
+                            errorMsg(value);
+                        });
+                    }
+
+
+                });
+
 
             });
 
