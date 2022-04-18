@@ -11,4 +11,11 @@ class CustomFieldOption extends Model
 
     protected $table = 'custom_field_options';
     protected $guarded = [];
+
+    public function relatedFields()
+    {
+        return $this->hasMany(CustomField::class,'option_id')
+            ->select(['name','type','slug', 'parent_id','option_id','id', 'is_required']);
+    }
+
 }

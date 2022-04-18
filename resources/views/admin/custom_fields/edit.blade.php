@@ -65,11 +65,11 @@
                             <label>Field Type</label>
                             <select class="form-control field_type"
                                     name="field_type">
-                                <option value="price_range" {{$data->field_type == "price_range" ? 'selected':''}}>Price
-                                    Range
-                                </option>
-                                <option value="input_field" {{$data->field_type == "input_field" ? 'selected':''}}>Input
-                                    Field
+{{--                                <option value="price_range" {{$data->field_type == "price_range" ? 'selected':''}}>Price--}}
+{{--                                    Range--}}
+{{--                                </option>--}}
+                                <option value="input_field" {{$data->field_type == "input_field" ? 'selected':''}}>
+                                    Input Field
                                 </option>
                                 <option value="number_field" {{$data->field_type == "number_field" ? 'selected':''}}>
                                     Number Field
@@ -82,20 +82,20 @@
                                     value="multi_select_option" {{$data->field_type == "multi_select_option" ? 'selected':''}}>
                                     Multi Select Option
                                 </option>
-                                <option value="date_picker" {{$data->field_type == "date_picker" ? 'selected':''}}>Date
-                                    Picker
-                                </option>
-                                <option value="time_picker" {{$data->field_type == "time_picker" ? 'selected':''}}>Time
-                                    Picker
-                                </option>
-                                <option
-                                    value="date_range_picker" {{$data->field_type == "date_range_picker" ? 'selected':''}}>
-                                    Date Range Picker
-                                </option>
-                                <option
-                                    value="time_range_picker" {{$data->field_type == "time_range_picker" ? 'selected':''}}>
-                                    Time Range Picker
-                                </option>
+{{--                                <option value="date_picker" {{$data->field_type == "date_picker" ? 'selected':''}}>Date--}}
+{{--                                    Picker--}}
+{{--                                </option>--}}
+{{--                                <option value="time_picker" {{$data->field_type == "time_picker" ? 'selected':''}}>Time--}}
+{{--                                    Picker--}}
+{{--                                </option>--}}
+{{--                                <option--}}
+{{--                                    value="date_range_picker" {{$data->field_type == "date_range_picker" ? 'selected':''}}>--}}
+{{--                                    Date Range Picker--}}
+{{--                                </option>--}}
+{{--                                <option--}}
+{{--                                    value="time_range_picker" {{$data->field_type == "time_range_picker" ? 'selected':''}}>--}}
+{{--                                    Time Range Picker--}}
+{{--                                </option>--}}
                             </select>
                         </div>
                     </div>

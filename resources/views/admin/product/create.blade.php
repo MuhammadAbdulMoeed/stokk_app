@@ -326,15 +326,68 @@
 
                     type: 'GET',
                     url: '{{route("getCategoryField")}}',
-                    data: {'sub_category_id': data,'category_id':category},
+                    data: {'sub_category_id': data, 'category_id': category},
 
                     success: function (response, status) {
 
                         if (response.result == 'success') {
                             $.unblockUI();
 
+                            var html ='<div class="custom_field_section row">';
 
+                            $.each(response.data, function (index, value) {
+                                if(value.field['type']  == 'number_field')
+                                {
+                                    html += '<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">';
+                                    html += '<div class="form-group">';
+                                    html += '<label for="exampleInputEmail1">'+value.field['name']+'</label>';
+                                    html += '<input type="'+text+'" class="form-control" onkeypress="return isNumberKey(event)" name="'+value.field['slug']+'">';
+                                    html += '</div>';
+                                    html += '</div>';
+                                }
+                                else if(value.field['type']  == 'input_field')
+                                {
+                                    html += '<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">';
+                                    html += '<div class="form-group">';
+                                    html += '<label for="exampleInputEmail1">'+value.field['name']+'</label>';
+                                    html += '<input type="'+text+'" class="form-control" onkeypress="return isCharacterKey(event)" name="'+value.field['slug']+'">';
+                                    html += '</div>';
+                                    html += '</div>';
+                                }
+                                else if(value.field['type']  == 'simple_select_option')
+                                {
+                                    html += '<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">';
+                                    html += '<div class="form-group">';
+                                    html += '<label for="exampleInputEmail1">'+value.field['name']+'</label>';
+                                    html += '<select name="'+value.field['slug']+'" class="form-control">';
+                                    $.each(value.field_record,function(index1,value1){
+                                        html += '<option value="'+value1.id+'">'+value1.name+'</option>';
+                                    });
+                                    html += '</select>';
 
+                                    html += '</div>';
+                                    html += '</div>';
+                                }
+
+                                else if(value.field['type']  == 'multi_select_option')
+                                {
+                                    html += '<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">';
+                                    html += '<div class="form-group">';
+                                    html += '<label for="exampleInputEmail1">'+value.field['name']+'</label>';
+                                    html += '<select multiple name="'+value.field['slug']+'" class="form-control multiSelectOption">';
+                                    $.each(value.field_record,function(index1,value1){
+                                        html += '<option value="'+value1.id+'">'+value1.name+'</option>';
+                                        
+                                    });
+                                    html += '</select>';
+
+                                    html += '</div>';
+                                    html += '</div>';
+                                }
+                            });
+
+                            $('.mainRow').after(html);
+                            $('.multiSelectOption').select2();
 
 
                         } else if (response.result == 'error') {

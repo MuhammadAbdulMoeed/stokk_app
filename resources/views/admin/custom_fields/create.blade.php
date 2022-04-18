@@ -59,15 +59,15 @@
                             <select class="form-control field_type"
                                     name="field_type">
                                 <option value="" selected disabled>Select</option>
-                                <option value="price_range">Price Range</option>
+{{--                                <option value="price_range">Price Range</option>--}}
                                 <option value="input_field">Input Field</option>
                                 <option value="number_field">Number Field</option>
                                 <option value="simple_select_option">Simple Select Option</option>
                                 <option value="multi_select_option">Multi Select Option</option>
-                                <option value="date_picker">Date Picker</option>
-                                <option value="time_picker">Time Picker</option>
-                                <option value="date_range_picker">Date Range Picker</option>
-                                <option value="time_range_picker">Time Range Picker</option>
+{{--                                <option value="date_picker">Date Picker</option>--}}
+{{--                                <option value="time_picker">Time Picker</option>--}}
+{{--                                <option value="date_range_picker">Date Range Picker</option>--}}
+{{--                                <option value="time_range_picker">Time Range Picker</option>--}}
                             </select>
                         </div>
                     </div>

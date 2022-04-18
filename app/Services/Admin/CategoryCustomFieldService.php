@@ -223,10 +223,14 @@ class CategoryCustomFieldService
                     $field = ['name'=>$singleField->name,'type'=>$singleField->field_type,'slug'=>$singleField->slug,
                         'parent_id'=>$singleField->parent_id,'option_id'=>$singleField->option_id,'id'=>$singleField->id,
                         'is_required'=>$singleField->is_required];
-                    if($singleField->type == 'simple_select_option' || $singleField->type == 'multi_select_option')
+
+                    if($singleField->field_type == 'simple_select_option' || $singleField->field_type == 'multi_select_option')
                     {
-                        $fieldRecords = CustomFieldOption::where('custom_field_id',$singleField->id)
+                        $fieldRecords = CustomFieldOption::with('relatedFields')
+                            ->where('custom_field_id',$singleField->id)
                             ->select('name','id')->get();
+
+
                     }
                 }
 
