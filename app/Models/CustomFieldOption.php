@@ -15,7 +15,7 @@ class CustomFieldOption extends Model
     public function relatedFields()
     {
         return $this->hasMany(CustomField::class,'option_id')
-            ->select(['name','type','slug', 'parent_id','option_id','id', 'is_required']);
+            ->select(['name','type','slug', 'parent_id','option_id','id', 'is_required','field_type']);
     }
 
 }

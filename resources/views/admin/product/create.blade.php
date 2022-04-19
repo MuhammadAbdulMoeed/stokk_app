@@ -237,6 +237,9 @@
             $('.category').change(function () {
                 var data = $(this).val();
 
+                $('.custom_field_section').remove();
+                $('.subCategory').val();
+
                 $.blockUI({
                     css: {
                         border: 'none',
@@ -332,7 +335,7 @@
 
                         if (response.result == 'success') {
                             $.unblockUI();
-
+                            var insideHtml = '';
                             var html ='<div class="custom_field_section row">';
 
                             $.each(response.data, function (index, value) {
@@ -341,7 +344,7 @@
                                     html += '<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">';
                                     html += '<div class="form-group">';
                                     html += '<label for="exampleInputEmail1">'+value.field['name']+'</label>';
-                                    html += '<input type="'+text+'" class="form-control" onkeypress="return isNumberKey(event)" name="'+value.field['slug']+'">';
+                                    html += '<input type="text" class="form-control" onkeypress="return isNumberKey(event)" name="'+value.field['slug']+'">';
                                     html += '</div>';
                                     html += '</div>';
                                 }
@@ -350,7 +353,7 @@
                                     html += '<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">';
                                     html += '<div class="form-group">';
                                     html += '<label for="exampleInputEmail1">'+value.field['name']+'</label>';
-                                    html += '<input type="'+text+'" class="form-control" onkeypress="return isCharacterKey(event)" name="'+value.field['slug']+'">';
+                                    html += '<input type="text" class="form-control" onkeypress="return isCharacterKey(event)" name="'+value.field['slug']+'">';
                                     html += '</div>';
                                     html += '</div>';
                                 }
@@ -359,16 +362,77 @@
                                     html += '<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">';
                                     html += '<div class="form-group">';
                                     html += '<label for="exampleInputEmail1">'+value.field['name']+'</label>';
-                                    html += '<select name="'+value.field['slug']+'" class="form-control">';
+                                    html += '<select name="'+value.field['slug']+'" class="form-control show_related_fields">';
+                                    html += '<option value="" disabled selected>Select</option>';
                                     $.each(value.field_record,function(index1,value1){
-                                        html += '<option value="'+value1.id+'">'+value1.name+'</option>';
+                                        if(value1.related_fields.length == 0)
+                                        {
+                                            html += '<option value="'+value1.id+'">'+value1.name+'</option>';
+                                        }
+                                        else{
+                                            html += '<option value="'+value1.id+'">'+value1.name+'</option>';
+                                            insideHtml += '<div class="'+value1.id+'-'+value1.name.replace(/\s/g, "")+' row " style="display:none;">';
+                                        }
+
+                                        $.each(value1.related_fields,function(index2,value2){
+                                            if(value2['field_type']  == 'number_field')
+                                            {
+                                                insideHtml += '<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">';
+                                                insideHtml += '<div class="form-group">';
+                                                insideHtml += '<label for="exampleInputEmail1">'+value2['name']+'</label>';
+                                                insideHtml += '<input type="text" class="form-control" onkeypress="return isNumberKey(event)" name="'+value2['slug']+'">';
+                                                insideHtml += '</div>';
+                                                insideHtml += '</div>';
+
+                                            }
+                                            else if(value2['field_type']  == 'input_field')
+                                            {
+                                                insideHtml += '<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">';
+                                                insideHtml += '<div class="form-group">';
+                                                insideHtml += '<label for="exampleInputEmail1">'+value2['name']+'</label>';
+                                                insideHtml += '<input type="text" class="form-control" onkeypress="return isCharacterKey(event)" name="'+value2['slug']+'">';
+                                                insideHtml += '</div>';
+                                                insideHtml += '</div>';
+
+                                            }
+                                            else if(value2['field_type']  == 'simple_select_option')
+                                            {
+                                                insideHtml += '<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">';
+                                                insideHtml += '<div class="form-group">';
+                                                insideHtml += '<label for="exampleInputEmail1">' + value2['name'] + '</label>';
+                                                insideHtml += '<select name="' + value2['slug'] + '" class="form-control">';
+                                                $.each(value.field_record, function (index3, value3) {
+                                                    insideHtml += '<option value="' + value3.id + '">' + value3.name + '</option>';
+                                                });
+                                                insideHtml += '</select>';
+                                                insideHtml += '</div>';
+                                                insideHtml += '</div>';
+                                            }
+                                            else if(value2['field_type']  == 'multi_select_option')
+                                            {
+                                                insideHtml += '<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">';
+                                                insideHtml += '<div class="form-group">';
+                                                insideHtml += '<label for="exampleInputEmail1">'+value2['name']+'</label>';
+                                                insideHtml += '<select multiple name="'+value2['slug']+'" class="form-control multiSelectOption">';
+                                                $.each(value.field_record,function(index4,value4){
+                                                    insideHtml += '<option value="'+value4.id+'">'+value4.name+'</option>';
+
+                                                });
+                                                insideHtml += '</select>';
+
+                                                insideHtml += '</div>';
+                                                insideHtml += '</div>';
+                                            }
+
+                                        });
+                                        insideHtml += '</div>';
+
                                     });
                                     html += '</select>';
+                                    html += '</div>';
+                                    html += '</div>';
 
-                                    html += '</div>';
-                                    html += '</div>';
                                 }
-
                                 else if(value.field['type']  == 'multi_select_option')
                                 {
                                     html += '<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">';
@@ -377,7 +441,7 @@
                                     html += '<select multiple name="'+value.field['slug']+'" class="form-control multiSelectOption">';
                                     $.each(value.field_record,function(index1,value1){
                                         html += '<option value="'+value1.id+'">'+value1.name+'</option>';
-                                        
+
                                     });
                                     html += '</select>';
 
@@ -388,6 +452,11 @@
 
                             $('.mainRow').after(html);
                             $('.multiSelectOption').select2();
+
+                            $('.custom_field_section').after(insideHtml);
+
+
+
 
 
                         } else if (response.result == 'error') {
@@ -410,190 +479,17 @@
 
             });
 
+            $(document).on('change','.show_related_fields',function(){
+                var data  = $(this).val();
+                var text = $( ".show_related_fields option:selected" ).text().replaceAll(/\s/g,'');
+
+                $('.'+data+'-'+text).removeAttr('style');
+
+
+            });
+
 
         });
-
-
-        function brand(sub_category_id) {
-            $.ajax({
-                type: 'GET',
-                url: '{{route("getCategoryBrand")}}',
-                data: {'category_id': sub_category_id},
-
-                success: function (response, status) {
-                    if (response.result == 'success') {
-
-                        var html = '';
-                        $.each(response.data, function (index, value) {
-                            html += '<option value="' + value.id + '">' + value.name + '</option>'
-                        });
-
-                        $('.brand').html(html);
-
-
-                    } else if (response.result == 'error') {
-                        errorMsg(response.message);
-                    }
-                },
-                error: function (data) {
-                    $.each(data.responseJSON.errors, function (key, value) {
-                        errorMsg(value);
-                    });
-                }
-            });
-
-        }
-
-        function getClass(sub_category_id) {
-            $.ajax({
-                type: 'GET',
-                url: '{{route("getCategoryClass")}}',
-                data: {'category_id': sub_category_id},
-
-                success: function (response, status) {
-                    if (response.result == 'success') {
-
-                        var html = '';
-                        $.each(response.data, function (index, value) {
-                            html += '<option value="' + value.id + '">' + value.name + '</option>'
-                        });
-
-                        $('.class').html(html);
-
-
-                    } else if (response.result == 'error') {
-                        errorMsg(response.message);
-                    }
-                },
-                error: function (data) {
-                    $.each(data.responseJSON.errors, function (key, value) {
-                        errorMsg(value);
-                    });
-                }
-            });
-
-        }
-
-        function getAdditionalOption(category_id) {
-            $.ajax({
-                type: 'GET',
-                url: '{{route("getCategoryAdditionalOption")}}',
-                data: {'category_id': category_id},
-
-                success: function (response, status) {
-                    if (response.result == 'success') {
-
-                        var html = '';
-                        $.each(response.data, function (index, value) {
-                            html += '<option value="' + value.id + '">' + value.name + '</option>'
-                        });
-
-                        $('.additionalOption').html(html);
-
-
-                    } else if (response.result == 'error') {
-                        errorMsg(response.message);
-                    }
-                },
-                error: function (data) {
-                    $.each(data.responseJSON.errors, function (key, value) {
-                        errorMsg(value);
-                    });
-                }
-            });
-
-        }
-
-        function size(sub_category_id) {
-            $.ajax({
-                type: 'GET',
-                url: '{{route("getCategorySize")}}',
-                data: {'category_id': sub_category_id},
-
-                success: function (response, status) {
-                    if (response.result == 'success') {
-
-                        var html = '';
-                        $.each(response.data, function (index, value) {
-                            html += '<option value="' + value.id + '">' + value.name + '</option>'
-                        });
-
-                        $('.size').html(html);
-
-
-                    } else if (response.result == 'error') {
-                        errorMsg(response.message);
-                    }
-                },
-                error: function (data) {
-                    $.each(data.responseJSON.errors, function (key, value) {
-                        errorMsg(value);
-                    });
-                }
-            });
-
-        }
-
-        function item_condition(category_id) {
-            $.ajax({
-                type: 'GET',
-                url: '{{route("getCategoryItemConditon")}}',
-                data: {'category_id': category_id},
-
-                success: function (response, status) {
-                    if (response.result == 'success') {
-
-                        var html = '';
-                        $.each(response.data, function (index, value) {
-                            html += '<option value="' + value.id + '">' + value.name + '</option>'
-                        });
-
-                        $('.itemCondition').html(html);
-
-
-                    } else if (response.result == 'error') {
-                        errorMsg(response.message);
-                    }
-                },
-                error: function (data) {
-                    $.each(data.responseJSON.errors, function (key, value) {
-                        errorMsg(value);
-                    });
-                }
-            });
-
-        }
-
-        function cloth_type(category_id) {
-            $.ajax({
-                type: 'GET',
-                url: '{{route("getCategoryCloth")}}',
-                data: {'category_id': category_id},
-
-                success: function (response, status) {
-                    if (response.result == 'success') {
-
-                        var html = '';
-                        $.each(response.data, function (index, value) {
-                            html += '<option value="' + value.id + '">' + value.name + '</option>'
-                        });
-
-                        $('.clothType').html(html);
-
-
-                    } else if (response.result == 'error') {
-                        errorMsg(response.message);
-                    }
-                },
-                error: function (data) {
-                    $.each(data.responseJSON.errors, function (key, value) {
-                        errorMsg(value);
-                    });
-                }
-            });
-
-        }
-
 
         var fileTypes = ['jpg', 'jpeg', 'png'];
 
