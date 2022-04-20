@@ -24,7 +24,7 @@ class CreatePivotProductsCustomFieldsTable extends Migration
             $table->foreign('custom_field_id')->references('id')->on('custom_fields')
                 ->onDelete('cascade');
 
-            $table->string('value');
+            $table->string('value')->nullable();
 
             $table->timestamps();
         });

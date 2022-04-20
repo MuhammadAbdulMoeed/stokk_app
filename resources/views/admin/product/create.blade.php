@@ -344,7 +344,7 @@
                                     html += '<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">';
                                     html += '<div class="form-group">';
                                     html += '<label for="exampleInputEmail1">'+value.field['name']+'</label>';
-                                    html += '<input type="text" class="form-control" onkeypress="return isNumberKey(event)" name="'+value.field['slug']+'">';
+                                    html += '<input type="text" class="form-control" onkeypress="return isNumberKey(event)" name="custom_fields['+value.field['id']+']">';
                                     html += '</div>';
                                     html += '</div>';
                                 }
@@ -353,7 +353,7 @@
                                     html += '<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">';
                                     html += '<div class="form-group">';
                                     html += '<label for="exampleInputEmail1">'+value.field['name']+'</label>';
-                                    html += '<input type="text" class="form-control" onkeypress="return isCharacterKey(event)" name="'+value.field['slug']+'">';
+                                    html += '<input type="text" class="form-control" onkeypress="return isCharacterKey(event)" name="custom_fields['+value.field['id']+']">';
                                     html += '</div>';
                                     html += '</div>';
                                 }
@@ -362,8 +362,8 @@
                                     html += '<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">';
                                     html += '<div class="form-group">';
                                     html += '<label for="exampleInputEmail1">'+value.field['name']+'</label>';
-                                    html += '<select name="'+value.field['slug']+'" class="form-control show_related_fields">';
-                                    html += '<option value="" disabled selected>Select</option>';
+                                    html += '<select name="custom_fields['+value.field['id']+']" class="form-control show_related_fields">';
+                                    html += '<option value="" selected disabled>Select</option>';
                                     $.each(value.field_record,function(index1,value1){
                                         if(value1.related_fields.length == 0)
                                         {
@@ -371,7 +371,7 @@
                                         }
                                         else{
                                             html += '<option value="'+value1.id+'">'+value1.name+'</option>';
-                                            insideHtml += '<div class="'+value1.id+'-'+value1.name.replace(/\s/g, "")+' row " style="display:none;">';
+                                            insideHtml += '<div class="'+value1.id+'-'+value1.name.replace(/\s/g, "")+' row '+value.field['name']+'" style="display:none;">';
                                         }
 
                                         $.each(value1.related_fields,function(index2,value2){
@@ -380,7 +380,7 @@
                                                 insideHtml += '<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">';
                                                 insideHtml += '<div class="form-group">';
                                                 insideHtml += '<label for="exampleInputEmail1">'+value2['name']+'</label>';
-                                                insideHtml += '<input type="text" class="form-control" onkeypress="return isNumberKey(event)" name="'+value2['slug']+'">';
+                                                insideHtml += '<input type="text" class="form-control" onkeypress="return isNumberKey(event)" name="custom_fields['+value2['id']+']">';
                                                 insideHtml += '</div>';
                                                 insideHtml += '</div>';
 
@@ -390,7 +390,7 @@
                                                 insideHtml += '<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">';
                                                 insideHtml += '<div class="form-group">';
                                                 insideHtml += '<label for="exampleInputEmail1">'+value2['name']+'</label>';
-                                                insideHtml += '<input type="text" class="form-control" onkeypress="return isCharacterKey(event)" name="'+value2['slug']+'">';
+                                                insideHtml += '<input type="text" class="form-control" onkeypress="return isCharacterKey(event)" name="custom_fields['+value2['id']+']">';
                                                 insideHtml += '</div>';
                                                 insideHtml += '</div>';
 
@@ -400,7 +400,7 @@
                                                 insideHtml += '<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">';
                                                 insideHtml += '<div class="form-group">';
                                                 insideHtml += '<label for="exampleInputEmail1">' + value2['name'] + '</label>';
-                                                insideHtml += '<select name="' + value2['slug'] + '" class="form-control">';
+                                                insideHtml += '<select name="custom_fields[' + value2['id'] + ']" class="form-control">';
                                                 $.each(value.field_record, function (index3, value3) {
                                                     insideHtml += '<option value="' + value3.id + '">' + value3.name + '</option>';
                                                 });
@@ -413,13 +413,11 @@
                                                 insideHtml += '<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">';
                                                 insideHtml += '<div class="form-group">';
                                                 insideHtml += '<label for="exampleInputEmail1">'+value2['name']+'</label>';
-                                                insideHtml += '<select multiple name="'+value2['slug']+'" class="form-control multiSelectOption">';
+                                                insideHtml += '<select multiple name="custom_fields['+value2['slug']+']" class="form-control multiSelectOption">';
                                                 $.each(value.field_record,function(index4,value4){
                                                     insideHtml += '<option value="'+value4.id+'">'+value4.name+'</option>';
-
                                                 });
                                                 insideHtml += '</select>';
-
                                                 insideHtml += '</div>';
                                                 insideHtml += '</div>';
                                             }
@@ -438,7 +436,7 @@
                                     html += '<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">';
                                     html += '<div class="form-group">';
                                     html += '<label for="exampleInputEmail1">'+value.field['name']+'</label>';
-                                    html += '<select multiple name="'+value.field['slug']+'" class="form-control multiSelectOption">';
+                                    html += '<select multiple name="custom_fields['+value.field['id']+'][]" class="form-control multiSelectOption">';
                                     $.each(value.field_record,function(index1,value1){
                                         html += '<option value="'+value1.id+'">'+value1.name+'</option>';
 
@@ -481,10 +479,15 @@
 
             $(document).on('change','.show_related_fields',function(){
                 var data  = $(this).val();
-                var text = $( ".show_related_fields option:selected" ).text().replaceAll(/\s/g,'');
+                var text = $(this).find('option:selected').text().replaceAll(/\s/g,'');
+                // $( ".show_related_fields option:selected" ).text().replaceAll(/\s/g,'');
+                var className = $( ".show_related_fields option:selected" ).attr('class');
+
+                var parentText = $(this).parent('div.form-group').find('label').text();
+
+                $('.'+parentText).hide();
 
                 $('.'+data+'-'+text).removeAttr('style');
-
 
             });
 

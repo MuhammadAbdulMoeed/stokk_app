@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\ProductSaveRequest;
+use App\Http\Requests\Admin\ProfileSaveRequest;
 use App\Services\Admin\ProductService;
 use Illuminate\Http\Request;
 
@@ -18,9 +20,10 @@ class ProductController extends Controller
         return $productService->create();
     }
 
-    public function save()
+    public function save(ProductSaveRequest $request,ProductService $productService)
     {
 
+        return $productService->save($request);
     }
 
     public function edit($id)

@@ -62,7 +62,7 @@
                                             <td>{{$loop->iteration}}</td>
                                             <td>{{$product->name}}</td>
                                             <td>{{isset($product->category) ? $product->category->name:'N/A'}}</td>
-                                            <td>{{isset($product->category) ? $product->category->name:'N/A'}}</td>
+                                            <td>{{isset($product->subCategory) ? $product->subCategory->name:'N/A'}}</td>
 
                                             <td>
                                                 <button
