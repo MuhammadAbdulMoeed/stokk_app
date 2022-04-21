@@ -26,9 +26,9 @@ class ProductController extends Controller
         return $productService->save($request);
     }
 
-    public function edit($id)
+    public function edit($id,ProductService $productService)
     {
-
+        return $productService->edit($id);
     }
 
     public function update()

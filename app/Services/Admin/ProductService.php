@@ -105,7 +105,18 @@ class ProductService
 
     public function edit($id)
     {
+        $data = Product::find($id);
 
+        if($data)
+        {
+            $categories = Category::whereNull('parent_id')->where('is_active', 1)->get();
+            $subCategories= Category::where('parent_id',$data->category_id)->get();
+
+            return view('admin.product.edit',compact('data','categories','subCategories'));
+        }
+        else{
+            return redirect()->route('productListing')->with('error','Record Not Found');
+        }
     }
 
     public function update($request)

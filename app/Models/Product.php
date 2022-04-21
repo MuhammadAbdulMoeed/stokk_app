@@ -22,4 +22,22 @@ class Product extends Model
     {
         return $this->belongsTo(Category::class,'sub_category_id');
     }
+
+    public function customField()
+    {
+        return $this->belongsToMany(CustomField::class,PivotProductCustomField::class,'product_id','custom_field_id')
+            ->withPivot('value');
+    }
+
+    public function customFieldRelated()
+    {
+        return $this->belongsToMany(CustomField::class,PivotProductCustomField::class,'product_id','custom_field_id')
+            ->withPivot('value')->whereNotNull('parent_id');
+    }
+
+
+    public function productImages()
+    {
+        return $this->hasMany(ProductImage::class,'product_id');
+    }
 }

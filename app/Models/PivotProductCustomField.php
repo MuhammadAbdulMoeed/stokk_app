@@ -11,4 +11,8 @@ class PivotProductCustomField extends Model
 
     protected $table = 'pivot_products_custom_fields';
     protected $guarded = [];
+
+
+
+
 }

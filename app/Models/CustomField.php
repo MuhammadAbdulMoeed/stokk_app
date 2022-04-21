@@ -17,4 +17,20 @@ class CustomField extends Model
         return $this->hasMany(CustomFieldOption::class,'custom_field_id');
     }
 
+    public function relatedFields()
+    {
+        return $this->belongsTo(CustomField::class,'parent_id');
+    }
+
+    public function parent()
+    {
+        return $this->belongsTo(CustomField::class,'parent_id');
+    }
+
+
+    public function customFieldOptionSelected()
+    {
+        return $this->belongsTo(CustomFieldOption::class,'option_id');
+    }
+
 }
