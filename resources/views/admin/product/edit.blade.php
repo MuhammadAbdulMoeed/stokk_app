@@ -34,6 +34,7 @@
 
             <form method="post" id="categoryForm">
                 @csrf
+                <input type="hidden" name="id" value="{{$data->id}}">
                 <div class="row mainRow">
 
                     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
@@ -100,8 +101,12 @@
 
 
                 @if(sizeof($data->customField) > 0)
-                    <div class="custom_field_section row">
+{{--                    <div class="custom_field_section row">--}}
                         @foreach($data->customField as $key => $customField)
+                            @if($loop->first)
+                                <div class="custom_field_section row">
+                            @endif
+
                             @if($customField->parent_id == null)
                                 <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">
                                     <div class="form-group">
@@ -116,17 +121,17 @@
                                                    value="{{$customField->pivot->value}}"
                                                    onkeypress="return isCharacterKey(event)" class="form-control">
                                         @elseif($customField->field_type == 'simple_select_option')
-                                            <select name="custom_fields{{$customField->id}}"
+                                            <select name="custom_fields[{{$customField->id}}]"
                                                     class="form-control show_related_fields">
                                                 @foreach($customField->customFieldOption as $option)
-                                                    <option value="{{$option->id}}">{{$option->name}}</option>
+                                                    <option value="{{$option->id}}" {{$option->id == $customField->pivot->value ? 'selected':''}}>{{$option->name}}</option>
                                                 @endforeach
                                             </select>
                                         @elseif($customField->field_type == 'multi_select_option')
-                                            <select name="custom_fields{{$customField->id}}"
+                                            <select name="custom_fields[{{$customField->id}}]"
                                                     class="form-control show_related_fields">
                                                 @foreach($customField->customFieldOption as $option)
-                                                    <option value="{{$option->id}}">{{$option->name}}</option>
+                                                    <option value="{{$option->id}}" {{$option->id == $customField->pivot->value ? 'selected':''}}>{{$option->name}}</option>
                                                 @endforeach
                                             </select>
                                         @endif
@@ -135,38 +140,44 @@
                                 </div>
 
                             @endif
+                            @if($loop->last)
+                                </div>
+                            @endif
+
+
 
                         @endforeach
-                    </div>
 
-                    @foreach($data->customFieldRelated as $key => $customFieldRelated)
 
-                        @if($loop->first)
-                            <div class="{{$customFieldRelated->customFieldOptionSelected->id}}-{{str_replace(" ","",$customFieldRelated->customFieldOptionSelected->name)}} row {{$customFieldRelated->parent->name}}">
-                        @endif
+                    @foreach($relatedFields as $key => $customFieldRelated)
+                        @foreach($customFieldRelated as $key2 => $customFieldRecord)
+                            @if($loop->first)
+                                <div class="{{$customFieldRecord->option_id}}-{{str_replace(" ","",$customFieldRecord->customFieldOptionSelected->name)}} customRow row {{$customFieldRecord->parent->name}}">
+                            @endif
+
                             <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">
                                 <div class="form-group">
-                                    <label for="exampleInputEmail1">{{$customFieldRelated->name}}</label>
+                                    <label for="exampleInputEmail1">{{$customFieldRecord->name}}</label>
 
-                                    @if($customFieldRelated->field_type == 'number_field')
-                                        <input type="text" name="custom_fields[{{$customFieldRelated->id}}]"
-                                               value="{{$customFieldRelated->pivot->value}}"
+                                    @if($customFieldRecord->field_type == 'number_field')
+                                        <input type="text" name="custom_fields[{{$customFieldRecord->id}}]"
+                                               value="{{isset($customFieldRecord->pivotTableValue) ? $customFieldRecord->pivotTableValue->value:''}}"
                                                onkeypress="return isNumberKey(event)" class="form-control">
-                                    @elseif($customFieldRelated->field_type == 'input_field')
-                                        <input type="text" name="custom_fields[{{$customFieldRelated->id}}]"
-                                               value="{{$customFieldRelated->pivot->value}}"
+                                    @elseif($customFieldRecord->field_type == 'input_field')
+                                        <input type="text" name="custom_fields[{{$customFieldRecord->id}}]"
+                                               value="{{isset($customFieldRecord->pivotTableValue) ? $customFieldRecord->pivotTableValue->value:''}}"
                                                onkeypress="return isCharacterKey(event)" class="form-control">
                                     @elseif($customFieldRelated->field_type == 'simple_select_option')
-                                        <select name="custom_fields{{$customFieldRelated->id}}"
+                                        <select name="custom_fields[{{$customFieldRecord->id}}]"
                                                 class="form-control show_related_fields">
-                                            @foreach($customFieldRelated->customFieldOption as $option)
-                                                <option name="{{$option->id}}">{{$option->name}}</option>
+                                            @foreach($customFieldRecord->customFieldOption as $option)
+                                                <option name="{{$option->id}}" >{{$option->name}}</option>
                                             @endforeach
                                         </select>
                                     @elseif($customFieldRelated->field_type == 'multi_select_option')
-                                        <select name="custom_fields{{$customFieldRelated->id}}"
+                                        <select name="custom_fields[{{$customFieldRecord->id}}]"
                                                 class="form-control show_related_fields">
-                                            @foreach($customFieldRelated->customFieldOption as $option)
+                                            @foreach($customFieldRecord->customFieldOption as $option)
                                                 <option name="{{$option->id}}">{{$option->name}}</option>
                                             @endforeach
                                         </select>
@@ -175,9 +186,12 @@
 
 
                             </div>
-                        @if($loop->last)
-                            </div>
-                        @endif
+
+                            @if($loop->last)
+                                </div>
+                            @endif
+
+                        @endforeach
                     @endforeach
 
                 @endif
@@ -212,7 +226,7 @@
                 </div>
 
 
-                <button class="btn btn-primary" type="button" id="createBtn">Create</button>
+                <button class="btn btn-primary" type="button" id="createBtn">Update</button>
 
 
                 <a href="{{route('productListing')}}">
@@ -232,7 +246,11 @@
     <script>
 
         $(document).ready(function () {
-            // $('.multiSelectOption').select2();
+
+            @foreach($data->customFieldRelated as $key =>  $customFieldRelated)
+                $('.{{$customFieldRelated->parent->name}}').hide();
+                $('.{{$customFieldRelated->customFieldOptionSelected->id}}-{{str_replace(" ","",$customFieldRelated->customFieldOptionSelected->name)}}').removeAttr('style');
+            @endforeach
 
             $('#createBtn').click(function () {
 
@@ -293,6 +311,7 @@
 
                 $('.custom_field_section').remove();
                 $('.subCategory').val();
+                $('.customRow').remove();
 
                 $.blockUI({
                     css: {
@@ -346,7 +365,6 @@
 
 
             });
-
 
             $('.subCategory').change(function () {
                 var data = $(this).val();
@@ -402,56 +420,63 @@
                                     html += '<select name="custom_fields[' + value.field['id'] + ']" class="form-control show_related_fields">';
                                     html += '<option value="" selected disabled>Select</option>';
                                     $.each(value.field_record, function (index1, value1) {
-                                        if (value1.related_fields.length == 0) {
+                                        if(typeof value1.related_fields == "undefined" ){
                                             html += '<option value="' + value1.id + '">' + value1.name + '</option>';
                                         } else {
                                             html += '<option value="' + value1.id + '">' + value1.name + '</option>';
-                                            insideHtml += '<div class="' + value1.id + '-' + value1.name.replace(/\s/g, "") + ' row ' + value.field['name'] + '" style="display:none;">';
+                                            insideHtml += '<div class="' + value1.id + '-' + value1.name.replace(/\s/g, "") + ' customRow row ' + value.field['name'] + '" style="display:none;">';
                                         }
 
-                                        $.each(value1.related_fields, function (index2, value2) {
-                                            if (value2['field_type'] == 'number_field') {
-                                                insideHtml += '<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">';
-                                                insideHtml += '<div class="form-group">';
-                                                insideHtml += '<label for="exampleInputEmail1">' + value2['name'] + '</label>';
-                                                insideHtml += '<input type="text" class="form-control" onkeypress="return isNumberKey(event)" name="custom_fields[' + value2['id'] + ']">';
-                                                insideHtml += '</div>';
-                                                insideHtml += '</div>';
 
-                                            } else if (value2['field_type'] == 'input_field') {
-                                                insideHtml += '<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">';
-                                                insideHtml += '<div class="form-group">';
-                                                insideHtml += '<label for="exampleInputEmail1">' + value2['name'] + '</label>';
-                                                insideHtml += '<input type="text" class="form-control" onkeypress="return isCharacterKey(event)" name="custom_fields[' + value2['id'] + ']">';
-                                                insideHtml += '</div>';
-                                                insideHtml += '</div>';
+                                        if(typeof value1.related_fields != "undefined" )
+                                        {
+                                            $.each(value1.related_fields, function (index2, value2) {
+                                                if (value2['field_type'] == 'number_field') {
+                                                    insideHtml += '<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">';
+                                                    insideHtml += '<div class="form-group">';
+                                                    insideHtml += '<label for="exampleInputEmail1">' + value2['name'] + '</label>';
+                                                    insideHtml += '<input type="text" class="form-control" onkeypress="return isNumberKey(event)" name="custom_fields[' + value2['id'] + ']">';
+                                                    insideHtml += '</div>';
+                                                    insideHtml += '</div>';
 
-                                            } else if (value2['field_type'] == 'simple_select_option') {
-                                                insideHtml += '<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">';
-                                                insideHtml += '<div class="form-group">';
-                                                insideHtml += '<label for="exampleInputEmail1">' + value2['name'] + '</label>';
-                                                insideHtml += '<select name="custom_fields[' + value2['id'] + ']" class="form-control">';
-                                                $.each(value.field_record, function (index3, value3) {
-                                                    insideHtml += '<option value="' + value3.id + '">' + value3.name + '</option>';
-                                                });
-                                                insideHtml += '</select>';
-                                                insideHtml += '</div>';
-                                                insideHtml += '</div>';
-                                            } else if (value2['field_type'] == 'multi_select_option') {
-                                                insideHtml += '<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">';
-                                                insideHtml += '<div class="form-group">';
-                                                insideHtml += '<label for="exampleInputEmail1">' + value2['name'] + '</label>';
-                                                insideHtml += '<select multiple name="custom_fields[' + value2['slug'] + ']" class="form-control multiSelectOption">';
-                                                $.each(value.field_record, function (index4, value4) {
-                                                    insideHtml += '<option value="' + value4.id + '">' + value4.name + '</option>';
-                                                });
-                                                insideHtml += '</select>';
-                                                insideHtml += '</div>';
-                                                insideHtml += '</div>';
-                                            }
+                                                } else if (value2['field_type'] == 'input_field') {
+                                                    insideHtml += '<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">';
+                                                    insideHtml += '<div class="form-group">';
+                                                    insideHtml += '<label for="exampleInputEmail1">' + value2['name'] + '</label>';
+                                                    insideHtml += '<input type="text" class="form-control" onkeypress="return isCharacterKey(event)" name="custom_fields[' + value2['id'] + ']">';
+                                                    insideHtml += '</div>';
+                                                    insideHtml += '</div>';
 
-                                        });
-                                        insideHtml += '</div>';
+                                                } else if (value2['field_type'] == 'simple_select_option') {
+                                                    insideHtml += '<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">';
+                                                    insideHtml += '<div class="form-group">';
+                                                    insideHtml += '<label for="exampleInputEmail1">' + value2['name'] + '</label>';
+                                                    insideHtml += '<select name="custom_fields[' + value2['id'] + ']" class="form-control">';
+                                                    $.each(value.field_record, function (index3, value3) {
+                                                        insideHtml += '<option value="' + value3.id + '">' + value3.name + '</option>';
+                                                    });
+                                                    insideHtml += '</select>';
+                                                    insideHtml += '</div>';
+                                                    insideHtml += '</div>';
+                                                } else if (value2['field_type'] == 'multi_select_option') {
+                                                    insideHtml += '<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">';
+                                                    insideHtml += '<div class="form-group">';
+                                                    insideHtml += '<label for="exampleInputEmail1">' + value2['name'] + '</label>';
+                                                    insideHtml += '<select multiple name="custom_fields[' + value2['slug'] + ']" class="form-control multiSelectOption">';
+                                                    $.each(value.field_record, function (index4, value4) {
+                                                        insideHtml += '<option value="' + value4.id + '">' + value4.name + '</option>';
+                                                    });
+                                                    insideHtml += '</select>';
+                                                    insideHtml += '</div>';
+                                                    insideHtml += '</div>';
+                                                }
+
+                                            });
+                                            insideHtml += '</div>';
+                                        }
+
+
+
 
                                     });
                                     html += '</select>';
@@ -504,16 +529,18 @@
                 var data = $(this).val();
                 var text = $(this).find('option:selected').text().replaceAll(/\s/g, '');
 
-                console.log(data,text);
 
                 // $( ".show_related_fields option:selected" ).text().replaceAll(/\s/g,'');
                 var className = $(".show_related_fields option:selected").attr('class');
 
                 var parentText = $(this).parent('div.form-group').find('label').text();
 
+
                 $('.' + parentText).hide();
 
                 $('.' + data + '-' + text).removeAttr('style');
+
+                $('.' + parentText).find('input:text').val('');
 
             });
 

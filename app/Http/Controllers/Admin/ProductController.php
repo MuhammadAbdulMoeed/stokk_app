@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\ProductSaveRequest;
 use App\Http\Requests\Admin\ProfileSaveRequest;
+use App\Http\Requests\ProductImageRequest;
 use App\Services\Admin\ProductService;
 use Illuminate\Http\Request;
 
@@ -31,12 +32,22 @@ class ProductController extends Controller
         return $productService->edit($id);
     }
 
-    public function update()
+    public function update(ProductSaveRequest $request,ProductService $productService)
+    {
+        return $productService->update($request);
+    }
+
+    public function delete(Request $request)
     {
 
     }
 
-    public function delete(Request $request)
+    public function updateImage(ProductImageRequest $request,ProductService $productService)
+    {
+        return $productService->updateImage($request);
+    }
+
+    public function deleteImage(Request $request,ProductService $productService)
     {
 
     }

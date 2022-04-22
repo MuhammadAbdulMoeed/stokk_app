@@ -239,6 +239,7 @@
 
                 $('.custom_field_section').remove();
                 $('.subCategory').val();
+                $('.customRow').remove();
 
                 $.blockUI({
                     css: {
@@ -365,65 +366,70 @@
                                     html += '<select name="custom_fields['+value.field['id']+']" class="form-control show_related_fields">';
                                     html += '<option value="" selected disabled>Select</option>';
                                     $.each(value.field_record,function(index1,value1){
-                                        if(value1.related_fields.length == 0)
+                                        if(typeof value1.related_fields == "undefined" )
                                         {
                                             html += '<option value="'+value1.id+'">'+value1.name+'</option>';
                                         }
                                         else{
                                             html += '<option value="'+value1.id+'">'+value1.name+'</option>';
-                                            insideHtml += '<div class="'+value1.id+'-'+value1.name.replace(/\s/g, "")+' row '+value.field['name']+'" style="display:none;">';
+                                            insideHtml += '<div class="'+value1.id+'-'+value1.name.replace(/\s/g, "")+' customRow row '+value.field['name']+'" style="display:none;">';
                                         }
 
-                                        $.each(value1.related_fields,function(index2,value2){
-                                            if(value2['field_type']  == 'number_field')
-                                            {
-                                                insideHtml += '<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">';
-                                                insideHtml += '<div class="form-group">';
-                                                insideHtml += '<label for="exampleInputEmail1">'+value2['name']+'</label>';
-                                                insideHtml += '<input type="text" class="form-control" onkeypress="return isNumberKey(event)" name="custom_fields['+value2['id']+']">';
-                                                insideHtml += '</div>';
-                                                insideHtml += '</div>';
 
-                                            }
-                                            else if(value2['field_type']  == 'input_field')
-                                            {
-                                                insideHtml += '<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">';
-                                                insideHtml += '<div class="form-group">';
-                                                insideHtml += '<label for="exampleInputEmail1">'+value2['name']+'</label>';
-                                                insideHtml += '<input type="text" class="form-control" onkeypress="return isCharacterKey(event)" name="custom_fields['+value2['id']+']">';
-                                                insideHtml += '</div>';
-                                                insideHtml += '</div>';
+                                        if(typeof value1.related_fields != "undefined" )
+                                        {
+                                            $.each(value1.related_fields,function(index2,value2){
+                                                if(value2['field_type']  == 'number_field')
+                                                {
+                                                    insideHtml += '<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">';
+                                                    insideHtml += '<div class="form-group">';
+                                                    insideHtml += '<label for="exampleInputEmail1">'+value2['name']+'</label>';
+                                                    insideHtml += '<input type="text" class="form-control" onkeypress="return isNumberKey(event)" name="custom_fields['+value2['id']+']">';
+                                                    insideHtml += '</div>';
+                                                    insideHtml += '</div>';
 
-                                            }
-                                            else if(value2['field_type']  == 'simple_select_option')
-                                            {
-                                                insideHtml += '<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">';
-                                                insideHtml += '<div class="form-group">';
-                                                insideHtml += '<label for="exampleInputEmail1">' + value2['name'] + '</label>';
-                                                insideHtml += '<select name="custom_fields[' + value2['id'] + ']" class="form-control">';
-                                                $.each(value.field_record, function (index3, value3) {
-                                                    insideHtml += '<option value="' + value3.id + '">' + value3.name + '</option>';
-                                                });
-                                                insideHtml += '</select>';
-                                                insideHtml += '</div>';
-                                                insideHtml += '</div>';
-                                            }
-                                            else if(value2['field_type']  == 'multi_select_option')
-                                            {
-                                                insideHtml += '<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">';
-                                                insideHtml += '<div class="form-group">';
-                                                insideHtml += '<label for="exampleInputEmail1">'+value2['name']+'</label>';
-                                                insideHtml += '<select multiple name="custom_fields['+value2['slug']+']" class="form-control multiSelectOption">';
-                                                $.each(value.field_record,function(index4,value4){
-                                                    insideHtml += '<option value="'+value4.id+'">'+value4.name+'</option>';
-                                                });
-                                                insideHtml += '</select>';
-                                                insideHtml += '</div>';
-                                                insideHtml += '</div>';
-                                            }
+                                                }
+                                                else if(value2['field_type']  == 'input_field')
+                                                {
+                                                    insideHtml += '<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">';
+                                                    insideHtml += '<div class="form-group">';
+                                                    insideHtml += '<label for="exampleInputEmail1">'+value2['name']+'</label>';
+                                                    insideHtml += '<input type="text" class="form-control" onkeypress="return isCharacterKey(event)" name="custom_fields['+value2['id']+']">';
+                                                    insideHtml += '</div>';
+                                                    insideHtml += '</div>';
 
-                                        });
-                                        insideHtml += '</div>';
+                                                }
+                                                else if(value2['field_type']  == 'simple_select_option')
+                                                {
+                                                    insideHtml += '<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">';
+                                                    insideHtml += '<div class="form-group">';
+                                                    insideHtml += '<label for="exampleInputEmail1">' + value2['name'] + '</label>';
+                                                    insideHtml += '<select name="custom_fields[' + value2['id'] + ']" class="form-control">';
+                                                    $.each(value.field_record, function (index3, value3) {
+                                                        insideHtml += '<option value="' + value3.id + '">' + value3.name + '</option>';
+                                                    });
+                                                    insideHtml += '</select>';
+                                                    insideHtml += '</div>';
+                                                    insideHtml += '</div>';
+                                                }
+                                                else if(value2['field_type']  == 'multi_select_option')
+                                                {
+                                                    insideHtml += '<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">';
+                                                    insideHtml += '<div class="form-group">';
+                                                    insideHtml += '<label for="exampleInputEmail1">'+value2['name']+'</label>';
+                                                    insideHtml += '<select multiple name="custom_fields['+value2['slug']+']" class="form-control multiSelectOption">';
+                                                    $.each(value.field_record,function(index4,value4){
+                                                        insideHtml += '<option value="'+value4.id+'">'+value4.name+'</option>';
+                                                    });
+                                                    insideHtml += '</select>';
+                                                    insideHtml += '</div>';
+                                                    insideHtml += '</div>';
+                                                }
+
+                                            });
+                                            insideHtml += '</div>';
+                                        }
+
 
                                     });
                                     html += '</select>';

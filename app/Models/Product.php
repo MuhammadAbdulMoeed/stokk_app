@@ -15,29 +15,35 @@ class Product extends Model
 
     public function category()
     {
-        return $this->belongsTo(Category::class,'category_id');
+        return $this->belongsTo(Category::class, 'category_id');
     }
 
     public function subCategory()
     {
-        return $this->belongsTo(Category::class,'sub_category_id');
+        return $this->belongsTo(Category::class, 'sub_category_id');
     }
 
     public function customField()
     {
-        return $this->belongsToMany(CustomField::class,PivotProductCustomField::class,'product_id','custom_field_id')
+        return $this->belongsToMany(CustomField::class, PivotProductCustomField::class, 'product_id', 'custom_field_id')
             ->withPivot('value');
     }
 
     public function customFieldRelated()
     {
-        return $this->belongsToMany(CustomField::class,PivotProductCustomField::class,'product_id','custom_field_id')
+        return $this->belongsToMany(CustomField::class, PivotProductCustomField::class, 'product_id', 'custom_field_id')
             ->withPivot('value')->whereNotNull('parent_id');
     }
 
+    public function customFieldRelate()
+    {
+        return $this->belongsToMany(CustomField::class, PivotProductCustomField::class, 'product_id', 'custom_field_id')
+            ->withPivot('value')->whereNull('parent_id');
+
+    }
 
     public function productImages()
     {
-        return $this->hasMany(ProductImage::class,'product_id');
+        return $this->hasMany(ProductImage::class, 'product_id');
     }
 }

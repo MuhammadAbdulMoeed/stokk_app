@@ -36,27 +36,37 @@ class ProductService
         DB::beginTransaction();
 
         try {
-           $product =  Product::create(['name' => $request->name, 'category_id' => $request->category_id,
+            $product = Product::create(['name' => $request->name, 'category_id' => $request->category_id,
                 'location' => $request->location, 'lat' => $request->lat, 'lng' => $request->lng,
-                'sub_category_id' => $request->sub_category_id,'created_by'=>Auth::user()->id,'is_active'=>1]);
+                'currency' => $request->currency,
+                'sub_category_id' => $request->sub_category_id, 'created_by' => Auth::user()->id, 'is_active' => 1]);
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json(['result' => 'error', 'message' => 'Error in Saving Product: ' . $e]);
         }
 
         try {
-            foreach($request->custom_fields as $customFieldId =>  $value)
-            {
+            foreach ($request->custom_fields as $customFieldId => $value) {
                 $findCustomField = CustomField::find($customFieldId);
 
-                if(!$findCustomField)
-                {
-                    return response()->json(['result'=>'error','message'=>'Custom Field Not Found']);
+                if (!$findCustomField) {
+                    return response()->json(['result' => 'error', 'message' => 'Custom Field Not Found']);
                 }
 
-                if($findCustomField->is_required == 1 && $value == null)
-                {
-                    return response()->json(['result'=>'error','message'=>$findCustomField->name.' is a Required Field']);
+                if ($findCustomField->is_required == 1 && $value == null) {
+                    if($findCustomField->parent_id )
+                    {
+                        if($findCustomField->option_id == $request->custom_fields[$findCustomField->parent_id])
+                        {
+                            return response()->json(['result' => 'error', 'message' => $findCustomField->name . ' is a Required Field']);
+                        }
+                        else{
+                            continue;
+                        }
+                    }
+                    else {
+                        return response()->json(['result' => 'error', 'message' => $findCustomField->name . ' is a Required Field']);
+                    }
                 }
 
                 PivotProductCustomField::create(['product_id' => $product->id,
@@ -69,10 +79,8 @@ class ProductService
             return response()->json(['result' => 'error', 'message' => 'Error in Saving Product Custom Field: ' . $e]);
         }
 
-
-
         try {
-            if(sizeof($request->image) > 0) {
+            if (sizeof($request->image) > 0) {
                 foreach ($request->image as $productImage) {
 
                     $image = $productImage;
@@ -107,25 +115,120 @@ class ProductService
     {
         $data = Product::find($id);
 
-        if($data)
-        {
+        if ($data) {
             $categories = Category::whereNull('parent_id')->where('is_active', 1)->get();
-            $subCategories= Category::where('parent_id',$data->category_id)->get();
+            $subCategories = Category::where('parent_id', $data->category_id)->get();
 
-            return view('admin.product.edit',compact('data','categories','subCategories'));
-        }
-        else{
-            return redirect()->route('productListing')->with('error','Record Not Found');
+            $relatedFields = array();
+
+            foreach ($data->customField as $key => $customField) {
+                if (sizeof($customField->getChild) > 0) {
+                    foreach ($customField->getChild as $getChild) {
+                        $relatedFields[$getChild->customFieldOptionSelected->id][] = $getChild;
+                    }
+                }
+            }
+
+
+            return view('admin.product.edit', compact('data', 'categories', 'subCategories',
+                'relatedFields'));
+        } else {
+            return redirect()->route('productListing')->with('error', 'Record Not Found');
         }
     }
 
     public function update($request)
     {
+        DB::beginTransaction();
+
+        $data = Product::find($request->id);
+        if ($data) {
+            try {
+                $data->update(['name' => $request->name, 'category_id' => $request->category_id,
+                    'location' => $request->location, 'lat' => $request->lat, 'lng' => $request->lng,
+                    'currency' => $request->currency,
+                    'sub_category_id' => $request->sub_category_id, 'created_by' => Auth::user()->id, 'is_active' => 1]);
+            } catch (\Exception $e) {
+                DB::rollBack();
+                return response()->json(['result' => 'error', 'message' => 'Error in Saving Product: ' . $e]);
+            }
+
+            try {
+                PivotProductCustomField::where('product_id',$data->id)->delete();
+                foreach ($request->custom_fields as $customFieldId => $value) {
+                    $findCustomField = CustomField::find($customFieldId);
+
+                    if (!$findCustomField) {
+                        return response()->json(['result' => 'error', 'message' => 'Custom Field Not Found']);
+                    }
+
+                    if ($findCustomField->is_required == 1 && $value == null) {
+                        if($findCustomField->parent_id )
+                        {
+                            if($findCustomField->option_id == $request->custom_fields[$findCustomField->parent_id])
+                            {
+                                return response()->json(['result' => 'error', 'message' => $findCustomField->name . ' is a Required Field']);
+                            }
+                            else{
+                                continue;
+                            }
+                        }
+                        else{
+                            return response()->json(['result' => 'error', 'message' => $findCustomField->name . ' is a Required Field']);
+                        }
+
+                    }
+
+
+                    PivotProductCustomField::create(['product_id' => $data->id,
+                        'custom_field_id' => $customFieldId,
+                        'value' => $value]);
+                }
+
+            } catch (\Exception $e) {
+                DB::rollBack();
+                return response()->json(['result' => 'error', 'message' => 'Error in Saving Product Custom Field: ' . $e]);
+            }
+
+            DB::commit();
+            return response()->json(['result' => 'success', 'message' => 'Product Updated Successfully']);
+        } else {
+            DB::rollBack();
+            return response()->json(['result' => 'error', 'message' => 'Record Not Found']);
+        }
 
     }
 
     public function delete($request)
     {
 
+    }
+
+    public function updateImage($request)
+    {
+        $data = Product::find($request->product_id);
+        if ($data) {
+
+            if ($request->has('image')) {
+                $image = $request->image;
+                $ext = $image->getClientOriginalExtension();
+                $fileName = $image->getClientOriginalName();
+                $fileNameUpload = time() . "-" . $fileName;
+                $path = public_path('upload/product/images/');
+                if (!file_exists($path)) {
+                    File::makeDirectory($path, 0777, true);
+                }
+                $galleryImage = ImageUploadHelper::saveImage($image, $fileNameUpload, 'upload/product/images/');
+
+                ProductImage::create(['image' => $galleryImage, 'product_id' => $data->id]);
+
+                return response()->json(['result' => 'success', 'message' => 'Product Image Uploaded']);
+
+            } else {
+                return response()->json(['result' => 'error', 'message' => 'Image Not Found']);
+            }
+        } else {
+            return response()->json(['result' => 'error', 'message' => 'Record Not Found']);
+        }
     }
 }

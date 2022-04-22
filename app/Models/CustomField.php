@@ -27,10 +27,19 @@ class CustomField extends Model
         return $this->belongsTo(CustomField::class,'parent_id');
     }
 
+    public function getChild()
+    {
+        return $this->hasMany(CustomField::class,'parent_id');
+    }
 
     public function customFieldOptionSelected()
     {
         return $this->belongsTo(CustomFieldOption::class,'option_id');
+    }
+
+    public function pivotTableValue()
+    {
+        return $this->hasOne(PivotProductCustomField::class,'custom_field_id');
     }
 
 }
