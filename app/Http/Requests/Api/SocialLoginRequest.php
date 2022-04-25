@@ -31,7 +31,13 @@ class SocialLoginRequest extends FormRequest
             "provider" => "required|string|in:FACEBOOK,GMAIL,APPLE",
             'image' => 'mimes:png,jpeg,jpg',
             'email' => 'required_if:provider,GMAIL',
-            'fcm_token' => 'required'
+            'fcm_token' => 'required',
+//            'country' => 'required',
+//            'city' => 'required',
+//            'country_lat' => 'required',
+//            'country_lng' => 'required',
+//            'city_lat' => 'required',
+//            'city_lng' => 'required'
         ];
     }
 

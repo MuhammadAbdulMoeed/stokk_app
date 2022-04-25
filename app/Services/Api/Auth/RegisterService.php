@@ -5,6 +5,7 @@ namespace App\Services\Api\Auth;
 
 
 use App\Models\User;
+use App\Models\UserLocation;
 use Illuminate\Support\Facades\DB;
 
 class RegisterService
@@ -14,8 +15,15 @@ class RegisterService
         DB::beginTransaction();
 
         try {
-            $user = User::create($request->except('password') +
+            $user = User::create($request->except('password','country','city','city_lat','city_lng','country_lat',
+                'country_lng') +
                 ['password' => bcrypt($request->password), 'role_id' => 2]);
+
+            $saveLocation =  UserLocation::create(['country'=>$request->country,
+                'country_lat'=>$request->country_lat,'country_lng'=>$request->country_lng,
+                'city'=>$request->city,
+                'city_lat'=>$request->city_lat,'city_lng'=>$request->city_lng,'user_id'=>$user->id
+            ]);
 
             $success['token'] = $user->createToken('ClassifiedMarketplace-' . rand(0, 9))->accessToken;
 

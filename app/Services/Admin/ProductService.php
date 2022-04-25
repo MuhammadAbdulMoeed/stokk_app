@@ -80,14 +80,14 @@ class ProductService
         }
 
         try {
-            if (sizeof($request->image) > 0) {
-                foreach ($request->image as $productImage) {
+            if (sizeof($request->new_gallery) > 0) {
+                foreach ($request->new_gallery as $key => $productImage) {
 
                     $image = $productImage;
 
                     $ext = $image->getClientOriginalExtension();
                     $fileName = $image->getClientOriginalName();
-                    $fileNameUpload = time() . "-" . $fileName;
+                    $fileNameUpload = time() . "-" . $key+1 .'-'.$ext;
                     $drive = 'upload/product/images/';
                     $path = public_path($drive);
                     if (!file_exists($path)) {
@@ -204,7 +204,24 @@ class ProductService
 
     }
 
-    public function updateImage($request)
+    public function deleteGallery($id)
+    {
+        $gallery = ProductImage::find($id);
+        if ($gallery) {
+            if (File::exists(public_path($gallery->images))) {
+                File::delete(public_path($gallery->images));
+            }
+            $gallery->delete();
+            return response()->json(['result' => 'success', 'message' => 'Gallery Image Deleted.']);
+
+        } else {
+            return response()->json(['result' => 'error', 'message' => 'Record Not Found']);
+        }
+
+    }
+
+
+    public function updateGallery($request)
     {
         $data = Product::find($request->product_id);
         if ($data) {
@@ -213,16 +230,19 @@ class ProductService
                 $image = $request->image;
                 $ext = $image->getClientOriginalExtension();
                 $fileName = $image->getClientOriginalName();
-                $fileNameUpload = time() . "-" . $fileName;
+                $fileNameUpload = time() . "-" . $ext;
                 $path = public_path('upload/product/images/');
                 if (!file_exists($path)) {
                     File::makeDirectory($path, 0777, true);
                 }
                 $galleryImage = ImageUploadHelper::saveImage($image, $fileNameUpload, 'upload/product/images/');
 
-                ProductImage::create(['image' => $galleryImage, 'product_id' => $data->id]);
+                $productImage = ProductImage::create(['image' => $galleryImage,
+                    'product_id' => $request->product_id]);
 
-                return response()->json(['result' => 'success', 'message' => 'Product Image Uploaded']);
+                $productImage->image =  asset($productImage->image);
+
+                return response()->json(['result' => 'success', 'message' => 'Product Gallery Image Uploaded','data'=>$productImage]);
 
             } else {
                 return response()->json(['result' => 'error', 'message' => 'Image Not Found']);
@@ -231,4 +251,7 @@ class ProductService
             return response()->json(['result' => 'error', 'message' => 'Record Not Found']);
         }
     }
+
+
+
 }

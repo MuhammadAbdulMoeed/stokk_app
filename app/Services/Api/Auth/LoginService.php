@@ -5,6 +5,7 @@ namespace App\Services\Api\Auth;
 
 
 use App\Models\User;
+use App\Models\UserLocation;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -69,6 +70,18 @@ class LoginService
                     $user = $this->loginWithGmail($request);
                 }
                 $message = 'User Registered Successfully';
+
+                try {
+                    $saveLocation = UserLocation::create(['country' => $request->country,
+                        'country_lat' => $request->country_lat, 'country_lng' => $request->country_lng,
+                        'city' => $request->city,
+                        'city_lat' => $request->city_lat, 'city_lng' => $request->city_lng, 'user_id' => $user->id
+                    ]);
+                }
+                catch(\Exception $e)
+                {
+                    return makeResponse('error','Error in Saving User Location: ',$e,'422');
+                }
             }
 
             Auth::loginUsingId($user->id);
@@ -103,8 +116,9 @@ class LoginService
             'role_id' => 2,
             'provider' => $request->provider,
             'fcm_token' => $request->fcm_token,
-
         ]);
+
+
         return $user;
     }
 
@@ -140,8 +154,12 @@ class LoginService
             'fcm_token' => $request->fcm_token,
 
         ]);
+
+
         return $user;
     }
+
+
 
 }
 

@@ -90,71 +90,92 @@
 
                 <h5>Product Gallery</h5>
 
+{{--                <div class="row">--}}
+{{--                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">--}}
+{{--                        <div class="custom-dbhome">--}}
+{{--                            <div class="form-group ">--}}
+{{--                                <div class="db-bannerIMG">--}}
+{{--                                    <img class="image_1" src="{{asset('admin/images/no_image.jpg')}}">--}}
+{{--                                </div>--}}
+{{--                                <label for="exampleInputEmail1">Image </label>--}}
+{{--                                <input type="file" class="images_select" name="image_1"--}}
+{{--                                       accept="image/png,image/jpg,image/jpeg"--}}
+{{--                                       onchange="readURL(this,'image_1');">--}}
+{{--                            </div>--}}
+
+{{--                            <div class="form-group ">--}}
+{{--                                <div class="db-bannerIMG">--}}
+{{--                                    <img class="image_2" src="{{asset('admin/images/no_image.jpg')}}">--}}
+{{--                                </div>--}}
+{{--                                <label for="exampleInputEmail1">Image </label>--}}
+{{--                                <input type="file" class="images_select" name="image_2"--}}
+{{--                                       accept="image/png,image/jpg,image/jpeg"--}}
+{{--                                       onchange="readURL(this,'image_2');">--}}
+{{--                            </div>--}}
+
+{{--                            <div class="form-group ">--}}
+{{--                                <div class="db-bannerIMG">--}}
+{{--                                    <img class="image_3" src="{{asset('admin/images/no_image.jpg')}}">--}}
+{{--                                </div>--}}
+{{--                                <label for="exampleInputEmail1">Image </label>--}}
+{{--                                <input type="file" class="images_select" name="image_3"--}}
+{{--                                       accept="image/png,image/jpg,image/jpeg"--}}
+{{--                                       onchange="readURL(this,'image_3');">--}}
+{{--                            </div>--}}
+
+{{--                            <div class="form-group ">--}}
+{{--                                <div class="db-bannerIMG">--}}
+{{--                                    <img class="image_4" src="{{asset('admin/images/no_image.jpg')}}">--}}
+{{--                                </div>--}}
+{{--                                <label for="exampleInputEmail1">Image </label>--}}
+{{--                                <input type="file" class="images_select" name="image_4"--}}
+{{--                                       accept="image/png,image/jpg,image/jpeg"--}}
+{{--                                       onchange="readURL(this,'image_4');">--}}
+{{--                            </div>--}}
+
+{{--                            <div class="form-group ">--}}
+{{--                                <div class="db-bannerIMG">--}}
+{{--                                    <img class="image_5" src="{{asset('admin/images/no_image.jpg')}}">--}}
+{{--                                </div>--}}
+{{--                                <label for="exampleInputEmail1">Image </label>--}}
+{{--                                <input type="file" class="images_select" name="image_5"--}}
+{{--                                       accept="image/png,image/jpg,image/jpeg"--}}
+{{--                                       onchange="readURL(this,'image_5');">--}}
+{{--                            </div>--}}
+
+{{--                            <div class="form-group ">--}}
+{{--                                <div class="db-bannerIMG">--}}
+{{--                                    <img class="image_6" src="{{asset('admin/images/no_image.jpg')}}">--}}
+{{--                                </div>--}}
+{{--                                <label for="exampleInputEmail1">Image </label>--}}
+{{--                                <input type="file" class="images_select" name="image_6"--}}
+{{--                                       accept="image/png,image/jpg,image/jpeg"--}}
+{{--                                       onchange="readURL(this,'image_6');">--}}
+{{--                            </div>--}}
+
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+
+
                 <div class="row">
-                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                        <div class="custom-dbhome">
-                            <div class="form-group ">
-                                <div class="db-bannerIMG">
-                                    <img class="image_1" src="{{asset('admin/images/no_image.jpg')}}">
-                                </div>
-                                <label for="exampleInputEmail1">Image </label>
-                                <input type="file" class="images_select" name="image[]"
-                                       accept="image/png,image/jpg,image/jpeg"
-                                       onchange="readURL(this,'image_1');">
-                            </div>
+                    <div class="col-2">
+                        <div class="form-group">
 
-                            <div class="form-group ">
-                                <div class="db-bannerIMG">
-                                    <img class="image_2" src="{{asset('admin/images/no_image.jpg')}}">
-                                </div>
-                                <label for="exampleInputEmail1">Image </label>
-                                <input type="file" class="images_select" name="image[]"
-                                       accept="image/png,image/jpg,image/jpeg"
-                                       onchange="readURL(this,'image_2');">
-                            </div>
-
-                            <div class="form-group ">
-                                <div class="db-bannerIMG">
-                                    <img class="image_3" src="{{asset('admin/images/no_image.jpg')}}">
-                                </div>
-                                <label for="exampleInputEmail1">Image </label>
-                                <input type="file" class="images_select" name="image[]"
-                                       accept="image/png,image/jpg,image/jpeg"
-                                       onchange="readURL(this,'image_3');">
-                            </div>
-
-                            <div class="form-group ">
-                                <div class="db-bannerIMG">
-                                    <img class="image_4" src="{{asset('admin/images/no_image.jpg')}}">
-                                </div>
-                                <label for="exampleInputEmail1">Image </label>
-                                <input type="file" class="images_select" name="image[]"
-                                       accept="image/png,image/jpg,image/jpeg"
-                                       onchange="readURL(this,'image_4');">
-                            </div>
-
-                            <div class="form-group ">
-                                <div class="db-bannerIMG">
-                                    <img class="image_5" src="{{asset('admin/images/no_image.jpg')}}">
-                                </div>
-                                <label for="exampleInputEmail1">Image </label>
-                                <input type="file" class="images_select" name="image[]"
-                                       accept="image/png,image/jpg,image/jpeg"
-                                       onchange="readURL(this,'image_5');">
-                            </div>
-
-                            <div class="form-group ">
-                                <div class="db-bannerIMG">
-                                    <img class="image_6" src="{{asset('admin/images/no_image.jpg')}}">
-                                </div>
-                                <label for="exampleInputEmail1">Image </label>
-                                <input type="file" class="images_select" name="image[]"
-                                       accept="image/png,image/jpg,image/jpeg"
-                                       onchange="readURL(this,'image_6');">
-                            </div>
-
+                            <label for="gallery-upload" class="gallery-uploadd">
+                                <img src="{{asset('admin/images/no_image.jpg')}}"
+                                     class="img-fluid no-image" alt="">
+                            </label>
+                            <input style="display:none;" type="file" class="form-control"
+                                   id="gallery-upload"
+                                   accept="image/png,image/jpeg,image/jpg">
                         </div>
                     </div>
+
+                    <div class="col-10 product-image-preview">
+                        <img class="image_upload_preview d-block">
+                    </div>
+
                 </div>
 
 
@@ -177,12 +198,34 @@
 
     <script>
 
+        var globalFormData = new FormData();
+
         $(document).ready(function () {
-            // $('.multiSelectOption').select2();
+            $(document).on("click",".pip",function () {
+                var files = globalFormData.getAll("new_gallery[]");
+                var index = $(this).index();
+                globalFormData.delete("new_gallery[]");
+                $.each(files, function (i, v) {
+                    if (index != i) {
+                        globalFormData.append("new_gallery[]", v);
+                    }
+                });
+                $(this).remove();
+                var image_length = $('.pip').length + 1;
+                image_length = image_length - 1;
+                if (image_length < 6) {
+                    $('#gallery-upload').prop('disabled', false);
+                }
+            });
 
             $('#createBtn').click(function () {
 
+                // var data = new FormData($('#categoryForm')[0]);
                 var data = new FormData($('#categoryForm')[0]);
+                for (var pair of data.entries()) {
+                    globalFormData.append(pair[0], pair[1]);
+                }
+
 
                 $.blockUI({
                     css: {
@@ -201,7 +244,7 @@
 
                     type: 'POST',
                     url: '{{route("productSave")}}',
-                    data: data,
+                    data: globalFormData,
                     cache: false,
                     contentType: false,
                     processData: false,
@@ -497,6 +540,10 @@
 
             });
 
+            $('#gallery-upload').change(function (event) {
+                imgToData(this);
+            });
+
 
         });
 
@@ -543,6 +590,46 @@
                 }
             }
         }
+
+        function imgToData(input) {
+            var image_length = $('.pip').length + 1;
+            // console.log(image_length);
+            if (image_length < 7) {
+                // console.log(image_length);
+                if (input.files) {
+                    var temp = image_length;
+                    $.each(input.files, function (i, v) {
+                        if (temp > 6) {
+                            return false;
+                        }
+                        var n = i + 1;
+                        var File = new FileReader();
+                        var size = input.files[0].size;
+                        if (size > 2000000) {
+                            errorMsg('size of image must be less that 2mb');
+                            return false;
+                        } else {
+                            File.onload = function (event) {
+                                var html = '<span class="pip">';
+                                html += '<img class="imageThumb" src=' + event.target.result + '  id=' + image_length + '  style="width: 100%" />';
+                                html += '</span>';
+                                globalFormData.append('new_gallery[]', input.files[i]);
+                                $(html).appendTo('.product-image-preview');
+                            };
+                            temp++;
+                            File.readAsDataURL(input.files[i]);
+                            if (image_length >= 6) {
+                                $('#gallery-upload').prop('disabled', true);
+                            }
+                        }
+                    });
+                } else {
+                    $('#gallery-upload').prop('disabled', true);
+                }
+            }
+        }
+
+
 
     </script>
 

@@ -29,6 +29,7 @@ class ProductSaveRequest extends FormRequest
             'sub_category_id' => 'required',
             'currency' => 'required',
             'location' => 'required',
+            'new_gallery.*' => 'mimes:jpg,jpeg,png'
 //            'lat' => 'required',
 //            'lng' => 'required'
         ];

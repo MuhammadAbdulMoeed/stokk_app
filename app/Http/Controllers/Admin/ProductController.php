@@ -44,11 +44,12 @@ class ProductController extends Controller
 
     public function updateImage(ProductImageRequest $request,ProductService $productService)
     {
-        return $productService->updateImage($request);
+        return $productService->updateGallery($request);
     }
 
-    public function deleteImage(Request $request,ProductService $productService)
+    public function deleteImage($id,ProductService $productService)
     {
+        return $productService->deleteGallery($id);
 
     }
 }

@@ -200,28 +200,33 @@
                 <h5>Product Gallery</h5>
 
                 <div class="row">
-                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                        <div class="custom-dbhome">
-                            @for($i = 0 ; $i < 6; $i++)
-                                <div class="form-group ">
-                                    <div class="db-bannerIMG">
-                                        @if(isset($data->productImages[$i]->image))
-                                            <img class="image_{{$i+1}}"
-                                                 src="{{asset($data->productImages[$i]->image)}}">
-                                        @else
-                                            <img class="image_{{$i+1}}"
-                                                 src="{{asset('admin/images/no_image.jpg')}}">
-                                        @endif
-                                    </div>
-                                    <label for="exampleInputEmail1">Image </label>
-                                    <input type="file" class="images_select" name="image[]"
-                                           accept="image/png,image/jpg,image/jpeg"
-                                           onchange="readURL(this,'image_{{$i+1}}');">
-                                </div>
-                            @endfor
+                    <div class="col-2">
+                        <div class="form-group">
 
-
+                            <label for="gallery-upload" class="gallery-uploadd">
+                                <img src="{{asset('admin/images/no_image.jpg')}}"
+                                     class="img-fluid no-image" alt="">
+                            </label>
+                            @if(sizeof($data->productImages) >= 6)
+                                <input style="display:none;" type="file" class="form-control"
+                                       id="gallery-upload" disabled
+                                       accept="image/png,image/jpeg,image/jpg">
+                            @else
+                                <input style="display:none;" type="file" class="form-control"
+                                       id="gallery-upload"
+                                       accept="image/png,image/jpeg,image/jpg">
+                            @endif
                         </div>
+                    </div>
+
+                    <div class="col-10 product-image-preview">
+                        <img class="image_upload_preview d-block">
+                        @foreach($data->productImages as $productImage)
+                            <span class="pip">
+                                <img src="{{asset($productImage->image)}}" data-id="{{$productImage->id}}"
+                                     class="imageThumb" width="100%">
+                            </span>
+                        @endforeach
                     </div>
                 </div>
 
@@ -245,7 +250,26 @@
 
     <script>
 
+        var globalFormData = new FormData();
+
         $(document).ready(function () {
+
+            // $(document).on("click", ".pip", function () {
+            //     var files = globalFormData.getAll("new_gallery[]");
+            //     var index = $(this).index();
+            //     globalFormData.delete("new_gallery[]");
+            //     $.each(files, function (i, v) {
+            //         if (index != i) {
+            //             globalFormData.append("new_gallery[]", v);
+            //         }
+            //     });
+            //     $(this).remove();
+            //     var image_length = $('.pip').length + 1;
+            //     image_length = image_length - 1;
+            //     if (image_length < 5) {
+            //         $('#gallery-upload').prop('disabled', false);
+            //     }
+            // });
 
             @foreach($data->customFieldRelated as $key =>  $customFieldRelated)
                 $('.{{$customFieldRelated->parent->name}}').hide();
@@ -254,7 +278,13 @@
 
             $('#createBtn').click(function () {
 
+                // var data = new FormData($('#categoryForm')[0]);
+
                 var data = new FormData($('#categoryForm')[0]);
+                for (var pair of data.entries()) {
+                    globalFormData.append(pair[0], pair[1]);
+                }
+
 
                 $.blockUI({
                     css: {
@@ -273,7 +303,7 @@
 
                     type: 'POST',
                     url: '{{route("productUpdate")}}',
-                    data: data,
+                    data: globalFormData,
                     cache: false,
                     contentType: false,
                     processData: false,
@@ -544,6 +574,54 @@
 
             });
 
+            $(document).on("click", ".pip", function () {
+                // var image_length = $('.pip').length + 1;
+                // console.log(image_length);
+                var image_length = $('.pip').length;
+
+                var data = $(this).children('img').data('id');
+                var this_data = $(this);
+                $.blockUI({
+                    css: {
+                        border: 'none',
+                        padding: '15px',
+                        backgroundColor: '#000',
+                        '-webkit-border-radius': '10px',
+                        '-moz-border-radius': '10px',
+                        opacity: .5,
+                        color: '#fff'
+                    }
+                });
+                $.ajax({
+                    url: '{{url('delete-image')}}/' + data,
+                    data: data,
+                    type: 'GET',
+                    success: function (response, status) {
+                        if (response.result == 'success') {
+                            $.unblockUI();
+                            this_data.remove();
+                            image_length = image_length - 1;
+                            if (image_length < 6) {
+                                $('#gallery-upload').prop('disabled', false);
+                            }
+                            successMsg(response.message);
+                        } else if (response.result == 'error') {
+                            $.unblockUI();
+                            errorMsg(response.message);
+                        }
+                    },
+                    error: function (data) {
+                        $.each(data.responseJSON.errors, function (key, value) {
+                            $.unblockUI();
+                            errorMsg(value);
+                        });
+                    }
+                });
+            });
+
+            $('#gallery-upload').change(function (event) {
+                imgToData(this);
+            });
 
         });
 
@@ -590,6 +668,93 @@
                 }
             }
         }
+
+
+        function imgToData(input) {
+            var image_length = $('.pip').length + 1;
+            // console.log(image_length);
+            if (image_length < 7) {
+                // console.log(image_length);
+                if (input.files) {
+                    var temp = image_length;
+                    $.each(input.files, function (i, v) {
+                        if (temp > 6) {
+                            return false;
+                        }
+                        var n = i + 1;
+                        var File = new FileReader();
+                        var size = input.files[0].size;
+                        if (size > 2000000) {
+                            errorMsg('size of image must be less that 2mb');
+                            return false;
+                        } else {
+                            File.onload = function (event) {
+
+                                globalFormData.append('new_gallery[]', input.files[i]);
+                                var response = uploadImage(input.files[i]);
+
+
+                            };
+                            temp++;
+                            File.readAsDataURL(input.files[i]);
+                            if (image_length >= 6) {
+                                $('#gallery-upload').prop('disabled', true);
+                            }
+                        }
+                    });
+                } else {
+                    $('#gallery-upload').prop('disabled', true);
+                }
+            }
+        }
+
+        function uploadImage(image, variation_id = null) {
+            var formData = new FormData();
+            var data = image;
+            var product_id = {{$data->id}};
+            formData.append('_token', '{{ csrf_token() }}');
+            formData.append('product_id', product_id);
+            formData.append('image', data);
+            $.blockUI({
+                css: {
+                    border: 'none',
+                    padding: '15px',
+                    backgroundColor: '#000',
+                    '-webkit-border-radius': '10px',
+                    '-moz-border-radius': '10px',
+                    opacity: .5,
+                    color: '#fff'
+                }
+            });
+            $.ajax({
+                type: 'POST',
+                url: '{{route("productUpdateGallery")}}',
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (response, status) {
+                    if (response.result == 'success') {
+                        $.unblockUI();
+
+                        var html = '<span class="pip">';
+                        html += '<img class="imageThumb" src=' + response.data.image + ' data-id ='+response.data.id+'   style="width: 100%" />';
+                        html += '</span>';
+                        $(html).appendTo('.product-image-preview');
+                    } else if (response.result == 'error') {
+                        $.unblockUI();
+                        errorMsg(response.message);
+                    }
+                },
+                error: function (data) {
+                    $.each(data.responseJSON.errors, function (key, value) {
+                        $.unblockUI();
+                        errorMsg(value);
+                    });
+                }
+            });
+        }
+
 
     </script>
 
