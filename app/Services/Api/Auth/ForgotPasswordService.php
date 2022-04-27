@@ -16,7 +16,7 @@ class ForgotPasswordService
     {
         DB::beginTransaction();
         try {
-            $user = User::where('email', $request->email)->first();
+            $user = User::where('email', $request->email)->whereNull('uuid')->whereNull('provider')->first();
             if (!$user) {
                 return makeResponse('error', 'Invalid Email Address', 401);
             }

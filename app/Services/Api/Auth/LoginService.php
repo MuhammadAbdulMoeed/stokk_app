@@ -13,6 +13,7 @@ class LoginService
 {
     public function loginWithEmail($request)
     {
+        DB::beginTransaction();
         try {
             if (Auth::attempt(['email' => request('email'), 'password' => request('password')])) {
 
@@ -20,22 +21,35 @@ class LoginService
 
                 Auth::user()->save();
 
-                $token = Auth::user()->createToken('ClassifiedMarketplace-' . rand(0, 9))->accessToken;
+                if(Auth::user()->uuid != null && Auth::user()->provider != null)
+                {
+                    DB::rollBack();
+                    return makeResponse('error', 'Invalid Credentials', 401);
+                }
 
+                $token = Auth::user()->createToken('ClassifiedMarketplace-' . rand(0, 9))->accessToken;
 
                 $data = [
                     'first_name' => Auth::user()->first_name,
                     'last_name' => Auth::user()->last_name,
                     'email' => Auth::user()->email,
-                    'fcm_token' => Auth::user()->fcm_token
-
+                    'fcm_token' => Auth::user()->fcm_token,
+                    'is_completed' => Auth::user()->userLocation ? 1:0,
+                    'provider' => Auth::user()->provider,
+                    'city' => Auth::user()->userLocation ? Auth::user()->userLocation->city: null,
+                    'country' => Auth::user()->userLocation ? Auth::user()->userLocation->country: null,
+                    'lat' => Auth::user()->userLocation ? Auth::user()->userLocation->lat: null,
+                    'lng' => Auth::user()->userLocation ? Auth::user()->userLocation->lng: null,
                 ];
 
+                DB::commit();
                 return makeResponse('success', 'Login Successfully', 200, $data, $token);
             } else {
+                DB::rollBack();
                 return makeResponse('error', 'Invalid Credentials', 401);
             }
         } catch (\Exception $e) {
+            DB::rollBack();
             return makeResponse('error', 'Server Error During Login: ' . $e, 500);
 
         }
@@ -71,18 +85,9 @@ class LoginService
                 }
                 $message = 'User Registered Successfully';
 
-                try {
-                    $saveLocation = UserLocation::create(['country' => $request->country,
-                        'country_lat' => $request->country_lat, 'country_lng' => $request->country_lng,
-                        'city' => $request->city,
-                        'city_lat' => $request->city_lat, 'city_lng' => $request->city_lng, 'user_id' => $user->id
-                    ]);
-                }
-                catch(\Exception $e)
-                {
-                    return makeResponse('error','Error in Saving User Location: ',$e,'422');
-                }
+
             }
+
 
             Auth::loginUsingId($user->id);
             $token = Auth::user()->createToken('ClassifiedMarketplace-' . rand(0, 9))->accessToken;
@@ -91,7 +96,13 @@ class LoginService
                 'first_name' => Auth::user()->first_name,
                 'last_name' => Auth::user()->last_name,
                 'email' => Auth::user()->email,
-                'fcm_token' => Auth::user()->fcm_token
+                'fcm_token' => Auth::user()->fcm_token,
+                'provider' => Auth::user()->provider,
+                'is_completed' => Auth::user()->userLocation ? 1:0,
+                'city' => Auth::user()->userLocation ? Auth::user()->userLocation->city: null,
+                'country' => Auth::user()->userLocation ? Auth::user()->userLocation->country: null,
+                'lat' => Auth::user()->userLocation ? Auth::user()->userLocation->lat: null,
+                'lng' => Auth::user()->userLocation ? Auth::user()->userLocation->lng: null,
             ];
 
             DB::commit();
@@ -116,6 +127,8 @@ class LoginService
             'role_id' => 2,
             'provider' => $request->provider,
             'fcm_token' => $request->fcm_token,
+            'user_name' => $request->full_name,
+
         ]);
 
 
@@ -129,6 +142,7 @@ class LoginService
         $user = User::create([
             'first_name' => isset($name[0]) ? $name[0] : null,
             'last_name' => isset($name[1]) ? $name[1] : null,
+            'user_name' => $request->full_name,
             'email' => $request->email,
             'uuid' => $request->uuid,
             'role_id' => 2,
@@ -152,6 +166,7 @@ class LoginService
             'role_id' => 2,
             'provider' => $request->provider,
             'fcm_token' => $request->fcm_token,
+            'user_name' => $request->full_name,
 
         ]);
 

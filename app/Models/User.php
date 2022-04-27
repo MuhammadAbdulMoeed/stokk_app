@@ -60,4 +60,21 @@ class User extends Authenticatable
     {
         return $this->hasOne(UserLocation::class,'user_id');
     }
+
+    public function favorite()
+    {
+        return $this->hasMany(Favorite::class,'user_id');
+    }
+
+    public function getProfileImageAttribute($value)
+    {
+        if($value)
+        {
+            return asset($value);
+        }
+        else{
+            return null;
+        }
+
+    }
 }

@@ -8,7 +8,6 @@ use App\Helper\ImageUploadHelper;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\CustomField;
-use App\Models\PivotCategoryField;
 use App\Models\PivotProductCustomField;
 use App\Models\Product;
 use App\Models\ProductImage;
