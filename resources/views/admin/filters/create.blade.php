@@ -47,7 +47,7 @@
 
                         <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 col-xl-3">
                             <label class="sc-featur">Sub Category
-                                <input type="radio" class="sale-checkbox" value="sub_category"
+                                <input type="radio" class="sale-checkbox" value="categories"
                                        name="filter">
                                 <span class="checkmark"></span>
                             </label>
@@ -55,7 +55,7 @@
 
                         <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 col-xl-3">
                             <label class="sc-featur">Brand
-                                <input type="radio" class="sale-checkbox" value="brand"
+                                <input type="radio" class="sale-checkbox" value="brands"
                                        name="filter">
                                 <span class="checkmark"></span>
                             </label>
@@ -63,19 +63,19 @@
 
                         <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 col-xl-3">
                             <label class="sc-featur">Class
-                                <input type="radio" class="sale-checkbox" value="class"
+                                <input type="radio" class="sale-checkbox" value="classes"
                                        name="filter">
                                 <span class="checkmark"></span>
                             </label>
                         </div>
 
-                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 col-xl-3">
-                            <label class="sc-featur">Rating
-                                <input type="radio" class="sale-checkbox" value="rating"
-                                       name="filter">
-                                <span class="checkmark"></span>
-                            </label>
-                        </div>
+{{--                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 col-xl-3">--}}
+{{--                            <label class="sc-featur">Rating--}}
+{{--                                <input type="radio" class="sale-checkbox" value="rating"--}}
+{{--                                       name="filter">--}}
+{{--                                <span class="checkmark"></span>--}}
+{{--                            </label>--}}
+{{--                        </div>--}}
 
 
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">

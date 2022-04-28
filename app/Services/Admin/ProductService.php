@@ -53,17 +53,13 @@ class ProductService
                 }
 
                 if ($findCustomField->is_required == 1 && $value == null) {
-                    if($findCustomField->parent_id )
-                    {
-                        if($findCustomField->option_id == $request->custom_fields[$findCustomField->parent_id])
-                        {
+                    if ($findCustomField->parent_id) {
+                        if ($findCustomField->option_id == $request->custom_fields[$findCustomField->parent_id]) {
                             return response()->json(['result' => 'error', 'message' => $findCustomField->name . ' is a Required Field']);
-                        }
-                        else{
+                        } else {
                             continue;
                         }
-                    }
-                    else {
+                    } else {
                         return response()->json(['result' => 'error', 'message' => $findCustomField->name . ' is a Required Field']);
                     }
                 }
@@ -79,35 +75,34 @@ class ProductService
         }
 
         try {
-            if (sizeof($request->new_gallery) > 0) {
-                foreach ($request->new_gallery as $key => $productImage) {
+            foreach ($request->new_gallery as $key => $productImage) {
 
-                    $image = $productImage;
 
-                    $ext = $image->getClientOriginalExtension();
-                    $fileName = $image->getClientOriginalName();
-                    $fileNameUpload = time() . "-" . $key+1 .'-'.$ext;
-                    $drive = 'upload/product/images/';
-                    $path = public_path($drive);
-                    if (!file_exists($path)) {
-                        File::makeDirectory($path, 0777, true);
-                    }
+                $image = $productImage;
 
-                    $imageSave = ImageUploadHelper::saveImage($image, $fileNameUpload, $drive);
-                    $save_image = $imageSave;
-
-                    ProductImage::create(['image' => $save_image, 'product_id' => $product->id]);
-
+                $ext = $image->getClientOriginalExtension();
+                $fileName = $image->getClientOriginalName();
+                $fileNameUpload = time() . "-" . $key . '-.' . $ext;
+                $drive = 'upload/product/images/';
+                $path = public_path($drive);
+                if (!file_exists($path)) {
+                    File::makeDirectory($path, 0777, true);
                 }
+
+                $imageSave = ImageUploadHelper::saveImage($image, $fileNameUpload, $drive);
+                $save_image = $imageSave;
+
+                ProductImage::create(['image' => $save_image, 'product_id' => $product->id]);
+
             }
+
+            DB::commit();
+            return response()->json(['result' => 'success', 'message' => 'Product Save Successfully']);
+
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json(['result' => 'error', 'message' => 'Error in Saving Product Image: ' . $e]);
         }
-
-        DB::commit();
-        return response()->json(['result' => 'success', 'message' => 'Product Save Successfully']);
-
     }
 
     public function edit($id)
@@ -153,7 +148,7 @@ class ProductService
             }
 
             try {
-                PivotProductCustomField::where('product_id',$data->id)->delete();
+                PivotProductCustomField::where('product_id', $data->id)->delete();
                 foreach ($request->custom_fields as $customFieldId => $value) {
                     $findCustomField = CustomField::find($customFieldId);
 
@@ -162,17 +157,13 @@ class ProductService
                     }
 
                     if ($findCustomField->is_required == 1 && $value == null) {
-                        if($findCustomField->parent_id )
-                        {
-                            if($findCustomField->option_id == $request->custom_fields[$findCustomField->parent_id])
-                            {
+                        if ($findCustomField->parent_id) {
+                            if ($findCustomField->option_id == $request->custom_fields[$findCustomField->parent_id]) {
                                 return response()->json(['result' => 'error', 'message' => $findCustomField->name . ' is a Required Field']);
-                            }
-                            else{
+                            } else {
                                 continue;
                             }
-                        }
-                        else{
+                        } else {
                             return response()->json(['result' => 'error', 'message' => $findCustomField->name . ' is a Required Field']);
                         }
 
@@ -239,9 +230,9 @@ class ProductService
                 $productImage = ProductImage::create(['image' => $galleryImage,
                     'product_id' => $request->product_id]);
 
-                $productImage->image =  asset($productImage->image);
+                $productImage->image = asset($productImage->image);
 
-                return response()->json(['result' => 'success', 'message' => 'Product Gallery Image Uploaded','data'=>$productImage]);
+                return response()->json(['result' => 'success', 'message' => 'Product Gallery Image Uploaded', 'data' => $productImage]);
 
             } else {
                 return response()->json(['result' => 'error', 'message' => 'Image Not Found']);
@@ -250,7 +241,6 @@ class ProductService
             return response()->json(['result' => 'error', 'message' => 'Record Not Found']);
         }
     }
-
 
 
 }

@@ -402,6 +402,8 @@
                 var text = $('.category option:selected').text();
 
                 var category = $('.category').val();
+                $('.custom_field_section').remove();
+                $('.customRow').remove();
 
                 $.blockUI({
                     css: {
@@ -668,7 +670,6 @@
                 }
             }
         }
-
 
         function imgToData(input) {
             var image_length = $('.pip').length + 1;

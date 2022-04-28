@@ -8,8 +8,10 @@ use Illuminate\Http\Request;
 
 class CategoryFilterController extends Controller
 {
+
     public function getCategoryFilter(Request $request,CategoryFilterService $filterService)
     {
         return $filterService->getCategoryFilter($request);
     }
+
 }

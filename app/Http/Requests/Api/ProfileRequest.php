@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Api;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class ProfileRequest extends FormRequest
 {
@@ -30,5 +32,12 @@ class ProfileRequest extends FormRequest
             'gender' => 'required',
             'date_of_birth' => 'required'
         ];
+    }
+
+    public function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(
+            makeResponse('error', $validator->errors()->first(),422)
+        );
     }
 }

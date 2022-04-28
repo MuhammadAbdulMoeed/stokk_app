@@ -4,6 +4,7 @@
 namespace App\Services\Api\Auth;
 
 
+use App\Helper\ImageUploadHelper;
 use App\Models\User;
 use App\Models\UserLocation;
 use Illuminate\Support\Facades\Auth;
@@ -83,6 +84,19 @@ class LoginService
                 } elseif ($request->provider == 'GMAIL') {
                     $user = $this->loginWithGmail($request);
                 }
+
+                if($request->has('profile_image'))
+                {
+                    $fileContents = file_get_contents($request->profile_image);
+                    $fileNameUpload = time() . "-" .'.jpg';
+                    $drive = 'upload/user/';
+
+                    $imageSave = ImageUploadHelper::saveImage($fileContents, $fileNameUpload, $drive);
+                    $user->profile_image= $imageSave;
+
+                    $user->save();
+                }
+
                 $message = 'User Registered Successfully';
 
 

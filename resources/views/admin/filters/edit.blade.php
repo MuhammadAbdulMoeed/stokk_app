@@ -55,35 +55,35 @@
 
                         <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 col-xl-3">
                             <label class="sc-featur">Sub Category
-                                <input type="radio" class="sale-checkbox" value="sub_category"
-                                       name="filter" {{$data->field_type == 'sub_category' ? 'checked':''}}>
+                                <input type="radio" class="sale-checkbox" value="categories"
+                                       name="filter" {{$data->field_type == 'categories' ? 'checked':''}}>
                                 <span class="checkmark"></span>
                             </label>
                         </div>
 
                         <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 col-xl-3">
                             <label class="sc-featur">Brand
-                                <input type="radio" class="sale-checkbox" value="brand"
-                                       name="filter" {{$data->field_type == 'brand' ? 'checked':''}}>
+                                <input type="radio" class="sale-checkbox" value="brands"
+                                       name="filter" {{$data->field_type == 'brands' ? 'checked':''}}>
                                 <span class="checkmark"></span>
                             </label>
                         </div>
 
                         <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 col-xl-3">
                             <label class="sc-featur">Class
-                                <input type="radio" class="sale-checkbox" value="class"
-                                       name="filter" {{$data->field_type == 'class' ? 'checked':''}}>
+                                <input type="radio" class="sale-checkbox" value="classes"
+                                       name="filter" {{$data->field_type == 'classes' ? 'checked':''}}>
                                 <span class="checkmark"></span>
                             </label>
                         </div>
 
-                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 col-xl-3">
-                            <label class="sc-featur">Rating
-                                <input type="radio" class="sale-checkbox" value="rating"
-                                       name="filter" {{$data->field_type == 'rating' ? 'checked':''}}>
-                                <span class="checkmark"></span>
-                            </label>
-                        </div>
+{{--                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 col-xl-3">--}}
+{{--                            <label class="sc-featur">Rating--}}
+{{--                                <input type="radio" class="sale-checkbox" value="rating"--}}
+{{--                                       name="filter" {{$data->field_type == 'rating' ? 'checked':''}}>--}}
+{{--                                <span class="checkmark"></span>--}}
+{{--                            </label>--}}
+{{--                        </div>--}}
 
 
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">

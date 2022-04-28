@@ -11,6 +11,8 @@ use App\Http\Controllers\Api\CategoryFilterController;
 use App\Http\Controllers\Api\HomeController;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\CategoryFieldController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -48,13 +50,14 @@ Route::group(['middleware' => ['json.response']], function () {
         Route::middleware('auth:api')->group(function () {
 
             Route::post('save-user-location', [UserLocationController::class, 'save']);
-            Route::post('category-filter',[CategoryFilterController::class,'getCategoryFilter']);
+            Route::post('category-field',[CategoryFieldController::class,'getCategoryField']);
             Route::post('home',[HomeController::class,'index']);
             Route::post('search',[HomeController::class,'searchProduct']);
 
             Route::post('get-profile',[ProfileController::class,'profile']);
             Route::post('save-profile',[ProfileController::class,'saveProfile']);
             Route::post('get-all-category',[CategoryController::class,'getCategories']);
+            Route::post('get-category-field',[CategoryFilterController::class,'getCategoryFilter']);
 
         });
 

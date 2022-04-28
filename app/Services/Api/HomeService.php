@@ -19,10 +19,16 @@ class HomeService
 
     public function getNearbyProduct()
     {
+        $data = Product::where('is_active',1)->inRandomOrder()
+            ->limit(8);
 
-        $data = Product::where('city',Auth::user()->userLocation->city)
-            ->where('is_active',1)->inRandomOrder()
-            ->limit(8)->get();
+        if(isset(Auth::user()->userLocation->city))
+        {
+            $data = $data->where('city',Auth::user()->userLocation->city)->get();
+        }
+        else{
+            $data = $data->get();
+        }
 
         $products = array();
         $productImage =  array();

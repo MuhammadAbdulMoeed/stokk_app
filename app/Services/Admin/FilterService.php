@@ -46,10 +46,12 @@ class FilterService
 
             }
 
+            $slug = str_slug($filter_name, "_");
+
 
             $filter = Filter::create(['filter_name' => $filter_name,
                 'filter_type' => $request->filter_type,
-                'field_type' => $field_type, 'min' => $min, 'max' => $max
+                'field_type' => $field_type, 'min' => $min, 'max' => $max, 'slug' => $slug
             ]);
 
             if ($request->field_type == 'simple_select_option' || $request->field_type == 'multi_select_option') {
@@ -101,8 +103,11 @@ class FilterService
 
                 }
 
+                $slug = str_slug($filter_name, "_");
+
+
                 $filter = $data->update(['filter_name' => $filter_name,
-                    'filter_type' => $request->filter_type,
+                    'filter_type' => $request->filter_type, 'slug' => $slug,
                     'field_type' => $field_type, 'min' => $min, 'max' => $max
                 ]);
 

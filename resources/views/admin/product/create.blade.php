@@ -351,10 +351,14 @@
             });
 
             $('.subCategory').change(function () {
+
+
+                $('.custom_field_section').remove();
+                $('.customRow').remove();
+
                 var data = $(this).val();
 
                 var text = $('.category option:selected').text();
-
                 var category = $('.category').val();
 
                 $.blockUI({

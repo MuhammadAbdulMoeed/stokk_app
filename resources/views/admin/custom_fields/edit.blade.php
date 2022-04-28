@@ -416,6 +416,7 @@
                 var type = $('.field_type').val();
 
 
+
                 if (data == 'pre_included_field') {
                     $('.parent_section_row').after(`@include('admin.custom_fields.section.pre_included_filter_section')`);
                     if (type) {
@@ -424,7 +425,7 @@
 
                 } else {
                     $('.pre-included-filter-section').remove();
-                    if (type) {
+                    if (type == 'simple_select_option' || type == 'multi_select_option') {
                         $('.select_option_section').removeAttr('style');
                     }
 

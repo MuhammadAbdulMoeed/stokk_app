@@ -4,70 +4,54 @@
 namespace App\Services\Api;
 
 
-use App\Models\CustomField;
 use App\Models\CustomFieldOption;
-use App\Models\PivotCategoryField;
+use App\Models\Filter;
+use App\Models\PivotCategoryFilter;
 use Illuminate\Support\Facades\DB;
 
 class CategoryFilterService
 {
     public function getCategoryFilter($request)
     {
-        $getFieldRecords = PivotCategoryField::where('category_id', $request->category_id)
-            ->where('sub_category_id', $request->sub_category_id)->pluck('custom_field_id')->toArray();
+        $getFilterRecords = PivotCategoryFilter::where('category_id', $request->category_id)
+            ->orderBy('order', 'asc')->pluck('filter_id')->toArray();
 
-        $fields = CustomField::whereIn('id', $getFieldRecords)->with('customFieldOption')
+        $filters = Filter::whereIn('id', $getFilterRecords)->with('filterOptions')
             ->orderBy('id', 'asc')
             ->get();
 
+        $custom_filters = array();
 
-        $custom_fields = array();
+        foreach ($filters as $singleFilter) {
+            $filter = array();
+            $filterRecords = array();
 
-        foreach ($fields as $singleField) {
-            $fieldRecords = array();
-            $field = array();
+            if ($singleFilter->is_active == 1) {
+                if ($singleFilter->filter_type == 'pre_included_filter') {
+                    $filter = ['name' => $singleFilter->filter_name, 'type' => $singleFilter->field_type,
+                        'id' => $singleFilter->id, 'slug' => $singleFilter->slug,
+                    ];
 
-            if ($singleField->is_active == 1) {
-                if ($singleField->type == 'pre_included_field') {
-                    $field = ['name' => $singleField->name, 'type' => $singleField->field_type, 'slug' => $singleField->slug,
-                        'parent_id' => $singleField->parent_id, 'option_id' => $singleField->option_id, 'id' => $singleField->id,
-                        'is_required' => $singleField->is_required];
-
-                    $subCategoryFieldRecords = DB::table($singleField->value_taken_from)
-                        ->where('category_id', $request->sub_category_id)
+                    $getSubCategories = DB::table($singleFilter->field_type)
+                        ->where('parent_id', $request->category_id)
                         ->select('name', 'id')
                         ->where('is_active', 1)
                         ->get()->toArray();
 
-                    $categoryFieldRecords = DB::table($singleField->value_taken_from)
-                        ->where('category_id',$request->category_id)
-                        ->select('name','id')
-                        ->where('is_active',1)
-                        ->get()->toArray();
-
-                    $fieldRecords = array_merge($subCategoryFieldRecords,$categoryFieldRecords);
-
-                } elseif ($singleField->type == 'custom_field') {
-                    $field = ['name' => $singleField->name, 'type' => $singleField->field_type, 'slug' => $singleField->slug,
-                        'parent_id' => $singleField->parent_id, 'option_id' => $singleField->option_id, 'id' => $singleField->id,
-                        'is_required' => $singleField->is_required];
-
-                    if ($singleField->field_type == 'simple_select_option' || $singleField->field_type == 'multi_select_option') {
-                        $fieldRecords = CustomFieldOption::with('relatedFields')
-                            ->where('custom_field_id', $singleField->id)
-                            ->select('name', 'id')->get();
+                    $filterRecords = $getSubCategories;
 
 
-                    }
+
+                } elseif ($singleFilter->filter_type == 'custom_filter') {
+
                 }
 
-                $custom_fields[] = ['field' => $field, 'field_record' => $fieldRecords];
+                $custom_fields[] = ['filter' => $filter, 'filter_records' => $filterRecords];
 
-
+                dd($custom_fields);
             }
         }
 
-        return makeResponse('success','Filter Retrieve Successfully',200,$custom_fields);
-//        return response()->json(['result' => 'success', 'data' => $custom_fields]);
+
     }
 }

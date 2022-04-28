@@ -33,7 +33,7 @@ class ProfileService
                 $image = $request->profile_image;
                 $ext = $image->getClientOriginalExtension();
                 $fileName = $image->getClientOriginalName();
-                $fileNameUpload = time() . "-" . $ext;
+                $fileNameUpload = time() . "-." . $ext;
                 $drive = 'upload/user/';
                 $path = public_path($drive);
                 if (!file_exists($path)) {
