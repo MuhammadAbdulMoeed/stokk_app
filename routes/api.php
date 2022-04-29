@@ -12,7 +12,9 @@ use App\Http\Controllers\Api\HomeController;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\CategoryFieldController;
-
+use App\Http\Controllers\Api\FavoriteController;
+use App\Http\Controllers\Api\BlockUserController;
+use App\Http\Controllers\Api\MyProductController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -56,8 +58,18 @@ Route::group(['middleware' => ['json.response']], function () {
 
             Route::post('get-profile',[ProfileController::class,'profile']);
             Route::post('save-profile',[ProfileController::class,'saveProfile']);
+
             Route::post('get-all-category',[CategoryController::class,'getCategories']);
+            Route::post('search-category',[CategoryController::class,'searchCategory']);
+
             Route::post('get-category-field',[CategoryFilterController::class,'getCategoryFilter']);
+
+            Route::post('favorite-product',[FavoriteController::class,'favoriteProduct']);
+
+            Route::post('block-user',[BlockUserController::class,'blockUser']);
+            Route::post('unblock-user',[BlockUserController::class,'unBlockUser']);
+
+            Route::post('my-products',[MyProductController::class,'myProduct']);
 
         });
 

@@ -4,8 +4,9 @@
 namespace App\Services\Api;
 
 
-use App\Models\CustomFieldOption;
+use App\Models\Category;
 use App\Models\Filter;
+use App\Models\FilterValue;
 use App\Models\PivotCategoryFilter;
 use Illuminate\Support\Facades\DB;
 
@@ -26,32 +27,55 @@ class CategoryFilterService
             $filter = array();
             $filterRecords = array();
 
+            $getCategory = Category::find($request->category_id);
+
             if ($singleFilter->is_active == 1) {
                 if ($singleFilter->filter_type == 'pre_included_filter') {
                     $filter = ['name' => $singleFilter->filter_name, 'type' => $singleFilter->field_type,
-                        'id' => $singleFilter->id, 'slug' => $singleFilter->slug,
+                        'id' => $singleFilter->id, 'slug' => $singleFilter->slug, 'min' => $singleFilter->min,
+                        'max' => $singleFilter->max
                     ];
 
-                    $getSubCategories = DB::table($singleFilter->field_type)
-                        ->where('parent_id', $request->category_id)
-                        ->select('name', 'id')
-                        ->where('is_active', 1)
-                        ->get()->toArray();
+                    if ($singleFilter->field_type == 'categories') {
+                        $getSubCategories = DB::table($singleFilter->field_type)
+                            ->where('parent_id', $request->category_id)
+                            ->select('name', 'id')
+                            ->where('is_active', 1)
+                            ->get()->toArray();
+                    } else if ($singleFilter->field_type == 'additional_options') {
+                        $getSubCategories = DB::table($singleFilter->field_type)
+                            ->select('name', 'id')
+                            ->where('is_active', 1)
+                            ->get()->toArray();
+                    } else {
+                        $getSubCategories = DB::table($singleFilter->field_type)
+                            ->select('name', 'id', 'icon')
+                            ->whereIn('category_id', $getCategory->subCategory->pluck('id')->toArray())
+                            ->where('is_active', 1)
+                            ->get()->toArray();
+                    }
 
                     $filterRecords = $getSubCategories;
 
 
-
                 } elseif ($singleFilter->filter_type == 'custom_filter') {
+                    $filter = ['name' => $singleFilter->filter_name, 'type' => $singleFilter->field_type,
+                        'id' => $singleFilter->id, 'slug' => $singleFilter->slug, 'min' => $singleFilter->min,
+                        'max' => $singleFilter->max
+                    ];
 
+                    if ($singleFilter->field_type == 'simple_select_option' || $singleFilter->field_type == 'multi_select_option') {
+                        $filterRecords = FilterValue::with('filter')
+                            ->where('filter_id', $singleFilter->id)
+                            ->select('name', 'id')->get();
+                    }
                 }
 
                 $custom_fields[] = ['filter' => $filter, 'filter_records' => $filterRecords];
 
-                dd($custom_fields);
             }
         }
 
-
+        return makeResponse('success', 'Filter Retrieve Successfully', 200, $custom_fields);
     }
 }

@@ -77,6 +77,14 @@
                             </label>
                         </div>
 
+                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 col-xl-3">
+                            <label class="sc-featur">Additional Options
+                                <input type="radio" class="sale-checkbox" value="additional_options"
+                                       name="filter" {{$data->field_type == 'additional_options' ? 'checked':''}}>
+                                <span class="checkmark"></span>
+                            </label>
+                        </div>
+
 {{--                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 col-xl-3">--}}
 {{--                            <label class="sc-featur">Rating--}}
 {{--                                <input type="radio" class="sale-checkbox" value="rating"--}}

@@ -13,6 +13,10 @@ class CategoryController extends Controller
         $categories =  $homeService->getAllCategories();
 
         return makeResponse('success','Category Retrieved Successfully',200,$categories);
+    }
 
+    public function searchCategory(Request $request,HomeService $homeService)
+    {
+        return $homeService->searchCategory($request);
     }
 }

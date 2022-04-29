@@ -13,8 +13,5 @@ class ProductImage extends Model
 
     protected $guarded = [];
 
-    public function getImageAttribute($value)
-    {
-        return asset($value);
-    }
+
 }

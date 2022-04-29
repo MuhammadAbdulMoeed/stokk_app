@@ -12,7 +12,7 @@ class HomeService
 {
     public function getAllCategories()
     {
-        $categories = Category::select('id','name','icon')->where('is_active',1)->whereNull('parent_id')->get();
+        $categories = Category::select('id','name','icon','image')->where('is_active',1)->whereNull('parent_id')->get();
 
         return $categories;
     }
@@ -59,6 +59,7 @@ class HomeService
     public function searchProduct($request)
     {
         $data = Product::where('name','like','%' . $request->name . '%')
+            ->where('is_active',1)
             ->get();
 
         $products = array();
@@ -91,7 +92,29 @@ class HomeService
         else{
             return makeResponse('error','Record Not Found',200);
         }
+    }
 
+    public function searchCategory($request)
+    {
+        $data = Category::where('name','like','%' . $request->name . '%')
+            ->whereNull('parent_id')
+            ->where('is_active',1)
+            ->get();
 
+        $categories = array();
+
+        if(sizeof($data) > 0)
+        {
+            foreach($data as $key => $category)
+            {
+                $categories[] = ['name'=>$category->name,'id'=>$category->id,'images'=>$category->image,
+                    'icon'=>$category->icon];
+            }
+
+            return makeResponse('success','Category Found Successfully',200,$categories);
+        }
+        else{
+            return makeResponse('error','Record Not Found',200);
+        }
     }
 }

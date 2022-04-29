@@ -41,6 +41,8 @@ class LoginService
                     'country' => Auth::user()->userLocation ? Auth::user()->userLocation->country: null,
                     'lat' => Auth::user()->userLocation ? Auth::user()->userLocation->lat: null,
                     'lng' => Auth::user()->userLocation ? Auth::user()->userLocation->lng: null,
+                    'profile_image' => Auth::user()->profile_image,
+
                 ];
 
                 DB::commit();
@@ -113,6 +115,7 @@ class LoginService
                 'fcm_token' => Auth::user()->fcm_token,
                 'provider' => Auth::user()->provider,
                 'is_completed' => Auth::user()->userLocation ? 1:0,
+                'profile_image' => Auth::user()->profile_image,
                 'city' => Auth::user()->userLocation ? Auth::user()->userLocation->city: null,
                 'country' => Auth::user()->userLocation ? Auth::user()->userLocation->country: null,
                 'lat' => Auth::user()->userLocation ? Auth::user()->userLocation->lat: null,

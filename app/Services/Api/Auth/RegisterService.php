@@ -34,6 +34,7 @@ class RegisterService
                 'country' => null,
                 'lat' =>  null,
                 'lng' =>  null,
+                'profile_image' => $user->profile_image,
 
             ];
 
