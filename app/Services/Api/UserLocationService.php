@@ -30,9 +30,6 @@ class UserLocationService
 
             $saveLocation->save();
 
-
-
-
             $data = [
                 'country' => $saveLocation->country,
                 'city' => $saveLocation->city,

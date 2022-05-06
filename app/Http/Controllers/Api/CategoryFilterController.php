@@ -15,4 +15,9 @@ class CategoryFilterController extends Controller
         return $filterService->getCategoryFilter($request);
     }
 
+    public function applyFilter(Request $request,CategoryFilterService $filterService)
+    {
+        return $filterService->applyFilter($request);
+    }
+
 }

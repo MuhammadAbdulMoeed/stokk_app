@@ -62,7 +62,8 @@ Route::group(['middleware' => ['json.response']], function () {
             Route::post('get-all-category',[CategoryController::class,'getCategories']);
             Route::post('search-category',[CategoryController::class,'searchCategory']);
 
-            Route::post('get-category-field',[CategoryFilterController::class,'getCategoryFilter']);
+            Route::post('get-category-filter',[CategoryFilterController::class,'getCategoryFilter']);
+            Route::post('apply-filters',[CategoryFilterController::class,'applyFilter']);
 
             Route::post('favorite-product',[FavoriteController::class,'favoriteProduct']);
 
@@ -70,6 +71,8 @@ Route::group(['middleware' => ['json.response']], function () {
             Route::post('unblock-user',[BlockUserController::class,'unBlockUser']);
 
             Route::post('my-products',[MyProductController::class,'myProduct']);
+
+            Route::post('get-subcategory-product',[CategoryController::class,'getSubCategoryProduct']);
 
         });
 

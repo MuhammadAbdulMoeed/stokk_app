@@ -19,4 +19,9 @@ class CategoryController extends Controller
     {
         return $homeService->searchCategory($request);
     }
+
+    public function getSubCategoryProduct(Request $request,HomeService $homeService)
+    {
+        return $homeService->getSubCategoryProduct($request);
+    }
 }

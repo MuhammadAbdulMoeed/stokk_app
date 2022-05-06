@@ -8,6 +8,8 @@ use App\Models\Category;
 use App\Models\Filter;
 use App\Models\FilterValue;
 use App\Models\PivotCategoryFilter;
+use App\Models\Product;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 
 class CategoryFilterService
@@ -77,5 +79,39 @@ class CategoryFilterService
         }
 
         return makeResponse('success', 'Filter Retrieve Successfully', 200, $custom_fields);
+    }
+
+    public function applyFilter($request)
+    {
+
+        $getFilterRecords = PivotCategoryFilter::where('category_id', $request->category_id)
+            ->orderBy('order', 'asc')->pluck('filter_id')->toArray();
+
+        foreach ($request->filters as $filter) {
+            $checkFilter = in_array($filter['id'], $getFilterRecords);
+
+            if (!$checkFilter) {
+                return makeResponse('error', 'Filter Record Not Exist In: ' . $filter['id'], 500);
+            }
+        }
+        $products = Product::where('category_id', $request->category_id);
+
+        foreach ($request->filters as $filter) {
+            $product = $products->with(['customFieldHasMany'=>function($query) use($filter){
+                $query->where('custom_field_id',$filter['id']);
+                $query->where('value',$filter['value']);
+            }]);
+        }
+
+        dd($product->toSql());
+
+
+        if (sizeof($products) > 0) {
+//            $products = $products
+        } else {
+            return makeResponse('error', 'Record Not Found', 404);
+        }
+
+
     }
 }

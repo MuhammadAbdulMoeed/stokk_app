@@ -38,7 +38,7 @@ class BlockUserService
             ->where('user_id', Auth::user()->id)->first();
 
         if (!$check) {
-            return makeResponse('success', 'User is not in Block List', 200);
+            return makeResponse('error', 'User is not in Block List', 404);
         }
         try {
             DB::beginTransaction();
