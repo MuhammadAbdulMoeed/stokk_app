@@ -10,21 +10,21 @@ use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-    public function getCategories(HomeService $homeService)
+    public function getCategories(CategoryService $categoryService)
     {
-        $categories = $homeService->getAllCategories();
+        $categories = $categoryService->getAllCategories();
 
         return makeResponse('success', 'Category Retrieved Successfully', 200, $categories);
     }
 
-    public function searchCategory(Request $request, HomeService $homeService)
+    public function searchCategory(Request $request, CategoryService $categoryService)
     {
-        return $homeService->searchCategory($request);
+        return $categoryService->searchCategory($request);
     }
 
-    public function getSubCategoryProduct(Request $request, HomeService $homeService)
+    public function getSubCategoryProduct(Request $request, CategoryService $categoryService)
     {
-        return $homeService->getSubCategoryProduct($request);
+        return $categoryService->getSubCategoryProduct($request);
     }
 
     public function getSubCategory(FetchSubCategoryRequest $request, CategoryService $categoryService)

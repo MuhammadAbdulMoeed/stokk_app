@@ -3,14 +3,15 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Services\Api\CategoryService;
 use App\Services\Api\HomeService;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    public function index(HomeService $homeService)
+    public function index(HomeService $homeService,CategoryService $categoryService)
     {
-        $categories = $homeService->getAllCategories();
+        $categories = $categoryService->getAllCategories();
 
         $products = $homeService->getNearbyProduct();
 
