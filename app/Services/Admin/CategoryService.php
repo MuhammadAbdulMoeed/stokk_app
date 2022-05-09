@@ -58,7 +58,15 @@ class CategoryService
                 $save_image = $imageSave;
             }
 
-            Category::create($request->except('_token', 'icon','image') + ['icon' => $save_icon,
+            $slug = null;
+            if (!$request->slug) {
+                $slug = strtoupper(str_slug($request->name, "_"));
+            } else {
+                $slug = $request->slug;
+
+            }
+
+            Category::create($request->except('_token', 'icon','image','slug') + ['icon' => $save_icon,'slug'=>$slug,
                     'image' => $save_image]);
 
             return response()->json(['result' => 'success', 'message' => 'Category Save Successfully']);
@@ -121,9 +129,15 @@ class CategoryService
                     $save_image = $imageSave;
                 }
 
+                $slug = null;
+                if (!$request->slug) {
+                    $slug = strtoupper(str_slug($request->name, "_"));
+                } else {
+                    $slug = $request->slug;
 
-                $data->update($request->except('_token', 'icon','image') + ['icon' => $save_icon,
-                        'image'=>$save_image]);
+                }
+                $data->update($request->except('_token', 'icon','image','slug') + ['icon' => $save_icon,
+                        'slug' => $slug, 'image'=>$save_image]);
 
                 return response()->json(['result' => 'success', 'message' => 'Category Updated Successfully']);
             } catch (\Exception $e) {

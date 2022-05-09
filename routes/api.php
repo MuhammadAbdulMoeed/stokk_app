@@ -15,6 +15,7 @@ use App\Http\Controllers\Api\CategoryFieldController;
 use App\Http\Controllers\Api\FavoriteController;
 use App\Http\Controllers\Api\BlockUserController;
 use App\Http\Controllers\Api\MyProductController;
+use App\Http\Controllers\Api\ProductController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -52,17 +53,17 @@ Route::group(['middleware' => ['json.response']], function () {
         Route::middleware('auth:api')->group(function () {
 
             Route::post('save-user-location', [UserLocationController::class, 'save']);
-            Route::post('category-field',[CategoryFieldController::class,'getCategoryField']);
+            Route::get('category-field',[CategoryFieldController::class,'getCategoryField']);
             Route::post('home',[HomeController::class,'index']);
             Route::post('search',[HomeController::class,'searchProduct']);
 
-            Route::post('get-profile',[ProfileController::class,'profile']);
+            Route::get('get-profile',[ProfileController::class,'profile']);
             Route::post('save-profile',[ProfileController::class,'saveProfile']);
 
-            Route::post('get-all-category',[CategoryController::class,'getCategories']);
+            Route::get('get-all-category',[CategoryController::class,'getCategories']);
             Route::post('search-category',[CategoryController::class,'searchCategory']);
 
-            Route::post('get-category-filter',[CategoryFilterController::class,'getCategoryFilter']);
+            Route::get('get-category-filter',[CategoryFilterController::class,'getCategoryFilter']);
             Route::post('apply-filters',[CategoryFilterController::class,'applyFilter']);
 
             Route::post('favorite-product',[FavoriteController::class,'favoriteProduct']);
@@ -70,9 +71,12 @@ Route::group(['middleware' => ['json.response']], function () {
             Route::post('block-user',[BlockUserController::class,'blockUser']);
             Route::post('unblock-user',[BlockUserController::class,'unBlockUser']);
 
-            Route::post('my-products',[MyProductController::class,'myProduct']);
+            Route::get('my-products',[MyProductController::class,'myProduct']);
 
-            Route::post('get-subcategory-product',[CategoryController::class,'getSubCategoryProduct']);
+            Route::get('get-subcategory-product',[CategoryController::class,'getSubCategoryProduct']);
+            Route::get('get-subcategory',[CategoryController::class,'getSubCategory']);
+
+            Route::post('save-product',[ProductController::class,'save']);
 
         });
 

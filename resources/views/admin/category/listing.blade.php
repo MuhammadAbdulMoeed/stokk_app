@@ -52,6 +52,7 @@
                                         <th> Parent Name</th>
                                         <th>Icon</th>
                                         <th>Image</th>
+                                        <th>Slug</th>
                                         <th>Status</th>
                                         <th>Action</th>
                                     </tr>
@@ -63,7 +64,14 @@
                                             <td>{{$loop->iteration}}</td>
                                             <td>{{$category->name}}</td>
                                             <td>{{isset($category->parent) ? $category->parent->name:'N/A'}}</td>
-                                            <td><img width="50%" height="50%" src="{{asset($category->icon)}}"></td>
+                                            <td>
+
+                                                @if($category->icon)
+                                                    <img width="50%" height="50%" src="{{asset($category->icon)}}">
+                                                @else
+                                                    N/A
+                                                @endif
+                                            </td>
                                             <td>
                                                 @if($category->image)
                                                     <img width="50%" height="50%" src="{{asset($category->image)}}">
@@ -72,6 +80,7 @@
                                                 @endif
 
                                             </td>
+                                            <td>{{$category->slug}}</td>
 
                                             <td>
                                                 <button class="btn-sm {{$category->is_active == 1 ? 'btn btn-outline-success':'btn btn-outline-danger'}}">

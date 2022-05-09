@@ -15,7 +15,7 @@ class HomeService
 
     public function getAllCategories()
     {
-        $categories = Category::select('id', 'name', 'icon', 'image')->where('is_active', 1)->whereNull('parent_id')->get();
+        $categories = Category::select('id', 'name', 'icon', 'image','slug as type')->where('is_active', 1)->whereNull('parent_id')->get();
 
         return $categories;
     }
