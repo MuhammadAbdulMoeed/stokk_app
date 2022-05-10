@@ -12,6 +12,11 @@ class PivotProductCustomField extends Model
     protected $table = 'pivot_products_custom_fields';
     protected $guarded = [];
 
+    public function product()
+    {
+        return $this->belongsTo(Product::class,'product_id');
+    }
+
 
 
 
