@@ -44,7 +44,7 @@ class CustomFieldService
                 'is_required' => $request->is_required, 'slug' => $slug,
                 'parent_id' => $request->parent_id, 'option_id' => $request->option_id,
                 'value_taken_from' => isset($request->value_taken_from) ? $request->value_taken_from : null,
-                'type' => $request->type
+                'type' => $request->type,'filter' => $request->filter
             ]);
         } catch (\Exception $e) {
             DB::rollBack();
@@ -96,7 +96,7 @@ class CustomFieldService
                     'is_required' => $request->is_required, 'slug' => $slug,
                     'parent_id' => $request->parent_id, 'option_id' => $request->option_id,
                     'value_taken_from' => isset($request->value_taken_from) ? $request->value_taken_from : null,
-                    'type' => $request->type
+                    'type' => $request->type,'filter' => $request->filter
                 ]);
             } catch (\Exception $e) {
                 DB::rollBack();

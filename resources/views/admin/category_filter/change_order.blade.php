@@ -45,7 +45,7 @@
 
                                 @foreach($data as $filter)
                                     <li id="{{$filter->id}}" class="list-group-item text-left ui-sortable-handle">
-                                        {{$filter->filter->filter_name}}
+                                        {{$filter->filter->name}}
                                     </li>
                                 @endforeach
 

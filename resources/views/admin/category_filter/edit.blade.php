@@ -46,9 +46,9 @@
                             <select multiple name="filters[]" class="form-control multiSelectOption">
                                 @foreach($filters as $filter)
                                     @if(in_array($filter->id,$selectedFilters))
-                                        <option value="{{$filter->id}}" selected >{{$filter->filter_name}}</option>
+                                        <option value="{{$filter->id}}" selected >{{$filter->name}}</option>
                                     @else
-                                        <option value="{{$filter->id}}" >{{$filter->filter_name}}</option>
+                                        <option value="{{$filter->id}}" >{{$filter->name}}</option>
                                     @endif
 
                                 @endforeach

@@ -28,12 +28,12 @@ class Category extends Model
 
     public function categoryFilters()
     {
-        return $this->belongsToMany(Filter::class,PivotCategoryFilter::class,'category_id','filter_id');
+        return $this->belongsToMany(CustomField::class,PivotCategoryFilter::class,'category_id','filter_id');
     }
 
     public function categoryFiltersOrder()
     {
-        return $this->belongsToMany(Filter::class,PivotCategoryFilter::class,'category_id','filter_id')
+        return $this->belongsToMany(CustomField::class,PivotCategoryFilter::class,'category_id','filter_id')
             ->orderBy('order','asc');
     }
 

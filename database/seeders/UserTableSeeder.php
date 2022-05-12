@@ -15,6 +15,12 @@ class UserTableSeeder extends Seeder
      */
     public function run()
     {
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        User::truncate();
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+
+
+
         $users = [
             ['first_name' => "admin", 'last_name' => 'admin', 'email' => "admin@gmail.com",
                 'password' => bcrypt('11223344'), 'role_id' => 1]

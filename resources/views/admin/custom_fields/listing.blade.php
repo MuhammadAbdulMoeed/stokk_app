@@ -52,6 +52,7 @@
                                         <th>Field Type</th>
                                         <th>Slug</th>
                                         <th>Required</th>
+                                        <th>Filter</th>
                                         <th>Status</th>
                                         <th>Action</th>
                                     </tr>
@@ -69,6 +70,13 @@
                                                 <button
                                                     class="btn-sm {{$customFields->is_required == 1 ? 'btn btn-outline-success':'btn btn-outline-danger'}}">
                                                     {{$customFields->is_required == 1 ? 'Yes':'No'}}
+                                                </button>
+                                            </td>
+
+                                            <td>
+                                                <button
+                                                    class="btn-sm {{$customFields->filter == 1 ? 'btn btn-outline-success':'btn btn-outline-danger'}}">
+                                                    {{$customFields->filter == 1 ? 'Yes':'No'}}
                                                 </button>
                                             </td>
 

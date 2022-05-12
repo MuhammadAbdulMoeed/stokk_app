@@ -18,8 +18,13 @@ class PivotCategoryFilter extends Model
 
     public function filter()
     {
-        return $this->belongsTo(Filter::class,'filter_id');
+        return $this->belongsTo(CustomField::class,'filter_id');
     }
+
+//    public function filter()
+//    {
+//        return $this->belongsTo(Filter::class,'filter_id');
+//    }
 
 
 

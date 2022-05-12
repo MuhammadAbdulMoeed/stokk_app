@@ -40,10 +40,10 @@
                     <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">
                         <div class="form-group">
                             <label for="exampleInputEmail1">Category</label>
-                            <select class="form-control category">
+                            <select  name="category_id" class="form-control category">
                                 <option value="" selected disabled>Select</option>
                                 @foreach($categories as $category)
-                                    <option value="{{$category->id}}" {{isset($data->category) ? $data->category->parent->id == $category->id ? 'selected':'':''}}>{{$category->name}}</option>
+                                    <option value="{{$category->id}}" {{isset($data->category->parent) ? $data->category->parent->id == $category->id ? 'selected':'':'selected'}}>{{$category->name}}</option>
                                 @endforeach
                             </select>
                         </div>

@@ -64,9 +64,9 @@
                                                 <td>
                                                     @foreach($category->categoryFiltersOrder as $category_filter)
                                                         @if($loop->last)
-                                                            {{$category_filter->filter_name}}
+                                                            {{$category_filter->name}}
                                                         @else
-                                                            {{$category_filter->filter_name}},
+                                                            {{$category_filter->name}},
                                                         @endif
                                                     @endforeach
                                                 </td>
@@ -165,7 +165,7 @@
                 $.ajax({
 
                     type: 'POST',
-                    url: '{{route("filterDelete")}}',
+                    url: '{{route("categoryFilterDelete")}}',
                     data: data,
 
                     success: function (response, status) {

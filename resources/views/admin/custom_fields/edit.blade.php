@@ -204,6 +204,17 @@
                             </select>
                         </div>
                     </div>
+
+                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                        <div class="form-group">
+                            <label>Filter</label>
+                            <select class="form-control" name="filter">
+                                <option value="0" {{$data->filter == 0 ? 'selected':''}}>No</option>
+                                <option value="1" {{$data->filter == 1 ? 'selected':''}}>Yes</option>
+
+                            </select>
+                        </div>
+                    </div>
                 </div>
 
                 @if($data->type == 'pre_included_field')

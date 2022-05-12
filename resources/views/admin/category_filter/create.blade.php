@@ -43,7 +43,7 @@
                             <label>Filter</label>
                             <select multiple name="filters[]" class="form-control multiSelectOption">
                                 @foreach($filters as $filter)
-                                    <option value="{{$filter->id}}">{{$filter->filter_name}}</option>
+                                    <option value="{{$filter->id}}">{{$filter->name}}</option>
                                 @endforeach
                             </select>
                         </div>

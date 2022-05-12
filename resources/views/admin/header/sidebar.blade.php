@@ -59,43 +59,25 @@
                 </li>
 
 
-                <li class="submenu">
-                    <a
+{{--                <li class="submenu">--}}
+{{--                    <a--}}
 
-                        @if(Request()->route()->getName() == 'filterListing' ||
-                        Request()->route()->getName() == 'filterCreate'  )
-                        class="active"
-                        @endif
-                        href="javascript:void(0)">
-                        <i class="fa fa-filter"></i> <span> Filters</span>
-                        <span class="menu-arrow"></span></a>
+{{--                        @if(Request()->route()->getName() == 'filterListing' ||--}}
+{{--                        Request()->route()->getName() == 'filterCreate'  )--}}
+{{--                        class="active"--}}
+{{--                        @endif--}}
+{{--                        href="javascript:void(0)">--}}
+{{--                        <i class="fa fa-filter"></i> <span> Filters</span>--}}
+{{--                        <span class="menu-arrow"></span></a>--}}
 
-                    <ul class="list-unstyled">
-                        <li><a href="{{route('filterListing')}}">Listing</a></li>
-                        <li><a href="{{route('filterCreate')}}">Create Filter</a></li>
-                    </ul>
-
-
-                </li>
-
-                <li class="submenu">
-                    <a
-
-                        @if(Request()->route()->getName() == 'categoryFilterListing' ||
-                        Request()->route()->getName() == 'categoryFilterCreate'  )
-                        class="active"
-                        @endif
-                        href="javascript:void(0)">
-                        <i class="fa fa-filter"></i> <span> Category Filters</span>
-                        <span class="menu-arrow"></span></a>
-
-                    <ul class="list-unstyled">
-                        <li><a href="{{route('categoryFilterListing')}}">Listing</a></li>
-                        <li><a href="{{route('categoryFilterCreate')}}">Create</a></li>
-                    </ul>
+{{--                    <ul class="list-unstyled">--}}
+{{--                        <li><a href="{{route('filterListing')}}">Listing</a></li>--}}
+{{--                        <li><a href="{{route('filterCreate')}}">Create Filter</a></li>--}}
+{{--                    </ul>--}}
 
 
-                </li>
+{{--                </li>--}}
+
 
                 <li class="submenu">
                     <a
@@ -246,6 +228,27 @@
                     <ul class="list-unstyled">
                         <li><a href="{{route('categoryCustomFieldsListing')}}">Listing</a></li>
                         <li><a href="{{route('categoryCustomFieldsCreate')}}">Create</a></li>
+                    </ul>
+
+
+                </li>
+
+
+
+                <li class="submenu">
+                    <a
+
+                        @if(Request()->route()->getName() == 'categoryFilterListing' ||
+                        Request()->route()->getName() == 'categoryFilterCreate'  )
+                        class="active"
+                        @endif
+                        href="javascript:void(0)">
+                        <i class="fa fa-filter"></i> <span> Category Filters</span>
+                        <span class="menu-arrow"></span></a>
+
+                    <ul class="list-unstyled">
+                        <li><a href="{{route('categoryFilterListing')}}">Listing</a></li>
+                        <li><a href="{{route('categoryFilterCreate')}}">Create</a></li>
                     </ul>
 
 

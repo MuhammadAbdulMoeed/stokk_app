@@ -5,6 +5,7 @@ namespace App\Services\Admin;
 
 
 use App\Models\Category;
+use App\Models\CustomField;
 use App\Models\Filter;
 use App\Models\PivotCategoryFilter;
 use Illuminate\Http\Request;
@@ -22,7 +23,7 @@ class CategoryFilterService
     {
 
         $categories =  Category::whereNull('parent_id')->get();
-        $filters =  Filter::all();
+        $filters =  CustomField::where('is_active',1)->where('filter',1)->get();
 
         return view('admin.category_filter.create',compact('categories','filters'));
     }
@@ -66,7 +67,7 @@ class CategoryFilterService
         if($data)
         {
             $categories =  Category::whereNull('parent_id')->get();
-            $filters =  Filter::all();
+            $filters =  CustomField::where('is_active',1)->where('filter',1)->get();
 
             $selectedFilters = PivotCategoryFilter::where('category_id',$id)->pluck('filter_id')->toArray();
 
@@ -121,12 +122,12 @@ class CategoryFilterService
 
     public function delete($request)
     {
-        $data =  PivotCategoryFilter::where('category_id',$request->category_id)->first();
+        $data =  PivotCategoryFilter::where('category_id',$request->id)->first();
 
         if($data)
         {
             try{
-                PivotCategoryFilter::where('category_id',$request->category_id)->delete();
+                PivotCategoryFilter::where('category_id',$request->id)->delete();
             }
             catch (\Exception $e)
             {
