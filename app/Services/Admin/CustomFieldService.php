@@ -38,13 +38,22 @@ class CustomFieldService
 
             }
 
+            $min = $max = null;
+            if($request->filter == 1 && $request->filter_field_type && $request->filter_field_type == 'range_slider')
+            {
+                $min = $request->min;
+                $max =  $request->max;
+            }
+
             $field = CustomField::create([
                 'name' => $request->name,
                 'field_type' => $request->field_type,
                 'is_required' => $request->is_required, 'slug' => $slug,
                 'parent_id' => $request->parent_id, 'option_id' => $request->option_id,
                 'value_taken_from' => isset($request->value_taken_from) ? $request->value_taken_from : null,
-                'type' => $request->type,'filter' => $request->filter
+                'type' => $request->type,'filter' => $request->filter,
+                'filter_field_type' =>$request->filter == 1 ? $request->filter_field_type:null,
+                'min' => $min, 'max' => $max
             ]);
         } catch (\Exception $e) {
             DB::rollBack();
@@ -90,13 +99,23 @@ class CustomFieldService
         if ($data) {
             DB::beginTransaction();
             try {
+
+                $min = $max = null;
+                if($request->filter == 1 && $request->filter_field_type && $request->filter_field_type == 'range_slider')
+                {
+                    $min = $request->min;
+                    $max =  $request->max;
+                }
+
                 $slug = str_slug($request->name, "_");
                 $field = $data->update(['name' => $request->name,
                     'field_type' => $request->field_type,
                     'is_required' => $request->is_required, 'slug' => $slug,
                     'parent_id' => $request->parent_id, 'option_id' => $request->option_id,
                     'value_taken_from' => isset($request->value_taken_from) ? $request->value_taken_from : null,
-                    'type' => $request->type,'filter' => $request->filter
+                    'type' => $request->type,'filter' => $request->filter,
+                    'filter_field_type' => $request->filter == 1 ? $request->filter_field_type:null,
+                    'min' =>$min, 'max' => $max,
                 ]);
             } catch (\Exception $e) {
                 DB::rollBack();

@@ -65,9 +65,9 @@
                             <label>Field Type</label>
                             <select class="form-control field_type"
                                     name="field_type">
-{{--                                <option value="price_range" {{$data->field_type == "price_range" ? 'selected':''}}>Price--}}
-{{--                                    Range--}}
-{{--                                </option>--}}
+                                {{--                                <option value="price_range" {{$data->field_type == "price_range" ? 'selected':''}}>Price--}}
+                                {{--                                    Range--}}
+                                {{--                                </option>--}}
                                 <option value="input_field" {{$data->field_type == "input_field" ? 'selected':''}}>
                                     Input Field
                                 </option>
@@ -82,20 +82,20 @@
                                     value="multi_select_option" {{$data->field_type == "multi_select_option" ? 'selected':''}}>
                                     Multi Select Option
                                 </option>
-{{--                                <option value="date_picker" {{$data->field_type == "date_picker" ? 'selected':''}}>Date--}}
-{{--                                    Picker--}}
-{{--                                </option>--}}
-{{--                                <option value="time_picker" {{$data->field_type == "time_picker" ? 'selected':''}}>Time--}}
-{{--                                    Picker--}}
-{{--                                </option>--}}
-{{--                                <option--}}
-{{--                                    value="date_range_picker" {{$data->field_type == "date_range_picker" ? 'selected':''}}>--}}
-{{--                                    Date Range Picker--}}
-{{--                                </option>--}}
-{{--                                <option--}}
-{{--                                    value="time_range_picker" {{$data->field_type == "time_range_picker" ? 'selected':''}}>--}}
-{{--                                    Time Range Picker--}}
-{{--                                </option>--}}
+                                {{--                                <option value="date_picker" {{$data->field_type == "date_picker" ? 'selected':''}}>Date--}}
+                                {{--                                    Picker--}}
+                                {{--                                </option>--}}
+                                {{--                                <option value="time_picker" {{$data->field_type == "time_picker" ? 'selected':''}}>Time--}}
+                                {{--                                    Picker--}}
+                                {{--                                </option>--}}
+                                {{--                                <option--}}
+                                {{--                                    value="date_range_picker" {{$data->field_type == "date_range_picker" ? 'selected':''}}>--}}
+                                {{--                                    Date Range Picker--}}
+                                {{--                                </option>--}}
+                                {{--                                <option--}}
+                                {{--                                    value="time_range_picker" {{$data->field_type == "time_range_picker" ? 'selected':''}}>--}}
+                                {{--                                    Time Range Picker--}}
+                                {{--                                </option>--}}
                             </select>
                         </div>
                     </div>
@@ -117,7 +117,7 @@
 
                 <div class="select_option_section row"
 
-                     @if(($data->field_type == 'simple_select_option') || ($data->field_type == 'multi_select_option'))
+                     @if($data->type == 'custom_field' && (($data->field_type == 'simple_select_option') || ($data->field_type == 'multi_select_option')))
                      style=""
                      @else
                      style="display: none"
@@ -208,11 +208,76 @@
                     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
                         <div class="form-group">
                             <label>Filter</label>
-                            <select class="form-control" name="filter">
+                            <select class="form-control filter_flag" name="filter">
                                 <option value="0" {{$data->filter == 0 ? 'selected':''}}>No</option>
                                 <option value="1" {{$data->filter == 1 ? 'selected':''}}>Yes</option>
 
                             </select>
+                        </div>
+                    </div>
+
+
+                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 filter_field_div"  style="display: {{$data->filter == 1 ? '':'none'}}">
+                        <div class="form-group">
+                            <label>Filter Field Type</label>
+                            <select class="form-control filter_field_type" name="filter_field_type">
+                                <option value="" selected disabled>Select</option>
+                                <option
+                                    value="range_slider" {{$data->filter_field_type == 'range_slider' ? 'selected':''}}>
+                                    Range Slider
+                                </option>
+                                <option
+                                    value="input_field" {{$data->filter_field_type == 'input_field' ? 'selected':''}}>
+                                    Input Field
+                                </option>
+                                <option
+                                    value="number_field" {{$data->filter_field_type == 'number_field' ? 'selected':''}}>
+                                    Number Field
+                                </option>
+                                <option
+                                    value="simple_select_option" {{$data->filter_field_type == 'simple_select_option' ? 'selected':''}}>
+                                    Simple Select Option
+                                </option>
+                                <option
+                                    value="multi_select_option" {{$data->filter_field_type == 'multi_select_option' ? 'selected':''}}>
+                                    Multi Select Option
+                                </option>
+                                <option
+                                    value="date_picker" {{$data->filter_field_type == 'date_picker' ? 'selected':''}}>
+                                    Date Picker
+                                </option>
+                                <option
+                                    value="time_picker" {{$data->filter_field_type == 'time_picker' ? 'selected':''}}>
+                                    Time Picker
+                                </option>
+                                <option
+                                    value="date_range_picker" {{$data->filter_field_type == 'date_range_picker' ? 'selected':''}}>
+                                    Date Range Picker
+                                </option>
+                                <option
+                                    value="time_range_picker" {{$data->filter_field_type == 'time_range_picker' ? 'selected':''}}>
+                                    Time Range Picker
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="filter_value_section row" style="display: {{$data->filter_field_type == 'range_slider' ? '':'none'}}">
+                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                        <div class="form-group">
+                            <label>Min Value</label>
+                            <input type="text" class="form-control" name="min"
+                                   placeholder="Enter Min Value" value="{{$data->min}}">
+                        </div>
+                    </div>
+
+                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                        <div class="form-group">
+                            <label>Max</label>
+                            <input type="text" class="form-control" name="max" value="{{$data->max}}"
+                                   placeholder="Enter Max Value">
                         </div>
                     </div>
                 </div>
@@ -427,7 +492,6 @@
                 var type = $('.field_type').val();
 
 
-
                 if (data == 'pre_included_field') {
                     $('.parent_section_row').after(`@include('admin.custom_fields.section.pre_included_filter_section')`);
                     if (type) {
@@ -440,6 +504,31 @@
                         $('.select_option_section').removeAttr('style');
                     }
 
+                }
+            });
+
+            $('.filter_flag').change(function () {
+
+                var data = $(this).val();
+
+                if (data == 1) {
+                    $('.filter_field_div').show();
+                } else {
+                    $('.filter_field_div').hide();
+                    $('.filter_value_section').hide();
+                }
+
+
+            });
+
+            $('.filter_field_type').change(function () {
+
+                var data = $('.filter_field_type').val();
+                if (data == 'range_slider') {
+                    $('.filter_value_section').show();
+                }
+                else{
+                    $('.filter_value_section').hide();
                 }
             });
 

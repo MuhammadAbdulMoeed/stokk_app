@@ -204,7 +204,7 @@
             });
 
 
-            $('.changeStatus').click(function () {
+            $(document).on('click', '.changeStatus',function () {
 
                 var data = $(this).data('id');
 

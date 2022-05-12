@@ -5,6 +5,8 @@ namespace App\Services\Api;
 
 
 use App\Models\Category;
+use App\Models\CustomField;
+use App\Models\CustomFieldOption;
 use App\Models\Filter;
 use App\Models\FilterValue;
 use App\Models\PivotCategoryField;
@@ -24,38 +26,39 @@ class CategoryFilterService
         $getFilterRecords = PivotCategoryFilter::where('category_id', $request->category_id)
             ->orderBy('order', 'asc')->pluck('filter_id')->toArray();
 
-        $filters = Filter::whereIn('id', $getFilterRecords)->with('filterOptions')
+        $customFields = CustomField::whereIn('id', $getFilterRecords)->with('customFieldOption')
+            ->where('filter',1)
             ->orderBy('id', 'asc')
             ->get();
 
-        $custom_filters = array();
+        $custom_fields = array();
 
-        foreach ($filters as $singleFilter) {
+        foreach ($customFields as $customField) {
             $filter = array();
             $filterRecords = array();
 
             $getCategory = Category::find($request->category_id);
 
-            if ($singleFilter->is_active == 1) {
-                if ($singleFilter->filter_type == 'pre_included_filter') {
-                    $filter = ['name' => $singleFilter->filter_name, 'type' => $singleFilter->field_type,
-                        'id' => $singleFilter->id, 'slug' => $singleFilter->slug, 'min' => $singleFilter->min,
-                        'max' => $singleFilter->max
+            if ($customField->is_active == 1) {
+
+                if ($customField->type == 'pre_included_field') {
+                    $filter = ['name' => $customField->name, 'type' => $customField->field_type,
+                        'id' => $customField->id, 'slug' => $customField->slug
                     ];
 
-                    if ($singleFilter->field_type == 'categories') {
-                        $getSubCategories = DB::table($singleFilter->field_type)
+                    if ($customField->value_taken_from == 'categories') {
+                        $getSubCategories = DB::table($customField->value_taken_from)
                             ->where('parent_id', $request->category_id)
                             ->select('name', 'id')
                             ->where('is_active', 1)
                             ->get()->toArray();
-                    } else if ($singleFilter->field_type == 'additional_options') {
-                        $getSubCategories = DB::table($singleFilter->field_type)
+                    } else if ($customField->value_taken_from == 'additional_options') {
+                        $getSubCategories = DB::table($customField->value_taken_from)
                             ->select('name', 'id')
                             ->where('is_active', 1)
                             ->get()->toArray();
                     } else {
-                        $getSubCategories = DB::table($singleFilter->field_type)
+                        $getSubCategories = DB::table($customField->value_taken_from)
                             ->select('name', 'id', 'icon')
                             ->whereIn('category_id', $getCategory->subCategory->pluck('id')->toArray())
                             ->where('is_active', 1)
@@ -65,18 +68,19 @@ class CategoryFilterService
                     $filterRecords = $getSubCategories;
 
 
-                } elseif ($singleFilter->filter_type == 'custom_filter') {
-                    $filter = ['name' => $singleFilter->filter_name, 'type' => $singleFilter->field_type,
-                        'id' => $singleFilter->id, 'slug' => $singleFilter->slug, 'min' => $singleFilter->min,
-                        'max' => $singleFilter->max
+                }
+                elseif ($customField->type == 'custom_field') {
+                    $filter = ['name' => $customField->name, 'type' => $customField->field_type,
+                        'id' => $customField->id, 'slug' => $customField->slug
                     ];
 
-                    if ($singleFilter->field_type == 'simple_select_option' || $singleFilter->field_type == 'multi_select_option') {
-                        $filterRecords = FilterValue::with('filter')
-                            ->where('filter_id', $singleFilter->id)
+                    if ($customField->field_type == 'simple_select_option' || $customField->field_type == 'multi_select_option') {
+                        $fieldRecords = CustomFieldOption::with('relatedFields')
+                            ->where('custom_field_id', $customField->id)
                             ->select('name', 'id')->get();
                     }
                 }
+
 
                 $custom_fields[] = ['filter' => $filter, 'filter_records' => $filterRecords];
 
