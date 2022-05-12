@@ -42,8 +42,9 @@ class CategoryFilterService
             if ($customField->is_active == 1) {
 
                 if ($customField->type == 'pre_included_field') {
-                    $filter = ['name' => $customField->name, 'type' => $customField->field_type,
-                        'id' => $customField->id, 'slug' => $customField->slug
+                    $filter = ['name' => $customField->name, 'type' => $customField->filter_field_type,
+                        'id' => $customField->id, 'slug' => $customField->slug,
+                        'min' => $customField->min  ? $customField->min:null, 'max' => $customField->max  ? $customField->max:null
                     ];
 
                     if ($customField->value_taken_from == 'categories') {
@@ -70,8 +71,9 @@ class CategoryFilterService
 
                 }
                 elseif ($customField->type == 'custom_field') {
-                    $filter = ['name' => $customField->name, 'type' => $customField->field_type,
-                        'id' => $customField->id, 'slug' => $customField->slug
+                    $filter = ['name' => $customField->name, 'type' => $customField->filter_field_type,
+                        'id' => $customField->id, 'slug' => $customField->slug,
+                        'min' => $customField->min, 'max' => $customField->max
                     ];
 
                     if ($customField->field_type == 'simple_select_option' || $customField->field_type == 'multi_select_option') {
