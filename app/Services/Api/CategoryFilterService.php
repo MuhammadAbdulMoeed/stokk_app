@@ -27,7 +27,7 @@ class CategoryFilterService
             ->orderBy('order', 'asc')->pluck('filter_id')->toArray();
 
         $customFields = CustomField::whereIn('id', $getFilterRecords)->with('customFieldOption')
-            ->where('filter',1)
+            ->where('filter', 1)
             ->orderBy('id', 'asc')
             ->get();
 
@@ -44,7 +44,7 @@ class CategoryFilterService
                 if ($customField->type == 'pre_included_field') {
                     $filter = ['name' => $customField->name, 'type' => $customField->filter_field_type,
                         'id' => $customField->id, 'slug' => $customField->slug,
-                        'min' => $customField->min  ? $customField->min:null, 'max' => $customField->max  ? $customField->max:null
+                        'min' => $customField->min ? $customField->min : null, 'max' => $customField->max ? $customField->max : null
                     ];
 
                     if ($customField->value_taken_from == 'categories') {
@@ -69,8 +69,7 @@ class CategoryFilterService
                     $filterRecords = $getSubCategories;
 
 
-                }
-                elseif ($customField->type == 'custom_field') {
+                } elseif ($customField->type == 'custom_field') {
                     $filter = ['name' => $customField->name, 'type' => $customField->filter_field_type,
                         'id' => $customField->id, 'slug' => $customField->slug,
                         'min' => $customField->min, 'max' => $customField->max
@@ -95,9 +94,12 @@ class CategoryFilterService
     public function applyFilter($request)
     {
 
+        $whereStatement = array();
+
         $getFilterRecords = PivotCategoryField::where('category_id', $request->category_id)
             ->orderBy('order', 'asc')->pluck('custom_field_id')->toArray();
 
+        $i = 1;
 
         foreach ($request->filters as $key => $filter) {
             $checkFilter = in_array($key, $getFilterRecords);
@@ -107,85 +109,43 @@ class CategoryFilterService
             }
 
 
+            if (sizeof($request->filters) == $i) {
+                $whereStatement[$key] = "OR ( custom_field_id = " . $key . " AND value >= " . $filter . ")";
+            } else {
+                $whereStatement[$key] = "( custom_field_id = " . $key . " AND value >=" . $filter . ")";
+
+            }
+
+            $i++;
         }
 
 
         $products = Product::where('category_id', $request->category_id);
 
-        if($request->has('sub_category_id'))
-        {
-            $products = $products->where('sub_category_id',$request->sub_category_id);
+        if ($request->has('sub_category_id')) {
+            $products = $products->where('sub_category_id', $request->sub_category_id);
         }
 
         $allCategorySubCategoryProducts = $products->pluck('id')->toArray();
 
 
-
         $finalProducts = array();
-        $whereStatement = array();
 
-        foreach($allCategorySubCategoryProducts as $key => $product)
-        {
-            $i = 1;
-            foreach($request->filters as $key1 => $value)
-            {
+        $statement = implode($whereStatement, ' ');
 
-                if(sizeof($request->filters) == $i)
-                {
-                    $whereStatement[$key1] = "OR ( custom_field_id = ".$key1." AND value >= ".$value.")";
-                }
-                else{
-                    $whereStatement[$key1] = "( custom_field_id = ".$key1." AND value >=". $value.")";
-                }
-
-                $i++;
-            }
+        $record = PivotProductCustomField::select('product_id')->whereRaw($statement)->distinct()->toSql();
 
 
-//
-//           dd( $product->customFieldHasMany->where('custom_field_id',array_keys($request->filters))
-//
-//           );
-
-
-//            foreach($product->customFieldHasMany as $customFieldRecord)
-//            {
-//                if(in_array($customFieldRecord->custom_field_id,array_keys($request->filters)) && in_array($customFieldRecord->value,array_values($request->filters)))
-//                {
-//                    $finalProducts[$customFieldRecord->product_id] = $customFieldRecord->product_id;
-//                }
-
-//                foreach($request->filters as $key => $value)
-//                {
-//                    if($customFieldRecord->custom_field_id == $key)
-//                    {
-//                        if($customFieldRecord->value >= $value)
-//                        {
-//                            $finalProducts[$customFieldRecord->product_id] = $this->fetchSingleProduct($customFieldRecord->product);
-//                        }
-//                    }
-//                }
-//            }
-        }
-
-
-        $statement = implode($whereStatement,' ');
-
-        $record = PivotProductCustomField::select('product_id')->whereRaw($statement)->distinct()->get();
-
-        foreach($record  as $singleRecord)
-        {
-            if(in_array($singleRecord->product_id,$allCategorySubCategoryProducts))
-            {
+        foreach ($record as $singleRecord) {
+            if (in_array($singleRecord->product_id, $allCategorySubCategoryProducts)) {
                 $finalProducts[] = $this->fetchSingleProduct($singleRecord->product);
             }
 
         }
 
 
-
         if (sizeof($finalProducts) > 0) {
-            return makeResponse('success','Record Found',200,$finalProducts);
+            return makeResponse('success', 'Record Found', 200, $finalProducts);
         } else {
             return makeResponse('error', 'Record Not Found', 404);
         }

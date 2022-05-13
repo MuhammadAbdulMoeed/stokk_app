@@ -8,6 +8,7 @@ use App\Helper\ImageUploadHelper;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\CustomField;
+use App\Models\CustomFieldOption;
 use App\Models\PivotProductCustomField;
 use App\Models\Product;
 use App\Models\ProductImage;
@@ -114,18 +115,127 @@ class ProductService
             $subCategories = Category::where('parent_id', $data->category_id)->get();
 
             $relatedFields = array();
+            $field = array();
+            $fieldRecords = array();
+
+
 
             foreach ($data->customField as $key => $customField) {
-                if (sizeof($customField->getChild) > 0) {
-                    foreach ($customField->getChild as $getChild) {
-                        $relatedFields[$getChild->customFieldOptionSelected->id][] = $getChild;
+
+                $field = array();
+                $fieldRecords = array();
+
+
+
+                if($customField->parent_id == null)
+                {
+                    $field = ['id' => $customField->id, 'name' => $customField->name, 'slug' => $customField->slug,
+                        'field_type' => $customField->field_type, 'order' => $customField->order,
+                        'type' => $customField->type,
+                        'parent_id' => $customField->parent_id, 'option_id' => $customField->option_id,
+                        "is_required" => $customField->is_required, "is_active" => $customField->is_active,
+                        'value_taken_from' => $customField->value_taken_from, "value" => $customField->pivot->value
+                    ];
+
+                    if ($customField->type == 'pre_included_field') {
+
+                        if ($customField->value_taken_from == 'categories') {
+
+                            $getSubCategories = DB::table($customField->value_taken_from)
+                                ->where('parent_id', $data->category_id)
+                                ->select('name', 'id')
+                                ->where('is_active', 1)
+                                ->get()->toArray();
+                        } else if ($customField->value_taken_from == 'additional_options') {
+                            $getSubCategories = DB::table($customField->value_taken_from)
+                                ->select('name', 'id')
+                                ->where('is_active', 1)
+                                ->get()->toArray();
+                        } else {
+                            $getSubCategories = DB::table($customField->value_taken_from)
+                                ->select('name', 'id', 'icon')
+                                ->whereIn('category_id', $data->subCategory->pluck('id')->toArray())
+                                ->where('is_active', 1)
+                                ->get()->toArray();
+
+
+                            if (sizeof($getSubCategories) <= 0) {
+                                $getSubCategories = DB::table($customField->value_taken_from)
+                                    ->select('name', 'id', 'icon')
+                                    ->whereIn('category_id', $data->category_id)
+                                    ->where('is_active', 1)
+                                    ->get()->toArray();
+                            }
+                        }
+
+                        $fieldRecords = $getSubCategories;
+                    }
+                    else {
+                        if (sizeof($customField->getChild) > 0) {
+                            foreach ($customField->getChild as $getChild) {
+                                $fieldRecords[$getChild->customFieldOptionSelected->id][] =  [
+                                    'id' => $getChild->id, 'name' => $getChild->name,
+                                    'slug' => $getChild->slug,
+                                    'field_type' => $getChild->field_type, 'order' => $getChild->order,
+                                    'type' => $getChild->type, 'parent_id' => $getChild->parent_id,
+                                    'option_id' => $getChild->option_id, "is_active" => $getChild->is_active,
+                                    "is_required" => $getChild->is_required,
+                                    'value_taken_from' => $getChild->value_taken_from,
+                                    "value" => $getChild->pivotTableValue->value,
+                                    'parent_main_name' => $customField->name,
+                                    'selected_parent_name' => $getChild->customFieldOptionSelected->name,
+                                    'is_selected_value' => $customField->pivot->value,
+                                ];
+
+
+
+                            }
+
+                        }
                     }
                 }
+                else{
+                    $field = ['id' => $customField->id, 'name' => $customField->name, 'slug' => $customField->slug,
+                        'field_type' => $customField->field_type, 'order' => $customField->order,
+                        'type' => $customField->type,
+                        'parent_id' => $customField->parent_id, 'option_id' => $customField->option_id,
+                        "is_required" => $customField->is_required, "is_active" => $customField->is_active,
+                        'value_taken_from' => $customField->value_taken_from, "value" => $customField->pivot->value
+                    ];
+
+                    if (sizeof($customField->getChild) > 0) {
+                        foreach ($customField->getChild as $getChild) {
+                            $fieldRecords[$getChild->customFieldOptionSelected->id][] =  [
+                                'id' => $getChild->id, 'name' => $getChild->name,
+                                'slug' => $getChild->slug,
+                                'field_type' => $getChild->field_type, 'order' => $getChild->order,
+                                'type' => $getChild->type, 'parent_id' => $getChild->parent_id,
+                                'option_id' => $getChild->option_id, "is_active" => $getChild->is_active,
+                                "is_required" => $getChild->is_required,
+                                'value_taken_from' => $getChild->value_taken_from,
+                                "value" => $getChild->pivotTableValue->value,
+                                'parent_main_name' => $customField->name,
+                                'selected_parent_name' => $getChild->customFieldOptionSelected->name
+
+
+                            ];
+
+                        }
+
+                    }
+
+
+                }
+
+                dd($fieldRecords);
+                $custom_fields[] = ['field' => $field, 'fieldRecord' => $fieldRecords];
+
             }
 
 
+
             return view('admin.product.edit', compact('data', 'categories', 'subCategories',
-                'relatedFields'));
+                'relatedFields','custom_fields'));
         } else {
             return redirect()->route('productListing')->with('error', 'Record Not Found');
         }

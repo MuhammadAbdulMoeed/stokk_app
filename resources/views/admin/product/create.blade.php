@@ -489,7 +489,7 @@
                                     html += '<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">';
                                     html += '<div class="form-group">';
                                     html += '<label for="exampleInputEmail1">'+value.field['name']+'</label>';
-                                    html += '<select multiple name="custom_fields['+value.field['id']+'][]" class="form-control multiSelectOption">';
+                                    html += '<select multiple name="custom_fields['+value.field['id']+']" class="form-control multiSelectOption">';
                                     $.each(value.field_record,function(index1,value1){
                                         html += '<option value="'+value1.id+'">'+value1.name+'</option>';
 

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class CustomField extends Model
 {
@@ -41,5 +42,7 @@ class CustomField extends Model
     {
         return $this->hasOne(PivotProductCustomField::class,'custom_field_id');
     }
+
+
 
 }
