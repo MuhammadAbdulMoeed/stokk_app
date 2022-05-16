@@ -192,11 +192,19 @@ class CategoryCustomFieldService
     {
 
         $getFieldRecords = PivotCategoryField::where('category_id', $request->category_id)
-            ->where('sub_category_id', $request->sub_category_id)->pluck('custom_field_id')->toArray();
+            ->where('sub_category_id', $request->sub_category_id)
+            ->orderBy('order','asc')
+            ->pluck('custom_field_id')
+            ->toArray();
 
-        $fields = CustomField::whereIn('id', $getFieldRecords)->with('customFieldOption')
-            ->orderBy('id', 'asc')
-            ->get();
+        $fields = array();
+
+
+        foreach($getFieldRecords as $fieldID)
+        {
+            $fields[] = CustomField::where('id', $fieldID)->with('customFieldOption')
+                ->first();
+        }
 
 
         $custom_fields = array();

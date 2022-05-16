@@ -118,14 +118,10 @@ class ProductService
             $field = array();
             $fieldRecords = array();
 
-
-
             foreach ($data->customField as $key => $customField) {
-
+                $relatedFields = array();
                 $field = array();
                 $fieldRecords = array();
-
-
 
                 if($customField->parent_id == null)
                 {
@@ -146,12 +142,14 @@ class ProductService
                                 ->select('name', 'id')
                                 ->where('is_active', 1)
                                 ->get()->toArray();
-                        } else if ($customField->value_taken_from == 'additional_options') {
+                        }
+                        else if ($customField->value_taken_from == 'additional_options') {
                             $getSubCategories = DB::table($customField->value_taken_from)
                                 ->select('name', 'id')
                                 ->where('is_active', 1)
                                 ->get()->toArray();
-                        } else {
+                        }
+                        else {
                             $getSubCategories = DB::table($customField->value_taken_from)
                                 ->select('name', 'id', 'icon')
                                 ->whereIn('category_id', $data->subCategory->pluck('id')->toArray())
@@ -171,27 +169,54 @@ class ProductService
                         $fieldRecords = $getSubCategories;
                     }
                     else {
-                        if (sizeof($customField->getChild) > 0) {
-                            foreach ($customField->getChild as $getChild) {
-                                $fieldRecords[$getChild->customFieldOptionSelected->id][] =  [
-                                    'id' => $getChild->id, 'name' => $getChild->name,
-                                    'slug' => $getChild->slug,
-                                    'field_type' => $getChild->field_type, 'order' => $getChild->order,
-                                    'type' => $getChild->type, 'parent_id' => $getChild->parent_id,
-                                    'option_id' => $getChild->option_id, "is_active" => $getChild->is_active,
-                                    "is_required" => $getChild->is_required,
-                                    'value_taken_from' => $getChild->value_taken_from,
-                                    "value" => $getChild->pivotTableValue->value,
-                                    'parent_main_name' => $customField->name,
-                                    'selected_parent_name' => $getChild->customFieldOptionSelected->name,
-                                    'is_selected_value' => $customField->pivot->value,
-                                ];
+                        foreach($customField->customFieldOption as $customChild)
+                        {
+                            $fieldRecords[] = ['id' => $customChild->id,
+                                'name' => $customChild->name
+                            ];
 
+                            if (sizeof($customChild->relatedFields) > 0) {
+                                foreach ($customChild->relatedFields as $getChild) {
+                                    $relatedFields[$getChild->customFieldOptionSelected->id][] =  [
+                                        'id' => $getChild->id, 'name' => $getChild->name,
+                                        'slug' => $getChild->slug,
+                                        'field_type' => $getChild->field_type, 'order' => $getChild->order,
+                                        'type' => $getChild->type, 'parent_id' => $getChild->parent_id,
+                                        'option_id' => $getChild->option_id, "is_active" => $getChild->is_active,
+                                        "is_required" => $getChild->is_required,
+                                        'value_taken_from' => $getChild->value_taken_from,
+                                        "value" => isset($getChild->pivotTableValue) ? $getChild->pivotTableValue->value:'',
+                                        'parent_main_name' => $customChild->name,
+                                        'selected_parent_name' => $getChild->customFieldOptionSelected->name,
+                                        'is_selected_value' => $customField->pivot->value,
+                                        'grand_parent_name' => $getChild->parent->name
+                                    ];
 
+                                }
 
                             }
-
                         }
+
+
+//                        if (sizeof($customField->getChild) > 0) {
+//                            foreach ($customField->getChild as $getChild) {
+//                                $fieldRecords[$getChild->customFieldOptionSelected->id][] =  [
+//                                    'id' => $getChild->id, 'name' => $getChild->name,
+//                                    'slug' => $getChild->slug,
+//                                    'field_type' => $getChild->field_type, 'order' => $getChild->order,
+//                                    'type' => $getChild->type, 'parent_id' => $getChild->parent_id,
+//                                    'option_id' => $getChild->option_id, "is_active" => $getChild->is_active,
+//                                    "is_required" => $getChild->is_required,
+//                                    'value_taken_from' => $getChild->value_taken_from,
+//                                    "value" => isset($getChild->pivotTableValue) ? $getChild->pivotTableValue->value:'',
+//                                    'parent_main_name' => $customField->name,
+//                                    'selected_parent_name' => $getChild->customFieldOptionSelected->name,
+//                                    'is_selected_value' => $customField->pivot->value,
+//                                ];
+//
+//                            }
+//
+//                        }
                     }
                 }
                 else{
@@ -216,8 +241,6 @@ class ProductService
                                 "value" => $getChild->pivotTableValue->value,
                                 'parent_main_name' => $customField->name,
                                 'selected_parent_name' => $getChild->customFieldOptionSelected->name
-
-
                             ];
 
                         }
@@ -227,11 +250,11 @@ class ProductService
 
                 }
 
-                dd($fieldRecords);
-                $custom_fields[] = ['field' => $field, 'fieldRecord' => $fieldRecords];
+                $custom_fields[] = ['field' => $field, 'fieldRecord' => $fieldRecords,'relatedFields'=>$relatedFields];
 
             }
 
+//            dd($custom_fields);
 
 
             return view('admin.product.edit', compact('data', 'categories', 'subCategories',

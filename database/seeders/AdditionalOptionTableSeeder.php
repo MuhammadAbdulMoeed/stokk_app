@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\AdditionalOption;
 use App\Models\Category;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class AdditionalOptionTableSeeder extends Seeder
 {
@@ -20,13 +21,13 @@ class AdditionalOptionTableSeeder extends Seeder
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
         $options = [
-            ['name' => 'Manual', 'category_id' => Category::where('name', 'Vehicle')->first()->id,
+            ['name' => 'Manual', 'category_id' => Category::where('name', 'Vehicles')->first()->id,
                 'is_active' => 1],
-            ['name' => 'Automatic', 'category_id' => Category::where('name', 'Vehicle')->first()->id,
+            ['name' => 'Automatic', 'category_id' => Category::where('name', 'Vehicles')->first()->id,
                 'is_active' => 1],
-            ['name' => '2 Door', 'category_id' => Category::where('name', 'Vehicle')->first()->id,
+            ['name' => '2 Door', 'category_id' => Category::where('name', 'Vehicles')->first()->id,
                 'is_active' => 1],
-            ['name' => '4 Door', 'category_id' => Category::where('name', 'Vehicle')->first()->id,
+            ['name' => '4 Door', 'category_id' => Category::where('name', 'Vehicles')->first()->id,
                 'is_active' => 1],
 
         ];

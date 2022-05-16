@@ -21,14 +21,14 @@ class CategorySeeder extends Seeder
 
 
         $categories = [
-            ['name' => 'Real Estate', 'parent_id' => null, 'icon' => 'upload/category/1648461739-Dog House.png',
-                'image' => null, 'slug' => 'REAL_ESTATE', 'is_active' => 1],
+            ['name' => 'Property', 'parent_id' => null, 'icon' => 'upload/category/1648461739-Dog House.png',
+                'image' => null, 'slug' => 'PROPERTY', 'is_active' => 1],
 
             ['name' => 'Vehicles', 'parent_id' => null, 'icon' => 'upload/category/1648461639-Sedan.png',
                 'image' => null, 'slug' => 'VEHICLES', 'is_active' => 1],
 
             ['name' => 'Bike', 'parent_id' => null, 'icon' => 'upload/category/1648461758-Quad Bike.png',
-                'image' => null, 'slug' => 'BIKE', 'is_active' => 1],
+                'image' => null, 'slug' => 'BIKE', 'is_active' => 0],
 
             ['name' => 'Fashion', 'parent_id' => null, 'icon' => 'upload/category/1648461789-Clothes.png',
                 'image' => null, 'slug' => 'FASHION', 'is_active' => 1],

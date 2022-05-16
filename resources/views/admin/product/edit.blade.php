@@ -105,67 +105,65 @@
                     @foreach($custom_fields as $key => $customField)
                         @if($loop->first)
                             <div class="custom_field_section row">
-                                @endif
+                        @endif
 
-                                @if($customField['field']['parent_id'] == null)
-                                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">
-                                        <div class="form-group">
-                                            <label for="exampleInputEmail1">{{$customField['field']['name']}}</label>
+                        @if($customField['field']['parent_id'] == null)
+                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">{{$customField['field']['name']}}</label>
 
-                                            @if($customField['field']['field_type'] == 'number_field')
-                                                <input type="text" name="custom_fields[{{$customField['field']['id']}}]"
-                                                       value="{{$customField['field']['value']}}"
-                                                       onkeypress="return isNumberKey(event)" class="form-control">
-                                            @elseif($customField['field']['field_type'] == 'input_field')
-                                                <input type="text" name="custom_fields[{{$customField['field']['id']}}]"
-                                                       value="{{$customField['field']['value']}}"
-                                                       onkeypress="return isCharacterKey(event)" class="form-control">
-                                            @elseif($customField['field']['field_type'] == 'simple_select_option' && $customField['field']['type'] == 'custom_field')
+                                    @if($customField['field']['field_type'] == 'number_field')
+                                        <input type="text" name="custom_fields[{{$customField['field']['id']}}]"
+                                               value="{{$customField['field']['value']}}"
+                                               onkeypress="return isNumberKey(event)" class="form-control">
+                                    @elseif($customField['field']['field_type'] == 'input_field')
+                                        <input type="text" name="custom_fields[{{$customField['field']['id']}}]"
+                                               value="{{$customField['field']['value']}}"
+                                               onkeypress="return isCharacterKey(event)" class="form-control">
+                                    @elseif($customField['field']['field_type'] == 'simple_select_option' && $customField['field']['type'] == 'custom_field')
 
-                                                <select name="custom_fields[{{$customField['field']['id']}}]"
-                                                        class="form-control show_related_fields">
-                                                    @foreach($customField['fieldRecord'] as $options)
-                                                        @foreach($options as $option)
-                                                            <option value="{{ $option['option_id']}}" {{$option['option_id'] == $customField['field']['value'] ? 'selected':''}}>
-                                                                {{$option['name']}}
-                                                            </option>
-                                                        @endforeach
+                                        <select name="custom_fields[{{$customField['field']['id']}}]"
+                                                class="form-control show_related_fields">
+                                            @foreach($customField['fieldRecord'] as $option)
+                                                    <option value ="{{ $option['id']}}" {{$option['id'] == $customField['field']['value'] ? 'selected':''}}>
+                                                        {{$option['name']}}
+                                                    </option>
 
-                                                    @endforeach
-                                                </select>
-                                            @elseif($customField['field']['field_type'] == 'multi_select_option'  && $customField['field']['type'] == 'custom_field')
-                                                <select name="custom_fields[{{$customField['field']['id']}}]"
-                                                        class="form-control show_related_fields">
-                                                    @foreach($customField['fieldRecord'] as $option)
-                                                        <option value="{{$option->id}}" {{$option->id == $customField['field']['value'] ? 'selected':''}}>{{$option->name}}</option>
-                                                    @endforeach
-                                                </select>
-                                            @elseif($customField['field']['field_type'] == 'simple_select_option' && $customField['field']['type'] == 'pre_included_field')
-                                                <select name="custom_fields[{{$customField['field']['id']}}]"
-                                                        class="form-control show_related_fields">
-                                                    @foreach($customField['fieldRecord'] as $option)
-                                                        <option value="{{$option->id}}" {{$option->id == $customField['field']['value'] ? 'selected':''}}>{{$option->name}}</option>
-                                                    @endforeach
-                                                </select>
-                                            @elseif($customField['field']['field_type'] == 'multi_select_option'  && $customField['field']['type'] == 'pre_included_field')
-                                                <select multiple name="custom_fields[{{$customField['field']['id']}}]"
-                                                        class="form-control show_related_fields  multiSelectOption">
-                                                    @foreach($customField['fieldRecord'] as $option)
-                                                        <option
-                                                            value="{{$option->id}}" {{$option->id == $customField['field']['value'] ? 'selected':''}}>{{$option->name}}</option>
-                                                    @endforeach
-                                                </select>
-                                            @endif
+                                            @endforeach
+                                        </select>
+                                    @elseif($customField['field']['field_type'] == 'multi_select_option'  && $customField['field']['type'] == 'custom_field')
+                                        <select name="custom_fields[{{$customField['field']['id']}}]"
+                                                class="form-control show_related_fields">
+                                            @foreach($customField['fieldRecord'] as $option)
+                                                <option
+                                                    value="{{$option->id}}" {{$option->id == $customField['field']['value'] ? 'selected':''}}>{{$option->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    @elseif($customField['field']['field_type'] == 'simple_select_option' && $customField['field']['type'] == 'pre_included_field')
+                                        <select name="custom_fields[{{$customField['field']['id']}}]"
+                                                class="form-control show_related_fields">
+                                            @foreach($customField['fieldRecord'] as $option)
+                                                <option
+                                                    value="{{$option->id}}" {{$option->id == $customField['field']['value'] ? 'selected':''}}>{{$option->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    @elseif($customField['field']['field_type'] == 'multi_select_option'  && $customField['field']['type'] == 'pre_included_field')
+                                        <select multiple name="custom_fields[{{$customField['field']['id']}}]"
+                                                class="form-control show_related_fields  multiSelectOption">
+                                            @foreach($customField['fieldRecord'] as $option)
+                                                <option
+                                                    value="{{$option->id}}" {{$option->id == $customField['field']['value'] ? 'selected':''}}>{{$option->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    @endif
 
-                                        </div>
-                                    </div>
+                                </div>
+                            </div>
 
-                                @endif
+                        @endif
                                 @if($loop->last)
                             </div>
                         @endif
-
-
 
                     @endforeach
 
@@ -174,36 +172,44 @@
 
                         @if($customFieldRelated['field']['value_taken_from'] == null  )
 
-                            @foreach($customFieldRelated['fieldRecord'] as $key2 => $customFieldRecord)
-                            @foreach($customFieldRecord as $key3 => $singleRelatedRecord)
+                            @foreach($customFieldRelated['relatedFields'] as $key2 => $customFieldRecord)
+                                @foreach($customFieldRecord as $key3 => $singleRelatedRecord)
 
-                                @if($loop->first)
-                                    <div class="{{$singleRelatedRecord['parent_id']}}-{{str_replace(" ","",$singleRelatedRecord['selected_parent_name'])}} customRow row {{$singleRelatedRecord['parent_main_name']}}" style="display: {{$singleRelatedRecord['is_selected_value'] == $singleRelatedRecord['option_id'] ? '':'none' }}">
-                                @endif
+                                    @if($loop->first)
+                                        <div class="{{$singleRelatedRecord['option_id']}}-{{str_replace(" ","",$singleRelatedRecord['selected_parent_name'])}} customRow row {{$singleRelatedRecord['grand_parent_name']}}"
+                                            style="display: {{$singleRelatedRecord['is_selected_value'] == $singleRelatedRecord['option_id'] ? '':'none' }}">
+                                    @endif
                                     <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">
                                         <div class="form-group">
-                                            <label for="exampleInputEmail1">{{$singleRelatedRecord['name']}}</label>
+                                            <label
+                                                for="exampleInputEmail1">{{$singleRelatedRecord['name']}}</label>
 
                                             @if($singleRelatedRecord['field_type'] == 'number_field')
-                                                <input type="text" name="custom_fields[{{$singleRelatedRecord['id']}}]"
+                                                <input type="text"
+                                                       name="custom_fields[{{$singleRelatedRecord['id']}}]"
                                                        value="{{isset($singleRelatedRecord['value']) ? $singleRelatedRecord['value']:''}}"
-                                                       onkeypress="return isNumberKey(event)" class="form-control">
+                                                       onkeypress="return isNumberKey(event)"
+                                                       class="form-control">
                                             @elseif($singleRelatedRecord['field_type'] == 'input_field')
-                                                <input type="text" name="custom_fields[{{$singleRelatedRecord['id']}}]"
+                                                <input type="text"
+                                                       name="custom_fields[{{$singleRelatedRecord['id']}}]"
                                                        value="{{isset($singleRelatedRecord['value']) ? $singleRelatedRecord['value']:''}}"
-                                                       onkeypress="return isCharacterKey(event)" class="form-control">
+                                                       onkeypress="return isCharacterKey(event)"
+                                                       class="form-control">
                                             @elseif($singleRelatedRecord->field_type == 'simple_select_option')
                                                 <select name="custom_fields[{{$singleRelatedRecord['id']}}]"
                                                         class="form-control show_related_fields">
                                                     @foreach($singleRelatedRecord->customFieldOption as $option)
-                                                        <option name="{{$option->id}}">{{$option->name}}</option>
+                                                        <option
+                                                            name="{{$option->id}}">{{$option->name}}</option>
                                                     @endforeach
                                                 </select>
                                             @elseif($singleRelatedRecord->field_type == 'multi_select_option')
                                                 <select name="custom_fields[{{$singleRelatedRecord['id']}}]"
                                                         class="form-control show_related_fields">
                                                     @foreach($singleRelatedRecord->customFieldOption as $option)
-                                                        <option name="{{$option->id}}">{{$option->name}}</option>
+                                                        <option
+                                                            name="{{$option->id}}">{{$option->name}}</option>
                                                     @endforeach
                                                 </select>
                                             @endif
@@ -211,12 +217,12 @@
 
                                     </div>
 
-                                @if($loop->last)
-                                    </div>
-                                @endif
-                            @endforeach
+                                    @if($loop->last)
+                                        </div>
+                                    @endif
+                                @endforeach
 
-                        @endforeach
+                            @endforeach
                         @endif
                     @endforeach
 
@@ -297,10 +303,10 @@
             //     }
             // });
 
-{{--            @foreach($data->customFieldRelated as $key =>  $customFieldRelated)--}}
-{{--                $('.{{$customFieldRelated->parent->name}}').hide();--}}
-{{--                $('.{{$customFieldRelated->customFieldOptionSelected->id}}-{{str_replace(" ","",$customFieldRelated->customFieldOptionSelected->name)}}').removeAttr('style');--}}
-{{--            @endforeach--}}
+            {{--            @foreach($data->customFieldRelated as $key =>  $customFieldRelated)--}}
+            {{--                $('.{{$customFieldRelated->parent->name}}').hide();--}}
+            {{--                $('.{{$customFieldRelated->customFieldOptionSelected->id}}-{{str_replace(" ","",$customFieldRelated->customFieldOptionSelected->name)}}').removeAttr('style');--}}
+            {{--            @endforeach--}}
 
             $('.multiSelectOption').select2();
 

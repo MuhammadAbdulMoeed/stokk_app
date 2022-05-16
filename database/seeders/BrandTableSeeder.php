@@ -21,8 +21,6 @@ class BrandTableSeeder extends Seeder
         Brand::truncate();
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
-
-
         $brands = [
             ['name' => 'Audi', 'icon' => 'upload/brand/1649050307-R (1) 1.png', 'is_active' => 1,
                 'category_id' => Category::where('name', 'Car')->first()->id],

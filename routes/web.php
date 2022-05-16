@@ -36,6 +36,16 @@ Route::get('migrate', function () {
     Artisan::call('migrate');
 });
 
+Route::get('migrate-fresh', function () {
+    Artisan::call('migrate:fresh --seed');
+
+});
+
+Route::get('passport-install', function () {
+    Artisan::call('passport:install');
+
+});
+
 
 Route::namespace('Admin')->group(function () {
     Route::namespace("Auth")->group(function () {
