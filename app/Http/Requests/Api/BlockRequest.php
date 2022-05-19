@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Api;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class BlockRequest extends FormRequest
 {
@@ -26,5 +28,12 @@ class BlockRequest extends FormRequest
         return [
             'blocked_user_id' => 'required'
         ];
+    }
+
+    public function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(
+            makeResponse('error', $validator->errors()->first(),422)
+        );
     }
 }

@@ -38,12 +38,10 @@ Route::get('migrate', function () {
 
 Route::get('migrate-fresh', function () {
     Artisan::call('migrate:fresh --seed');
-
 });
 
 Route::get('passport-install', function () {
     Artisan::call('passport:install');
-
 });
 
 
@@ -63,7 +61,6 @@ Route::namespace('Admin')->group(function () {
 
         Route::middleware(['auth'])->group(function () {
             Route::get('logout', [LogoutController::class, 'logout'])->name('logoutUser');
-
         });
     });
 

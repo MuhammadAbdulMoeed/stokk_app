@@ -97,6 +97,65 @@
 
                     </div>
 
+
+                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Type</label>
+                            <select name="type" class="form-control product_type">
+                                <option value="for_sale" {{$data->type == 'for_sale' ? 'selected':''}}>For Sale</option>
+                                <option value="for_rent" {{$data->type == 'for_rent' ? 'selected':''}}>For Rent</option>
+                            </select>
+                        </div>
+
+                    </div>
+
+                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 price_div" style="{{$data->type == 'for_sale' ? '':'display:none'}}">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Price</label>
+                            <input type="text" name="price" class="form-control"
+                                   onkeypress="return isNumberKey(event)" value="{{$data->price}}"
+                                   placeholder="Enter Price">
+                        </div>
+                    </div>
+
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4 rent_price_div" style="{{$data->type == 'for_rent' ? '':'display:none'}}">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Per Day Price</label>
+                            <input type="text" name="per_day_rent_price" class="form-control"
+                                   onkeypress="return isNumberKey(event)" value="{{$data->per_day_rent_price}}"
+                                   placeholder="Enter Price">
+                        </div>
+                    </div>
+
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4 rent_price_div" style="{{$data->type == 'for_rent' ? '':'display:none'}}">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Per Month Price</label>
+                            <input type="text" name="per_month_rent_price" class="form-control"
+                                   onkeypress="return isNumberKey(event)" value="{{$data->per_month_rent_price}}"
+                                   placeholder="Enter Price">
+                        </div>
+                    </div>
+
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4 rent_price_div" style="{{$data->type == 'for_rent' ? '':'display:none'}}">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Per Hour Price</label>
+                            <input type="text" name="per_hour_rent_price" class="form-control"
+                                   onkeypress="return isNumberKey(event)" value="{{$data->per_hour_rent_price}}"
+                                   placeholder="Enter Price">
+                        </div>
+                    </div>
+
+
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Description</label>
+                            <textarea  name="description" class="form-control">{{$data->description}}</textarea>
+                        </div>
+                    </div>
+
+
+
+
                 </div>
 
 
@@ -132,11 +191,14 @@
                                             @endforeach
                                         </select>
                                     @elseif($customField['field']['field_type'] == 'multi_select_option'  && $customField['field']['type'] == 'custom_field')
-                                        <select name="custom_fields[{{$customField['field']['id']}}]"
+                                        <select name="custom_fields[{{$customField['field']['id']}}][]"
                                                 class="form-control show_related_fields">
                                             @foreach($customField['fieldRecord'] as $option)
-                                                <option
-                                                    value="{{$option->id}}" {{$option->id == $customField['field']['value'] ? 'selected':''}}>{{$option->name}}</option>
+                                                @if(in_array($option->id , $customField['field']['value'] ))
+                                                    <option value="{{$option->id}}" selected>{{$option->name}}</option>
+                                                @else
+                                                    <option value="{{$option->id}}" >{{$option->name}}</option>
+                                                @endif
                                             @endforeach
                                         </select>
                                     @elseif($customField['field']['field_type'] == 'simple_select_option' && $customField['field']['type'] == 'pre_included_field')
@@ -148,11 +210,16 @@
                                             @endforeach
                                         </select>
                                     @elseif($customField['field']['field_type'] == 'multi_select_option'  && $customField['field']['type'] == 'pre_included_field')
-                                        <select multiple name="custom_fields[{{$customField['field']['id']}}]"
+
+                                        <select multiple name="custom_fields[{{$customField['field']['id']}}][]"
                                                 class="form-control show_related_fields  multiSelectOption">
+
                                             @foreach($customField['fieldRecord'] as $option)
-                                                <option
-                                                    value="{{$option->id}}" {{$option->id == $customField['field']['value'] ? 'selected':''}}>{{$option->name}}</option>
+                                                @if(in_array($option->id , $customField['field']['value'] ))
+                                                    <option value="{{$option->id}}" selected>{{$option->name}}</option>
+                                                @else
+                                                    <option value="{{$option->id}}" >{{$option->name}}</option>
+                                                @endif
                                             @endforeach
                                         </select>
                                     @endif
@@ -205,11 +272,14 @@
                                                     @endforeach
                                                 </select>
                                             @elseif($singleRelatedRecord->field_type == 'multi_select_option')
-                                                <select name="custom_fields[{{$singleRelatedRecord['id']}}]"
+                                                <select name="custom_fields[{{$singleRelatedRecord['id']}}][]"
                                                         class="form-control show_related_fields">
                                                     @foreach($singleRelatedRecord->customFieldOption as $option)
-                                                        <option
-                                                            name="{{$option->id}}">{{$option->name}}</option>
+                                                        @if(in_array($option->id , $customField['field']['value'] ))
+                                                            <option value="{{$option->id}}" selected>{{$option->name}}</option>
+                                                        @else
+                                                            <option value="{{$option->id}}" >{{$option->name}}</option>
+                                                        @endif
                                                     @endforeach
                                                 </select>
                                             @endif
@@ -655,6 +725,21 @@
 
             $('#gallery-upload').change(function (event) {
                 imgToData(this);
+            });
+
+            $('.product_type').change(function(){
+                var data = $(this).val();
+
+                if(data == 'for_rent')
+                {
+                    $('.price_div').hide();
+                    $('.rent_price_div').show();
+
+                }
+                else{
+                    $('.rent_price_div').hide();
+                    $('.price_div').show();
+                }
             });
 
         });

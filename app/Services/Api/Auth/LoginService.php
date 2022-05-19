@@ -42,7 +42,6 @@ class LoginService
                     'lat' => Auth::user()->userLocation ? Auth::user()->userLocation->lat: null,
                     'lng' => Auth::user()->userLocation ? Auth::user()->userLocation->lng: null,
                     'profile_image' => Auth::user()->profile_image,
-
                 ];
 
                 DB::commit();

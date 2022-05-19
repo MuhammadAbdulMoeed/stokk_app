@@ -22,11 +22,11 @@ class ProductService
         try {
             $product = Product::create(['name' => $request->name, 'category_id' => $request->category_id,
                 'location' => $request->location, 'lat' => $request->lat, 'lng' => $request->lng,
-                'currency' => $request->currency,'description' => $request->description,
+                'currency' => $request->currency, 'description' => $request->description,
                 'sub_category_id' => $request->sub_category_id, 'created_by' => Auth::user()->id, 'is_active' => 1]);
         } catch (\Exception $e) {
             DB::rollBack();
-            return makeResponse('error','Error in Saving Product: ' . $e,500);
+            return makeResponse('error', 'Error in Saving Product: ' . $e, 500);
         }
 
         try {
@@ -34,7 +34,7 @@ class ProductService
                 $findCustomField = CustomField::find($customFieldId);
 
                 if (!$findCustomField) {
-                    return makeResponse('error','Custom Field Not Found: ' . $customFieldId,500);
+                    return makeResponse('error', 'Custom Field Not Found: ' . $customFieldId, 500);
 
                 }
 
@@ -46,7 +46,7 @@ class ProductService
                             continue;
                         }
                     } else {
-                        return makeResponse('error',$findCustomField->name . ' is a Required Field',422);
+                        return makeResponse('error', $findCustomField->name . ' is a Required Field', 422);
 
                     }
                 }
@@ -58,7 +58,7 @@ class ProductService
 
         } catch (\Exception $e) {
             DB::rollBack();
-            return makeResponse('error','Error in Saving Custom Field: ' . $e,500);
+            return makeResponse('error', 'Error in Saving Custom Field: ' . $e, 500);
         }
 
         try {
@@ -85,14 +85,53 @@ class ProductService
             }
 
             DB::commit();
-            return makeResponse('success','Product Save Successfully',200);
+            return makeResponse('success', 'Product Save Successfully', 200);
 
         } catch (\Exception $e) {
             DB::rollBack();
-            return makeResponse('error','Error in Saving Product Image: ' . $e,500);
+            return makeResponse('error', 'Error in Saving Product Image: ' . $e, 500);
 
         }
+    }
 
 
+    public function detail($request)
+    {
+        $data = Product::find($request->product_id);
+
+        if ($data) {
+            $productDetail = array();
+
+            //parent products
+            foreach($data->customFieldRelate as $relatedField)
+            {
+                if(sizeof($relatedField->customFieldOption) >0)
+                {
+                    $productDetail[] = [
+                        'field_name' => $relatedField->name,
+                        'value' => $relatedField->pivot->name
+                    ];
+                }
+                else{
+                    $productDetail[] = [
+                        'field_name' => $relatedField->name,
+                        'value' => $relatedField->pivot->value
+                    ];
+                }
+
+            }
+
+            //child products
+            foreach ($data->customFieldRelated as $relatedField) {
+                $productDetail[] = [
+                    'field_name' => $relatedField->name,
+                    'value' => $relatedField->pivot->value
+                ];
+            }
+
+            dd($productDetail);
+        } else {
+            return makeResponse('error', 'Product Not Found', 500);
+        }
     }
 }

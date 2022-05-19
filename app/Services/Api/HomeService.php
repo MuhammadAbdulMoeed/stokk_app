@@ -35,9 +35,25 @@ class HomeService
 
     public function searchProduct($request)
     {
-        $data = Product::where('name', 'like', '%' . $request->name . '%')
-            ->where('is_active', 1)
-            ->get();
+        $data = Product::where('is_active', 1);
+
+        if($request->has('name'))
+        {
+            $data = $data->where('name', 'like', '%' . $request->name . '%');
+        }
+
+        if($request->has('category_id'))
+        {
+            $data = $data->where('category_id',$request->category_id);
+        }
+
+        if($request->has('sub_category_id'))
+        {
+            $data =  $data->where('sub_category_id',$request->sub_category_id);
+        }
+
+        $data = $data->get();
+
 
         $products = array();
         $productImage = array();

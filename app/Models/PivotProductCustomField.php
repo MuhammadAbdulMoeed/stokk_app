@@ -17,6 +17,11 @@ class PivotProductCustomField extends Model
         return $this->belongsTo(Product::class,'product_id');
     }
 
+    public function customField()
+    {
+        return $this->belongsTo(CustomField::class,'custom_field_id');
+    }
+
 
 
 

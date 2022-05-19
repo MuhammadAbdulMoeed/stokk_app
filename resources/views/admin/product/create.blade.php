@@ -86,6 +86,64 @@
 
                     </div>
 
+                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Type</label>
+                            <select name="type" class="form-control product_type">
+                                <option value="for_sale">For Sale</option>
+                                <option value="for_rent">For Rent</option>
+                            </select>
+                        </div>
+
+                    </div>
+
+                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 price_div">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Price</label>
+                            <input type="text" name="price" class="form-control"
+                                   onkeypress="return isNumberKey(event)"
+                                   placeholder="Enter Price">
+                        </div>
+                    </div>
+
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4 rent_price_div" style="display: none">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Per Day Price</label>
+                            <input type="text" name="per_day_rent_price" class="form-control"
+                                   onkeypress="return isNumberKey(event)"
+                                   placeholder="Enter Price">
+                        </div>
+                    </div>
+
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4 rent_price_div" style="display: none">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Per Month Price</label>
+                            <input type="text" name="per_month_rent_price" class="form-control"
+                                   onkeypress="return isNumberKey(event)"
+                                   placeholder="Enter Price">
+                        </div>
+                    </div>
+
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4 rent_price_div" style="display: none">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Per Hour Price</label>
+                            <input type="text" name="per_hour_rent_price" class="form-control"
+                                   onkeypress="return isNumberKey(event)"
+                                   placeholder="Enter Price">
+                        </div>
+                    </div>
+
+
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Description</label>
+                            <textarea  name="description" class="form-control"></textarea>
+                        </div>
+                    </div>
+
+
+
+
                 </div>
 
                 <h5>Product Gallery</h5>
@@ -464,7 +522,7 @@
                                                     insideHtml += '<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">';
                                                     insideHtml += '<div class="form-group">';
                                                     insideHtml += '<label for="exampleInputEmail1">'+value2['name']+'</label>';
-                                                    insideHtml += '<select multiple name="custom_fields['+value2['slug']+']" class="form-control multiSelectOption">';
+                                                    insideHtml += '<select multiple name="custom_fields['+value2['slug']+'][]" class="form-control multiSelectOption">';
                                                     $.each(value.field_record,function(index4,value4){
                                                         insideHtml += '<option value="'+value4.id+'">'+value4.name+'</option>';
                                                     });
@@ -489,7 +547,7 @@
                                     html += '<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">';
                                     html += '<div class="form-group">';
                                     html += '<label for="exampleInputEmail1">'+value.field['name']+'</label>';
-                                    html += '<select multiple name="custom_fields['+value.field['id']+']" class="form-control multiSelectOption">';
+                                    html += '<select multiple name="custom_fields['+value.field['id']+'][]" class="form-control multiSelectOption">';
                                     $.each(value.field_record,function(index1,value1){
                                         html += '<option value="'+value1.id+'">'+value1.name+'</option>';
 
@@ -546,6 +604,21 @@
 
             $('#gallery-upload').change(function (event) {
                 imgToData(this);
+            });
+
+            $('.product_type').change(function(){
+                var data = $(this).val();
+
+                if(data == 'for_rent')
+                {
+                    $('.price_div').hide();
+                    $('.rent_price_div').show();
+
+                }
+                else{
+                    $('.rent_price_div').hide();
+                    $('.price_div').show();
+                }
             });
 
 

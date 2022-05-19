@@ -42,6 +42,13 @@ class Product extends Model
 
     }
 
+    public function allRelatedFields()
+    {
+        return $this->belongsToMany(CustomField::class, PivotProductCustomField::class, 'product_id', 'custom_field_id')
+            ->withPivot('value');
+
+    }
+
     public function productImages()
     {
         return $this->hasMany(ProductImage::class, 'product_id');

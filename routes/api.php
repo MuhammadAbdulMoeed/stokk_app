@@ -16,8 +16,10 @@ use App\Http\Controllers\Api\FavoriteController;
 use App\Http\Controllers\Api\BlockUserController;
 use App\Http\Controllers\Api\MyProductController;
 use App\Http\Controllers\Api\ProductController;
+
 /*
-|--------------------------------------------------------------------------
+|------------------------------------------------.
+--------------------------
 | API Routes
 |--------------------------------------------------------------------------
 |
@@ -77,6 +79,9 @@ Route::group(['middleware' => ['json.response']], function () {
             Route::get('get-subcategory',[CategoryController::class,'getSubCategory']);
 
             Route::post('save-product',[ProductController::class,'save']);
+
+            Route::get('product-detail',[ProductController::class,'productDetail']);
+
 
         });
 
