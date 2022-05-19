@@ -31,29 +31,55 @@ class ProductService
 
         try {
             foreach ($request->custom_fields as $customFieldId => $value) {
-                $findCustomField = CustomField::find($customFieldId);
+                if (is_array($value)) {
+                    foreach ($value as $singleValue) {
+                        $findCustomField = CustomField::find($customFieldId);
 
-                if (!$findCustomField) {
-                    return makeResponse('error', 'Custom Field Not Found: ' . $customFieldId, 500);
-
-                }
-
-                if ($findCustomField->is_required == 1 && $value == null) {
-                    if ($findCustomField->parent_id) {
-                        if ($findCustomField->option_id == $request->custom_fields[$findCustomField->parent_id]) {
-                            return response()->json(['result' => 'error', 'message' => $findCustomField->name . ' is a Required Field']);
-                        } else {
-                            continue;
+                        if (!$findCustomField) {
+                            return response()->json(['result' => 'error', 'message' => 'Custom Field Not Found']);
                         }
-                    } else {
-                        return makeResponse('error', $findCustomField->name . ' is a Required Field', 422);
 
+                        if ($findCustomField->is_required == 1 && $singleValue == null) {
+                            if ($findCustomField->parent_id) {
+                                if ($findCustomField->option_id == $request->custom_fields[$findCustomField->parent_id]) {
+                                    return response()->json(['result' => 'error', 'message' => $findCustomField->name . ' is a Required Field']);
+                                } else {
+                                    continue;
+                                }
+                            } else {
+                                return response()->json(['result' => 'error', 'message' => $findCustomField->name . ' is a Required Field']);
+                            }
+                        }
+
+                        PivotProductCustomField::create(['product_id' => $product->id,
+                            'custom_field_id' => $customFieldId,
+                            'value' => $singleValue]);
                     }
                 }
+                else {
 
-                PivotProductCustomField::create(['product_id' => $product->id,
-                    'custom_field_id' => $customFieldId,
-                    'value' => $value]);
+                    $findCustomField = CustomField::find($customFieldId);
+
+                    if (!$findCustomField) {
+                        return response()->json(['result' => 'error', 'message' => 'Custom Field Not Found']);
+                    }
+
+                    if ($findCustomField->is_required == 1 && $value == null) {
+                        if ($findCustomField->parent_id) {
+                            if ($findCustomField->option_id == $request->custom_fields[$findCustomField->parent_id]) {
+                                return response()->json(['result' => 'error', 'message' => $findCustomField->name . ' is a Required Field']);
+                            } else {
+                                continue;
+                            }
+                        } else {
+                            return response()->json(['result' => 'error', 'message' => $findCustomField->name . ' is a Required Field']);
+                        }
+                    }
+
+                    PivotProductCustomField::create(['product_id' => $product->id,
+                        'custom_field_id' => $customFieldId,
+                        'value' => $value]);
+                }
             }
 
         } catch (\Exception $e) {

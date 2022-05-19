@@ -78,7 +78,8 @@ class ProductService
                             'custom_field_id' => $customFieldId,
                             'value' => $singleValue]);
                     }
-                } else {
+                }
+                else {
 
                     $findCustomField = CustomField::find($customFieldId);
 
