@@ -9,12 +9,15 @@ use App\Models\CustomField;
 use App\Models\PivotProductCustomField;
 use App\Models\Product;
 use App\Models\ProductImage;
+use App\Traits\ProductFetchTrait;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 
 class ProductService
 {
+    use ProductFetchTrait;
+
     public function save($request)
     {
         DB::beginTransaction();
@@ -55,8 +58,7 @@ class ProductService
                             'custom_field_id' => $customFieldId,
                             'value' => $singleValue]);
                     }
-                }
-                else {
+                } else {
 
                     $findCustomField = CustomField::find($customFieldId);
 
@@ -125,24 +127,70 @@ class ProductService
     {
         $data = Product::find($request->product_id);
 
+
         if ($data) {
             $productDetail = array();
+            $lastFieldId = null;
+
 
             //parent products
-            foreach($data->customFieldRelate as $relatedField)
-            {
-                if(sizeof($relatedField->customFieldOption) >0)
-                {
-                    $productDetail[] = [
-                        'field_name' => $relatedField->name,
-                        'value' => $relatedField->pivot->name
-                    ];
-                }
-                else{
+            foreach ($data->customFieldRelate as $relatedField) {
+
+
+                if (sizeof($relatedField->customFieldOption) > 0) {
                     $productDetail[] = [
                         'field_name' => $relatedField->name,
                         'value' => $relatedField->pivot->value
                     ];
+                } else {
+
+                    if ($relatedField->type == 'custom_field') {
+                        $productDetail[] = [
+                            'field_name' => $relatedField->name,
+                            'value' => $relatedField->pivot->value
+                        ];
+                    } elseif ($relatedField->type == 'pre_included_field') {
+
+                        if ($lastFieldId == $relatedField->id) {
+                            break;
+                        } else {
+
+                            $lastFieldId = $relatedField->id;
+
+
+                            $value = array();
+                            if ($relatedField->field_type == 'multi_select_option') {
+                                $getMultipleValue = PivotProductCustomField::where('product_id', $data->id)
+                                    ->where('custom_field_id', $relatedField->id)
+                                    ->get();
+                                foreach ($getMultipleValue as $fieldValue) {
+                                    $value[] = $fieldValue->value;
+                                }
+                            } else {
+                                $value[] = $relatedField->pivot->value;
+                            }
+
+
+                            if ($relatedField->field_type == "multi_select_option") {
+                                $fieldValue = DB::table($relatedField->value_taken_from)
+                                    ->whereIn('id', $value)
+                                    ->pluck('name')->toArray();
+
+                            } else {
+                                $fieldValue = DB::table($relatedField->value_taken_from)
+                                    ->whereIn('id', $value)
+                                    ->pluck('name')->toArray();
+
+                            }
+                        }
+
+
+                        $productDetail[] = [
+                            'field_name' => $relatedField->name,
+                            'value' => $fieldValue
+                        ];
+                    }
+
                 }
 
             }
@@ -155,7 +203,23 @@ class ProductService
                 ];
             }
 
-            dd($productDetail);
+
+            //create response for sending detail or product
+            $product = $this->fetchSingleProduct($data);
+            $product['description'] = $data->description;
+            $product['type'] = $data->type;
+            $product['price'] = $data->type == 'for_sale' ? $data->price : null;
+            $product['monthly_price'] = $data->type == 'for_rent' ? $data->per_month_rent_price : null;
+            $product['daily_price'] = $data->type == 'for_rent' ? $data->per_day_rent_price : null;
+            $product['hourly_price'] = $data->type == 'for_rent' ? $data->per_hour_rent_price : null;
+            $product['created_by'] = $data->user->first_name . ' ' . $data->user->last_name;
+            $product['fields'] = $productDetail;
+            $product['location'] = $data->location;
+            $product['cart_available'] = $data->created_by == Auth::user()->id ? 'no' : 'yes';
+
+
+            return makeResponse('success', 'Detail Fetch Successfully', 200, $product);
+
         } else {
             return makeResponse('error', 'Product Not Found', 500);
         }

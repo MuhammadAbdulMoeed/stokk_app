@@ -64,5 +64,10 @@ class Product extends Model
         return $this->hasMany( PivotProductCustomField::class, 'product_id');
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class,'created_by');
+    }
+
 
 }
