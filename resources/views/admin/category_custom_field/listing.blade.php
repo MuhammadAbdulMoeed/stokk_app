@@ -64,7 +64,7 @@
                                         <tr>
                                             <td>{{$loop->iteration}}</td>
                                             <td>{{$categoryName[0]}}</td>
-                                            <td>{{isset($categoryName[2]) ? $categoryName[2]:'N/A'}}</td>
+                                            <td>{{isset($categoryName[2]) ? $categoryName[2]:'N/A'}}{{isset($categoryName[3]) ? '-'.$categoryName[3]:''}}</td>
                                             <td>{{$fieldName}}</td>
 
                                             <td>

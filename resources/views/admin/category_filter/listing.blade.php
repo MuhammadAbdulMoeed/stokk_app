@@ -50,7 +50,7 @@
                                         <th>#</th>
                                         <th>Category Name</th>
                                         <th>Filter Name</th>
-{{--                                        <th>Status</th>--}}
+                                        {{--                                        <th>Status</th>--}}
                                         <th>Action</th>
                                     </tr>
                                     </thead>
@@ -58,8 +58,9 @@
                                     <tbody>
                                     @foreach($data as $category)
                                         @if(sizeof($category->categoryFilters) >0)
+                                            @php $i = 0  @endphp
                                             <tr>
-                                                <td>{{$loop->iteration}}</td>
+                                                <td>{{++$i}}</td>
                                                 <td>{{$category->name}}</td>
                                                 <td>
                                                     @foreach($category->categoryFiltersOrder as $category_filter)
@@ -70,11 +71,11 @@
                                                         @endif
                                                     @endforeach
                                                 </td>
-{{--                                                <td>--}}
-{{--                                                    <button class="btn-sm {{$category->is_active == 1 ? 'btn btn-outline-success':'btn btn-outline-danger'}}">--}}
-{{--                                                        {{$category->is_active == 1 ? 'Active':'Inactive'}}--}}
-{{--                                                    </button>--}}
-{{--                                                </td>--}}
+                                                {{--                                                <td>--}}
+                                                {{--                                                    <button class="btn-sm {{$category->is_active == 1 ? 'btn btn-outline-success':'btn btn-outline-danger'}}">--}}
+                                                {{--                                                        {{$category->is_active == 1 ? 'Active':'Inactive'}}--}}
+                                                {{--                                                    </button>--}}
+                                                {{--                                                </td>--}}
                                                 <td>
                                                     <a title="Edit"
                                                        href="{{route('categoryFilterEdit',['id'=>$category->id])}}"
@@ -86,7 +87,8 @@
                                                        class="btn btn-outline-danger btn-sm deleteRecord">
                                                         <i class="fas fa-trash-alt"></i></a>
 
-                                                    <a title="Change Order" href="{{route('categoryFilterChangePosition',['id'=>$category->id])}}"
+                                                    <a title="Change Order"
+                                                       href="{{route('categoryFilterChangePosition',['id'=>$category->id])}}"
                                                        data-id="{{$category->id}}"
                                                        class="btn btn-outline-primary btn-sm ">
                                                         <i class="fa fa-sort" aria-hidden="true"></i>

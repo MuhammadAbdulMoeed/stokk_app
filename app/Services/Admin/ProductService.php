@@ -153,6 +153,7 @@ class ProductService
             $field = array();
             $fieldRecords = array();
             $lastFieldId = '';
+            $custom_fields = array();
             foreach ($data->customField as $key => $customField) {
                 $relatedFields = array();
                 $field = array();
@@ -197,7 +198,31 @@ class ProductService
                                 ->select('name', 'id')
                                 ->where('is_active', 1)
                                 ->get()->toArray();
-                        } else {
+                        }
+                        else if ($customField->value_taken_from == 'sizes' || $customField->value_taken_from == 'item_conditions') {
+                            $getSubCategories = DB::table($customField->value_taken_from)
+                                ->select('name', 'id')
+                                ->where('is_active', 1)
+                                ->get()->toArray();
+                        }
+                        else if ($customField->value_taken_from == 'brands') {
+                            $getCategoriesBrands = DB::table($customField->value_taken_from)
+                                ->select('name', 'id')
+                                ->where('is_active', 1)
+                                ->where('category_id',$data->category_id)
+                                ->get()->toArray();
+
+                            $getSubCategoriesBrands = DB::table($customField->value_taken_from)
+                                ->select('name', 'id')
+                                ->where('is_active', 1)
+                                ->where('category_id',$data->sub_category_id)
+                                ->get()->toArray();
+
+                            $getSubCategories = array_merge($getCategoriesBrands,$getSubCategoriesBrands);
+
+
+                        }
+                        else {
                             $getSubCategories = DB::table($customField->value_taken_from)
                                 ->select('name', 'id', 'icon')
                                 ->whereIn('category_id', $data->subCategory->pluck('id')->toArray())

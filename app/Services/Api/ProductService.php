@@ -138,18 +138,30 @@ class ProductService
 
 
                 if (sizeof($relatedField->customFieldOption) > 0) {
+                    $value = '';
+                    foreach($relatedField->customFieldOption as $customFieldOption)
+                    {
+                        if($customFieldOption->id == $relatedField->pivot->value)
+                        {
+                            $value = $customFieldOption->name;
+                        }
+                    }
+
                     $productDetail[] = [
                         'field_name' => $relatedField->name,
-                        'value' => $relatedField->pivot->value
+                        'value' => $value
                     ];
-                } else {
+                }
+                else {
 
                     if ($relatedField->type == 'custom_field') {
+
                         $productDetail[] = [
                             'field_name' => $relatedField->name,
                             'value' => $relatedField->pivot->value
                         ];
-                    } elseif ($relatedField->type == 'pre_included_field') {
+                    }
+                    elseif ($relatedField->type == 'pre_included_field') {
 
                         if ($lastFieldId == $relatedField->id) {
                             break;
