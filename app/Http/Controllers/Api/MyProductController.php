@@ -8,8 +8,8 @@ use Illuminate\Http\Request;
 
 class MyProductController extends Controller
 {
-    public function myProduct(MyProductService $productService)
+    public function myProduct(Request $request,MyProductService $productService)
     {
-        return $productService->myProduct();
+        return $productService->myProduct($request);
     }
 }

@@ -4,6 +4,7 @@
 namespace App\Traits;
 
 
+use App\Models\ProductReview;
 use Illuminate\Support\Facades\Auth;
 
 trait ProductFetchTrait
@@ -25,8 +26,19 @@ trait ProductFetchTrait
                 $productImage[] = $image->image;
             }
 
+
+
             $products[] = ['name' => $product->name, 'id' => $product->id, 'images' => $productImage,
-                'totalFavorite' => count($product->isFavorite), 'is_favorite' => $status];
+                'totalFavorite' => count($product->isFavorite), 'is_favorite' => $status,
+                'product_type' => $product->type,
+                'price' => $product->type == 'for_sale' ? $product->price : null,
+                'description' => $product->description, 'location' => $product->location,
+                'monthly_price' => $product->type == 'for_rent' ? $product->per_month_rent_price : null,
+                'daily_price' => $product->type == 'for_rent' ? $product->per_day_rent_price : null,
+                'hourly_price' => $product->type == 'for_rent' ? $product->per_hour_rent_price : null,
+                'avg_rating' => number_format(ProductReview::where('product_id', $product->id)->avg('rating'), '2', '.', ',')
+
+            ];
         }
 
         return $products;
@@ -34,8 +46,6 @@ trait ProductFetchTrait
 
     public function fetchSingleProduct($product)
     {
-
-
         $productImage = [];
         $status = 'no';
         $isFavorite = $product->isFavorite->where('user_id', Auth::user()->id)->first();
@@ -49,7 +59,16 @@ trait ProductFetchTrait
         }
 
         $products = ['name' => $product->name, 'id' => $product->id, 'images' => $productImage,
-            'totalFavorite' => count($product->isFavorite), 'is_favorite' => $status];
+            'totalFavorite' => count($product->isFavorite), 'is_favorite' => $status,
+            'product_type' => $product->type,
+            'price' => $product->type == 'for_sale' ? $product->price : null,
+            'description' => $product->description, 'location' => $product->location,
+            'monthly_price' => $product->type == 'for_rent' ? $product->per_month_rent_price : null,
+            'daily_price' => $product->type == 'for_rent' ? $product->per_day_rent_price : null,
+            'hourly_price' => $product->type == 'for_rent' ? $product->per_hour_rent_price : null,
+            'avg_rating' => number_format(ProductReview::where('product_id', $product->id)->avg('rating'), '2', '.', ',')
+
+        ];
 
         return $products;
     }

@@ -218,19 +218,33 @@ class ProductService
 
             //create response for sending detail or product
             $product = $this->fetchSingleProduct($data);
-            $product['description'] = $data->description;
-            $product['type'] = $data->type;
-            $product['price'] = $data->type == 'for_sale' ? $data->price : null;
-            $product['monthly_price'] = $data->type == 'for_rent' ? $data->per_month_rent_price : null;
-            $product['daily_price'] = $data->type == 'for_rent' ? $data->per_day_rent_price : null;
-            $product['hourly_price'] = $data->type == 'for_rent' ? $data->per_hour_rent_price : null;
+//            $product['description'] = $data->description;
+//            $product['type'] = $data->type;
+//            $product['price'] = $data->type == 'for_sale' ? $data->price : null;
+//            $product['monthly_price'] = $data->type == 'for_rent' ? $data->per_month_rent_price : null;
+//            $product['daily_price'] = $data->type == 'for_rent' ? $data->per_day_rent_price : null;
+//            $product['hourly_price'] = $data->type == 'for_rent' ? $data->per_hour_rent_price : null;
             $product['created_by'] = $data->user->first_name . ' ' . $data->user->last_name;
             $product['fields'] = $productDetail;
-            $product['location'] = $data->location;
+//            $product['location'] = $data->location;
             $product['cart_available'] = $data->created_by == Auth::user()->id ? 'no' : 'yes';
 
+            $relatedProductsArray = Product::where('category_id',$data->category_id)
+                ->where('sub_category_id',$data->sub_category_id)
+                ->where('id','!=',$data->id)
+                ->where('created_by','!=',Auth::user()->id)
+                ->where('is_active',1)
+                ->get();
 
-            return makeResponse('success', 'Detail Fetch Successfully', 200, $product);
+            $relatedProducts = $this->fetchProduct($relatedProductsArray);
+
+            $data = [
+                'product_detail' => $product,
+                'related_products' =>  $relatedProducts
+            ];
+
+
+            return makeResponse('success', 'Detail Fetch Successfully', 200, $data);
 
         } else {
             return makeResponse('error', 'Product Not Found', 500);

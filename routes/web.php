@@ -193,5 +193,6 @@ Route::namespace('Admin')->group(function () {
 
         Route::get('category-field', [CategoryCustomFieldController::class, 'getCategoryField'])->name('getCategoryField');
 
+
     });
 });

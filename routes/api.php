@@ -16,7 +16,7 @@ use App\Http\Controllers\Api\FavoriteController;
 use App\Http\Controllers\Api\BlockUserController;
 use App\Http\Controllers\Api\MyProductController;
 use App\Http\Controllers\Api\ProductController;
-
+use App\Http\Controllers\Api\ReviewController;
 /*
 |------------------------------------------------.
 --------------------------
@@ -68,7 +68,9 @@ Route::group(['middleware' => ['json.response']], function () {
             Route::get('get-category-filter',[CategoryFilterController::class,'getCategoryFilter']);
             Route::post('apply-filters',[CategoryFilterController::class,'applyFilter']);
 
-            Route::post('favorite-product',[FavoriteController::class,'favoriteProduct']);
+            Route::post('make-product-favorite',[FavoriteController::class,'favoriteProduct']);
+            Route::get('favorite-product-list',[FavoriteController::class,'favoriteProductList']);
+
 
             Route::post('block-user',[BlockUserController::class,'blockUser']);
             Route::post('unblock-user',[BlockUserController::class,'unBlockUser']);
@@ -82,6 +84,7 @@ Route::group(['middleware' => ['json.response']], function () {
 
             Route::get('product-detail',[ProductController::class,'productDetail']);
 
+            Route::post('post-review',[ReviewController::class,'saveReview']);
 
         });
 

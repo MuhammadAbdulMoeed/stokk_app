@@ -136,16 +136,25 @@ class CategoryFilterService
                 return makeResponse('error', 'Filter Record Not Exist In: ' . $filter['id'], 500);
             }
 
-            if(sizeof($request->filters) == 1)
+            $getFieldRecord = CustomField::find($filter['id']);
+            $operator = '=';
+
+            if($getFieldRecord->type == 'custom_field' && $getFieldRecord->field_type == 'number_field')
             {
-                $whereStatement[$key] = "( custom_field_id = " . $filter['id'] . " AND value =" . $filter['value'] . ")";
+                $operator = '>=';
+            }
+
+
+            if($key == 0)
+            {
+                $whereStatement[$key] = "( custom_field_id = " . $filter['id'] . " AND value ".$operator.''. $filter['value'] . ")";
             }
             else {
 
-                if (sizeof($request->filters) == $i) {
-                    $whereStatement[$key] = "OR ( custom_field_id = " . $filter['id'] . " AND value = " . $filter['value'] . ")";
+                if (sizeof($request->filters) == $i || $key != 0) {
+                    $whereStatement[$key] = "OR ( custom_field_id = " . $filter['id'] . " AND value  ".$operator.'' . $filter['value'] . ")";
                 } else {
-                    $whereStatement[$key] = "( custom_field_id = " . $filter['id'] . " AND value =" . $filter['value'] . ")";
+                    $whereStatement[$key] = "( custom_field_id = " . $filter['id'] . " AND value ".$operator.'' . $filter['value'] . ")";
 
                 }
             }
@@ -169,6 +178,8 @@ class CategoryFilterService
         $finalProducts = array();
 
         $statement = implode($whereStatement, ' ');
+
+//        dd($statement);
 
         $record = PivotProductCustomField::select('product_id')->whereRaw($statement)->distinct()->get();
 

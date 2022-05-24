@@ -13,9 +13,11 @@ class MyProductService
 
     use ProductFetchTrait;
 
-    public function myProduct()
+    public function myProduct($request)
     {
-        $productsList = Product::where('is_active', 1)->where('created_by', Auth::user()->id)->get();
+        $productsList = Product::where('is_active', 1)
+            ->where('type',$request->type)
+            ->where('created_by', Auth::user()->id)->get();
         if (sizeof($productsList) > 0) {
 
             $products = $this->fetchProduct($productsList);

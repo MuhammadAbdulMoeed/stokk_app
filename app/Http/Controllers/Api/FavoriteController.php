@@ -14,4 +14,8 @@ class FavoriteController extends Controller
         return $favoriteService->favoriteProduct($request);
     }
 
+    public function favoriteProductList(Request $request,FavoriteService $favoriteService)
+    {
+        return $favoriteService->favoriteProductList($request);
+    }
 }
