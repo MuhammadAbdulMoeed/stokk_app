@@ -36,6 +36,7 @@ trait ProductFetchTrait
                 'monthly_price' => $product->type == 'for_rent' ? $product->per_month_rent_price : null,
                 'daily_price' => $product->type == 'for_rent' ? $product->per_day_rent_price : null,
                 'hourly_price' => $product->type == 'for_rent' ? $product->per_hour_rent_price : null,
+                'product_creator_id' => $product->created_by,
                 'avg_rating' => number_format(ProductReview::where('product_id', $product->id)->avg('rating'), '2', '.', ',')
 
             ];
@@ -66,6 +67,7 @@ trait ProductFetchTrait
             'monthly_price' => $product->type == 'for_rent' ? $product->per_month_rent_price : null,
             'daily_price' => $product->type == 'for_rent' ? $product->per_day_rent_price : null,
             'hourly_price' => $product->type == 'for_rent' ? $product->per_hour_rent_price : null,
+            'product_creator_id' => $product->created_by,
             'avg_rating' => number_format(ProductReview::where('product_id', $product->id)->avg('rating'), '2', '.', ',')
 
         ];

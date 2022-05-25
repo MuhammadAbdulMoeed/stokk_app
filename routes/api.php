@@ -17,6 +17,7 @@ use App\Http\Controllers\Api\BlockUserController;
 use App\Http\Controllers\Api\MyProductController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\ReviewController;
+use App\Http\Controllers\Api\ChatController;
 /*
 |------------------------------------------------.
 --------------------------
@@ -85,6 +86,10 @@ Route::group(['middleware' => ['json.response']], function () {
             Route::get('product-detail',[ProductController::class,'productDetail']);
 
             Route::post('post-review',[ReviewController::class,'saveReview']);
+
+            Route::get('conversation',[ChatController::class,'conversation']);
+            Route::post('send-message',[ChatController::class,'sendMessage']);
+            Route::get('chat-list',[ChatController::class,'chat']);
 
         });
 
