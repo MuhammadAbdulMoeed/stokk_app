@@ -7,6 +7,8 @@
 
 @section('body')
 
+    @php phpinfo();  @endphp
+
     <div class="content">
         <div class="container-fluid">
             <div class="row">

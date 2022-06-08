@@ -5,7 +5,6 @@ namespace App\Exceptions;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Spatie\Permission\Exceptions\UnauthorizedException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Throwable;
 use Illuminate\Auth\AuthenticationException;
 
@@ -38,9 +37,16 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {
-        $this->reportable(function (Throwable $e) {
-            //
+//        $this->reportable(function (Throwable $e) {
+//            //
+//        });
+
+        $this->renderable(function (NotFoundHttpException $e,$request){
+            if($request->is('api/*')){
+                return makeResponse('error','Not Found',404);
+            }
         });
+
     }
 
     protected function unauthenticated($request, AuthenticationException $exception)
@@ -65,7 +71,12 @@ class Handler extends ExceptionHandler
     public function report(Throwable $exception)
     {
         parent::report($exception);
+//        return makeResponse('error',$exception->getMessage(),404);
+
     }
+
+
+
 
 
 }

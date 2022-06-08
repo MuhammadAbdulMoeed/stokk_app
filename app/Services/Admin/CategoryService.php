@@ -6,6 +6,7 @@ namespace App\Services\Admin;
 
 use App\Helper\ImageUploadHelper;
 use App\Models\Category;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 
 class CategoryService
@@ -18,6 +19,7 @@ class CategoryService
 
     public function create()
     {
+
         $parents = Category::whereNull('parent_id')->get();
         return view('admin.category.create', compact('parents'));
     }
@@ -191,4 +193,20 @@ class CategoryService
             return response()->json(['result' => 'error', 'message' => 'Record Not Found']);
         }
     }
+
+
+    public  function removeBraces($str,$opbr = '(',$clbr = ')') {
+
+        $rstr = trim($str);
+        $leftchar = substr($rstr,0,1);
+        $rightchar = substr($rstr,-1,1);
+        if (($opbr == '(' and ($leftchar == '(' or $leftchar == '{' or $leftchar == '[')) or $leftchar == $opbr) {
+            $rstr = substr($rstr,1);
+        }
+        if (($clbr == ')' and ($rightchar == ')' or $rightchar == '}' or $rightchar == ']')) or $rightchar == $clbr) {
+            $rstr = substr($rstr,0,-1);
+        }
+        return $rstr;
+    }
+
 }

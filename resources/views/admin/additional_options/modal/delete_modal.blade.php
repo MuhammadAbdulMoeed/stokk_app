@@ -7,6 +7,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
+
             </div>
             <form id="delete_form">
                 @csrf

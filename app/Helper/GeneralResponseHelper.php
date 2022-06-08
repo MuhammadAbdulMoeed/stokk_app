@@ -1,7 +1,7 @@
 <?php
 
 
-function makeResponse($result, $message, $code = 200,$data = [],$token = null)
+function makeResponse($result, $message, $code = 200,$data = null,$token = null)
 {
     if($token)
     {
@@ -21,4 +21,9 @@ function makeResponse($result, $message, $code = 200,$data = [],$token = null)
     }
 
 }
+
+
+
+
+
 

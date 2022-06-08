@@ -62,7 +62,8 @@ class LoginService
         DB::beginTransaction();
         try {
             $message = '';
-            $user = User::where('uuid', $request->uuid)->where('provider', $request->provider)->first();
+            $user = User::where('uuid', $request->uuid)
+                ->where('provider', $request->provider)->first();
 
             if ($user) {
 
@@ -78,6 +79,12 @@ class LoginService
                 $message = "Login Successfully";
             }
             else {
+                $checkEmail = User::where('email', $request->email)->first();
+                if($checkEmail)
+                {
+                    DB::rollBack();
+                    return makeResponse('error', 'Email Already Exist', 401);
+                }
                 if ($request->provider == 'FACEBOOK') {
                     $user = $this->loginWithFb($request);
                 } elseif ($request->provider == 'APPLE') {
