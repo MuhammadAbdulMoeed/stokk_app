@@ -14,10 +14,18 @@ class ProfileService
 {
     public function getProfile()
     {
-        $data = ['first_name' => Auth::user()->first_name,'last_name' => Auth::user()->last_name,
-            'profile_image' => Auth::user()->profile_image, 'user_name' => Auth::user()->user_name,
-            'gender' => Auth::user()->gender, 'date_of_birth' => Auth::user()->date_of_birth,
-            'description' => Auth::user()->bio
+        $data = [ 'first_name' => Auth::user()->first_name,
+            'last_name' => Auth::user()->last_name,
+            'email' => Auth::user()->email,
+            'fcm_token' => Auth::user()->fcm_token,
+            'is_completed' => Auth::user()->userLocation ? 1:0,
+            'provider' => Auth::user()->provider,
+            'city' => Auth::user()->userLocation ? Auth::user()->userLocation->city: null,
+            'country' => Auth::user()->userLocation ? Auth::user()->userLocation->country: null,
+            'lat' => Auth::user()->userLocation ? Auth::user()->userLocation->lat: null,
+            'lng' => Auth::user()->userLocation ? Auth::user()->userLocation->lng: null,
+            'profile_image' => Auth::user()->profile_image,
+
         ];
 
 
