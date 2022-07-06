@@ -15,14 +15,15 @@ class HomeService
 
     public function getNearbyProduct()
     {
-        $data = Product::where('is_active', 1)->inRandomOrder()
+        $data = Product::where('is_active', 1)->where('created_by',Auth::user()->id)
+            ->inRandomOrder()
             ->limit(8);
 
-        if (isset(Auth::user()->userLocation->city)) {
-            $data = $data->where('city', Auth::user()->userLocation->city)->get();
-        } else {
+//        if (isset(Auth::user()->userLocation->city)) {
+//            $data = $data->where('city', Auth::user()->userLocation->city)->get();
+//        } else {
             $data = $data->get();
-        }
+//        }
 
         $products = array();
         $productImage = array();

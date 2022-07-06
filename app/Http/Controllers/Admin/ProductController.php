@@ -37,9 +37,9 @@ class ProductController extends Controller
         return $productService->update($request);
     }
 
-    public function delete(Request $request)
+    public function delete(Request $request,ProductService $productService)
     {
-
+        return $productService->delete($request);
     }
 
     public function updateImage(ProductImageRequest $request,ProductService $productService)

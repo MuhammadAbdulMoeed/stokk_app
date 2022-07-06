@@ -5,6 +5,7 @@ namespace App\Traits;
 
 
 use App\Models\ProductReview;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 trait ProductFetchTrait
@@ -37,6 +38,7 @@ trait ProductFetchTrait
                 'daily_price' => $product->type == 'for_rent' ? $product->per_day_rent_price : null,
                 'hourly_price' => $product->type == 'for_rent' ? $product->per_hour_rent_price : null,
                 'product_creator_id' => $product->created_by,
+                'product_created_ago' => Carbon::parse($product->created_at)->diffForHumans(),
                 'avg_rating' => number_format(ProductReview::where('product_id', $product->id)->avg('rating'), '2', '.', ',')
 
             ];
@@ -68,6 +70,7 @@ trait ProductFetchTrait
             'daily_price' => $product->type == 'for_rent' ? $product->per_day_rent_price : null,
             'hourly_price' => $product->type == 'for_rent' ? $product->per_hour_rent_price : null,
             'product_creator_id' => $product->created_by,
+            'product_created_ago' => Carbon::parse($product->created_at)->diffForHumans(),
             'avg_rating' => number_format(ProductReview::where('product_id', $product->id)->avg('rating'), '2', '.', ',')
 
         ];

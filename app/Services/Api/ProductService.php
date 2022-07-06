@@ -10,6 +10,7 @@ use App\Models\PivotProductCustomField;
 use App\Models\Product;
 use App\Models\ProductImage;
 use App\Traits\ProductFetchTrait;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
@@ -26,6 +27,11 @@ class ProductService
             $product = Product::create(['name' => $request->name, 'category_id' => $request->category_id,
                 'location' => $request->location, 'lat' => $request->lat, 'lng' => $request->lng,
                 'currency' => $request->currency, 'description' => $request->description,
+                'type' => $request->type,
+                'price' => $request->type == 'for_sale' ? $request->price : null,
+                'per_month_rent_price' => $request->type == 'for_rent' ? $request->per_month_rent_price : null,
+                'per_hour_rent_price' => $request->type == 'for_rent' ? $request->per_month_rent_price : null,
+                'per_day_rent_price' => $request->type == 'for_rent' ? $request->per_month_rent_price : null,
                 'sub_category_id' => $request->sub_category_id, 'created_by' => Auth::user()->id, 'is_active' => 1]);
         } catch (\Exception $e) {
             DB::rollBack();
@@ -138,12 +144,12 @@ class ProductService
 
 
                 if (sizeof($relatedField->customFieldOption) > 0) {
-                    $value = '';
+                    $value = array();
                     foreach($relatedField->customFieldOption as $customFieldOption)
                     {
                         if($customFieldOption->id == $relatedField->pivot->value)
                         {
-                            $value = $customFieldOption->name;
+                            $value[] = $customFieldOption->name;
                         }
                     }
 
@@ -158,7 +164,7 @@ class ProductService
 
                         $productDetail[] = [
                             'field_name' => $relatedField->name,
-                            'value' => $relatedField->pivot->value
+                            'value' => [$relatedField->pivot->value]
                         ];
                     }
                     elseif ($relatedField->type == 'pre_included_field') {
@@ -225,6 +231,7 @@ class ProductService
 //            $product['daily_price'] = $data->type == 'for_rent' ? $data->per_day_rent_price : null;
 //            $product['hourly_price'] = $data->type == 'for_rent' ? $data->per_hour_rent_price : null;
             $product['created_by'] = $data->user->first_name . ' ' . $data->user->last_name;
+            $product['creator_image'] =  $data->user->profile_image;
             $product['fields'] = $productDetail;
 //            $product['location'] = $data->location;
             $product['cart_available'] = $data->created_by == Auth::user()->id ? 'no' : 'yes';

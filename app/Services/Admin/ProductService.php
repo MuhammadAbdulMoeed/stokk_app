@@ -429,7 +429,16 @@ class ProductService
 
     public function delete($request)
     {
+        $data =  Product::find($request->id);
+        if($data)
+        {
+            $data->delete();
+            return response()->json(['result' => 'success', 'message' => 'Record Deleted Successfully']);
 
+        }
+        else{
+            return response()->json(['result' => 'error', 'message' => 'Record Not Found']);
+        }
     }
 
     public function deleteGallery($id)
