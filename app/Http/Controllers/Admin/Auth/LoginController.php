@@ -12,7 +12,6 @@ class LoginController extends Controller
 
     public function loginPage(LoginService $loginService)
     {
-        dd(env('DB_PASSWORD'));
         return $loginService->loginPage();
     }
 
