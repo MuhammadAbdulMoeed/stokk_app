@@ -13,17 +13,28 @@ class HomeService
 {
     use ProductFetchTrait;
 
-    public function getNearbyProduct()
+    public function getNearbyProduct($request = null)
     {
         $data = Product::where('is_active', 1)->where('created_by',Auth::user()->id)
             ->inRandomOrder()
             ->limit(8);
 
-//        if (isset(Auth::user()->userLocation->city)) {
+
+        if(isset($request) && $request->type == 'for_rent')
+        {
+            $data =  $data->where('type',$request->type);
+        }
+        elseif(isset($request) && $request->type == 'for_sale')
+        {
+            $data =  $data->where('type',$request->type);
+        }
+
+        //        if (isset(Auth::user()->userLocation->city)) {
 //            $data = $data->where('city', Auth::user()->userLocation->city)->get();
 //        } else {
-            $data = $data->get();
+        $data = $data->get();
 //        }
+
 
         $products = array();
         $productImage = array();

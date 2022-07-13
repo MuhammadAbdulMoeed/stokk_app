@@ -9,11 +9,11 @@ use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    public function index(HomeService $homeService,CategoryService $categoryService)
+    public function index(HomeService $homeService,CategoryService $categoryService,Request $request)
     {
         $categories = $categoryService->getAllCategories();
 
-        $products = $homeService->getNearbyProduct();
+        $products = $homeService->getNearbyProduct($request);
 
         $data = ['products'=>$products,'categories'=>$categories];
 
