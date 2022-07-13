@@ -62,8 +62,9 @@ class FavoriteService
 
 
             return makeResponse('success', 'Product Found', 200, $products);
-        } else {
-            return makeResponse('error', 'No Record Found', 404);
+        }
+        else {
+            return makeResponse('success', 'No Record Found', 200);
         }
 
     }
