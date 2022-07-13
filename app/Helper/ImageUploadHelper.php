@@ -9,8 +9,8 @@ class ImageUploadHelper
 {
     public static function saveImage($image, $fileNameUpload, $path)
     {
-
-        Image::make($image)->save($path . $fileNameUpload);
+        $publicPath =  public_path($path);
+        Image::make($image)->save($publicPath . $fileNameUpload);
 
         return $path . $fileNameUpload;
     }
