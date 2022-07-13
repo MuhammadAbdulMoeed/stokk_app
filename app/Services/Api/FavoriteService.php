@@ -52,6 +52,8 @@ class FavoriteService
             }])
             ->get();
 
+        $products = array();
+
         if (sizeof($favoriteProductList) > 0) {
 
             foreach ($favoriteProductList as $favoriteProduct)
@@ -64,7 +66,7 @@ class FavoriteService
             return makeResponse('success', 'Product Found', 200, $products);
         }
         else {
-            return makeResponse('success', 'No Record Found', 200);
+            return makeResponse('success', 'No Record Found', 200,$products);
         }
 
     }
