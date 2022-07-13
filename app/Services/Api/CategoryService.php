@@ -33,7 +33,7 @@ class CategoryService
             $data[] = ['name'=>$subCategory->name,'image'=>$subCategory->image,
                 'icon'=>$subCategory->icon,
                 'type' => $subCategory->slug,'id'=>(string)$subCategory->id,
-                'parent_id'=>$subCategory->parent_id];
+                'parent_id'=>(string)$subCategory->parent_id];
         }
 
         return $data;

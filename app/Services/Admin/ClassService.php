@@ -32,7 +32,7 @@ class ClassService
                 $ext = $image->getClientOriginalExtension();
                 $fileName = $image->getClientOriginalName();
                 $fileNameUpload = time() . "-" . $fileName;
-                $drive = 'upload/brand/';
+                $drive = 'upload/class/';
                 $path = public_path($drive);
                 if (!file_exists($path)) {
                     File::makeDirectory($path, 0777, true);
@@ -89,7 +89,7 @@ class ClassService
                     $ext = $image->getClientOriginalExtension();
                     $fileName = $image->getClientOriginalName();
                     $fileNameUpload = time() . "-" . $fileName;
-                    $drive = 'upload/category/';
+                    $drive = 'upload/class/';
                     $path = public_path($drive);
                     if (!file_exists($path)) {
                         File::makeDirectory($path, 0777, true);
