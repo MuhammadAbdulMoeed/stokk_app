@@ -78,29 +78,30 @@ class CategoryService
                 return makeResponse('error', 'Category Not Found', 404);
 
             }
-        }
+            else {
 
-        if ($findCategory) {
+                $productsList = $productsList->where('category_id', $request->category_id);
 
-            $productsList = $productsList->where('category_id', $request->category_id);
+                if ($request->sub_category_id) {
+                    $findSubCategory = Category::where('id', $request->sub_category_id)
+                        ->whereNotNull('parent_id')
+                        ->where('is_active', 1)
+                        ->first();
+                    if (!$findSubCategory) {
+                        return makeResponse('error', 'Sub Category Not Found', 404);
+                    }
 
-            if ($request->sub_category_id) {
-                $findSubCategory = Category::where('id', $request->sub_category_id)
-                    ->whereNotNull('parent_id')
-                    ->where('is_active', 1)
-                    ->first();
-                if (!$findSubCategory) {
-                    return makeResponse('error', 'Sub Category Not Found', 404);
+                    if ($findSubCategory->parent_id != $request->category_id) {
+                        return makeResponse('error', 'This SubCategory does not belong to Category', '200');
+                    }
+
+                    $productsList = $productsList->where('sub_category_id', $request->sub_category_id);
                 }
 
-                if ($findSubCategory->parent_id != $request->category_id) {
-                    return makeResponse('error', 'This SubCategory does not belong to Category', '200');
-                }
-
-                $productsList = $productsList->where('sub_category_id', $request->sub_category_id);
             }
-            
         }
+
+
 
         $productsList = $productsList->get();
 
