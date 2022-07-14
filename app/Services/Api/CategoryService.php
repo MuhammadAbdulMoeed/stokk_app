@@ -16,7 +16,7 @@ class CategoryService
 
     public function getAllCategories()
     {
-        $categories = Category::select('id', 'name', 'icon', 'image','slug as type')->where('is_active', 1)->whereNull('parent_id')->get();
+        $categories = Category::select('id', 'name', 'icon', 'image', 'slug as type')->where('is_active', 1)->whereNull('parent_id')->get();
 
         return $categories;
     }
@@ -26,14 +26,13 @@ class CategoryService
     {
         $data = array();
 
-        $subCategories =  Category::where('parent_id',$request->category_id)->where('is_active',1)->get();
+        $subCategories = Category::where('parent_id', $request->category_id)->where('is_active', 1)->get();
 
-        foreach($subCategories as $subCategory)
-        {
-            $data[] = ['name'=>$subCategory->name,'image'=>$subCategory->image,
-                'icon'=>$subCategory->icon,
-                'type' => $subCategory->slug,'id'=>(string)$subCategory->id,
-                'parent_id'=>(string)$subCategory->parent_id];
+        foreach ($subCategories as $subCategory) {
+            $data[] = ['name' => $subCategory->name, 'image' => $subCategory->image,
+                'icon' => $subCategory->icon,
+                'type' => $subCategory->slug, 'id' => (string)$subCategory->id,
+                'parent_id' => (string)$subCategory->parent_id];
         }
 
         return $data;
@@ -69,32 +68,39 @@ class CategoryService
             ->first();
 
         if ($findCategory) {
-            $findSubCategory = Category::where('id', $request->sub_category_id)
-                ->whereNotNull('parent_id')
-                ->where('is_active', 1)
-                ->first();
 
-            if (!$findSubCategory) {
-                return makeResponse('error', 'Sub Category Not Found', 404);
-            } else {
+            $productsList = Product::where('category_id', $request->category_id)
+                ->where('is_active', 1);
+
+            if ($request->sub_category_id) {
+                $findSubCategory = Category::where('id', $request->sub_category_id)
+                    ->whereNotNull('parent_id')
+                    ->where('is_active', 1)
+                    ->first();
+                if (!$findSubCategory) {
+                    return makeResponse('error', 'Sub Category Not Found', 404);
+                }
+
                 if ($findSubCategory->parent_id != $request->category_id) {
                     return makeResponse('error', 'This SubCategory does not belong to Category', '200');
                 }
 
-                $productsList = Product::where('sub_category_id',$request->sub_category_id)
-                    ->where('is_active',1)
-                    ->get();
-
-                if(sizeof($productsList) > 0)
-                {
-                    $products = $this->fetchProduct($productsList);
-                    return makeResponse('success', 'Record Found', 200, $products);
-                }
-                else{
-                    return makeResponse('error', 'Record Not Found', 404);
-                }
+                $productsList = $productsList->where('sub_category_id', $request->sub_category_id);
             }
-        } else {
+
+
+            $productsList = $productsList->get();
+
+
+            if (sizeof($productsList) > 0) {
+                $products = $this->fetchProduct($productsList);
+                return makeResponse('success', 'Record Found', 200, $products);
+            } else {
+                return makeResponse('error', 'Record Not Found', 404);
+            }
+
+        }
+        else {
             return makeResponse('error', 'Category Not Found', 404);
         }
 
