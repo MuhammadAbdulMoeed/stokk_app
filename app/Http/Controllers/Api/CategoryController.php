@@ -22,9 +22,9 @@ class CategoryController extends Controller
         return $categoryService->searchCategory($request);
     }
 
-    public function getSubCategoryProduct(Request $request, CategoryService $categoryService)
+    public function getProduct(Request $request, CategoryService $categoryService)
     {
-        return $categoryService->getSubCategoryProduct($request);
+        return $categoryService->getProduct($request);
     }
 
     public function getSubCategory(FetchSubCategoryRequest $request, CategoryService $categoryService)

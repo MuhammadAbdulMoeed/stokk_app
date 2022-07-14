@@ -78,7 +78,7 @@ Route::group(['middleware' => ['json.response']], function () {
 
             Route::get('my-products',[MyProductController::class,'myProduct']);
 
-            Route::get('get-subcategory-product',[CategoryController::class,'getSubCategoryProduct']);
+            Route::get('get-products',[CategoryController::class,'getProduct']);
             Route::get('get-subcategory',[CategoryController::class,'getSubCategory']);
 
             Route::post('save-product',[ProductController::class,'save']);

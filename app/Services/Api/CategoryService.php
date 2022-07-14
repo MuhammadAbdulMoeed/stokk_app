@@ -59,7 +59,7 @@ class CategoryService
         }
     }
 
-    public function getSubCategoryProduct($request)
+    public function getProduct($request)
     {
         $products = array();
         $findCategory = Category::where('id', $request->category_id)
