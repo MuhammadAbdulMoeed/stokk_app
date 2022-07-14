@@ -62,15 +62,27 @@ class CategoryService
     public function getProduct($request)
     {
         $products = array();
-        $findCategory = Category::where('id', $request->category_id)
-            ->whereNull('parent_id')
-            ->where('is_active', 1)
-            ->first();
+
+
+        $productsList = Product::where('is_active', 1);
+
+        if($request->category_id)
+        {
+            $findCategory = Category::where('id', $request->category_id)
+                ->whereNull('parent_id')
+                ->where('is_active', 1)
+                ->first();
+
+            if(!$findCategory)
+            {
+                return makeResponse('error', 'Category Not Found', 404);
+
+            }
+        }
 
         if ($findCategory) {
 
-            $productsList = Product::where('category_id', $request->category_id)
-                ->where('is_active', 1);
+            $productsList = $productsList->where('category_id', $request->category_id);
 
             if ($request->sub_category_id) {
                 $findSubCategory = Category::where('id', $request->sub_category_id)
@@ -87,22 +99,19 @@ class CategoryService
 
                 $productsList = $productsList->where('sub_category_id', $request->sub_category_id);
             }
-
-
-            $productsList = $productsList->get();
-
-
-            if (sizeof($productsList) > 0) {
-                $products = $this->fetchProduct($productsList);
-                return makeResponse('success', 'Record Found', 200, $products);
-            } else {
-                return makeResponse('error', 'Record Not Found', 404);
-            }
-
+            
         }
-        else {
-            return makeResponse('error', 'Category Not Found', 404);
+
+        $productsList = $productsList->get();
+
+
+        if (sizeof($productsList) > 0) {
+            $products = $this->fetchProduct($productsList);
+            return makeResponse('success', 'Record Found', 200, $products);
+        } else {
+            return makeResponse('error', 'Record Not Found', 404);
         }
+
 
     }
 
