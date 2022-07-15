@@ -18,6 +18,7 @@ use App\Http\Controllers\Api\MyProductController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\ReviewController;
 use App\Http\Controllers\Api\ChatController;
+use App\Http\Controllers\Api\CheckoutController;
 /*
 |------------------------------------------------.
 --------------------------
@@ -90,6 +91,9 @@ Route::group(['middleware' => ['json.response']], function () {
             Route::get('conversation',[ChatController::class,'conversation']);
             Route::post('send-message',[ChatController::class,'sendMessage']);
             Route::get('chat-list',[ChatController::class,'chat']);
+
+
+            Route::post('checkout',[CheckoutController::class,'checkout']);
 
         });
 
