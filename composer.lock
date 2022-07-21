@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4f1e6669d7128249e3e1a97f129d21a4",
+    "content-hash": "a0ddbd3a7917e6293c0b72a07ae628e3",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -902,16 +902,16 @@
         },
         {
             "name": "firebase/php-jwt",
-            "version": "v6.2.0",
+            "version": "v6.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/firebase/php-jwt.git",
-                "reference": "d28e6df83830252650da4623c78aaaf98fb385f3"
+                "reference": "018dfc4e1da92ad8a1b90adc4893f476a3b41cb8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/firebase/php-jwt/zipball/d28e6df83830252650da4623c78aaaf98fb385f3",
-                "reference": "d28e6df83830252650da4623c78aaaf98fb385f3",
+                "url": "https://api.github.com/repos/firebase/php-jwt/zipball/018dfc4e1da92ad8a1b90adc4893f476a3b41cb8",
+                "reference": "018dfc4e1da92ad8a1b90adc4893f476a3b41cb8",
                 "shasum": ""
             },
             "require": {
@@ -958,9 +958,9 @@
             ],
             "support": {
                 "issues": "https://github.com/firebase/php-jwt/issues",
-                "source": "https://github.com/firebase/php-jwt/tree/v6.2.0"
+                "source": "https://github.com/firebase/php-jwt/tree/v6.3.0"
             },
-            "time": "2022-05-13T20:54:50+00:00"
+            "time": "2022-07-15T16:48:45+00:00"
         },
         {
             "name": "fruitcake/laravel-cors",
@@ -1513,16 +1513,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v8.83.19",
+            "version": "v8.83.20",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "4264f2ee12330bdb1be050998f58ba7271236395"
+                "reference": "aa5908e83fccb18b135ca31aa0342cf4bd6909a8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/4264f2ee12330bdb1be050998f58ba7271236395",
-                "reference": "4264f2ee12330bdb1be050998f58ba7271236395",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/aa5908e83fccb18b135ca31aa0342cf4bd6909a8",
+                "reference": "aa5908e83fccb18b135ca31aa0342cf4bd6909a8",
                 "shasum": ""
             },
             "require": {
@@ -1682,7 +1682,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2022-07-13T13:23:09+00:00"
+            "time": "2022-07-19T14:11:02+00:00"
         },
         {
             "name": "laravel/helpers",
@@ -2148,16 +2148,16 @@
         },
         {
             "name": "league/commonmark",
-            "version": "2.3.3",
+            "version": "2.3.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/commonmark.git",
-                "reference": "0da1dca5781dd3cfddbe328224d9a7a62571addc"
+                "reference": "155ec1c95626b16fda0889cf15904d24890a60d5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/0da1dca5781dd3cfddbe328224d9a7a62571addc",
-                "reference": "0da1dca5781dd3cfddbe328224d9a7a62571addc",
+                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/155ec1c95626b16fda0889cf15904d24890a60d5",
+                "reference": "155ec1c95626b16fda0889cf15904d24890a60d5",
                 "shasum": ""
             },
             "require": {
@@ -2250,7 +2250,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-06-07T21:28:26+00:00"
+            "time": "2022-07-17T16:25:47+00:00"
         },
         {
             "name": "league/config",
@@ -7091,6 +7091,151 @@
                 "source": "https://github.com/webmozarts/assert/tree/1.11.0"
             },
             "time": "2022-06-03T18:03:27+00:00"
+        },
+        {
+            "name": "workerman/channel",
+            "version": "v1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/walkor/channel.git",
+                "reference": "3df772d0d20d4cebfcfd621c33d1a1ab732db523"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/walkor/channel/zipball/3df772d0d20d4cebfcfd621c33d1a1ab732db523",
+                "reference": "3df772d0d20d4cebfcfd621c33d1a1ab732db523",
+                "shasum": ""
+            },
+            "require": {
+                "workerman/workerman": ">=4.0.12"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Channel\\": "./src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "homepage": "http://www.workerman.net",
+            "support": {
+                "issues": "https://github.com/walkor/channel/issues",
+                "source": "https://github.com/walkor/channel/tree/v1.1.0"
+            },
+            "time": "2021-02-08T02:45:42+00:00"
+        },
+        {
+            "name": "workerman/phpsocket.io",
+            "version": "v1.1.14",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/walkor/phpsocket.io.git",
+                "reference": "a5758da4d55b4744a4cc9c956816d88ce385601e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/walkor/phpsocket.io/zipball/a5758da4d55b4744a4cc9c956816d88ce385601e",
+                "reference": "a5758da4d55b4744a4cc9c956816d88ce385601e",
+                "shasum": ""
+            },
+            "require": {
+                "workerman/channel": ">=1.0.0",
+                "workerman/workerman": ">=3.5.16"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "PHPSocketIO\\": "./src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "homepage": "http://www.workerman.net",
+            "keywords": [
+                "Socket.io"
+            ],
+            "support": {
+                "issues": "https://github.com/walkor/phpsocket.io/issues",
+                "source": "https://github.com/walkor/phpsocket.io/tree/v1.1.14"
+            },
+            "funding": [
+                {
+                    "url": "https://opencollective.com/walkor",
+                    "type": "open_collective"
+                },
+                {
+                    "url": "https://www.patreon.com/walkor",
+                    "type": "patreon"
+                }
+            ],
+            "time": "2022-02-24T03:33:45+00:00"
+        },
+        {
+            "name": "workerman/workerman",
+            "version": "v4.0.41",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/walkor/workerman.git",
+                "reference": "8a6a536f7f720a1d8af421ef4a48789c90ab19ec"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/walkor/workerman/zipball/8a6a536f7f720a1d8af421ef4a48789c90ab19ec",
+                "reference": "8a6a536f7f720a1d8af421ef4a48789c90ab19ec",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4"
+            },
+            "suggest": {
+                "ext-event": "For better performance. "
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Workerman\\": "./"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "walkor",
+                    "email": "walkor@workerman.net",
+                    "homepage": "http://www.workerman.net",
+                    "role": "Developer"
+                }
+            ],
+            "description": "An asynchronous event driven PHP framework for easily building fast, scalable network applications.",
+            "homepage": "http://www.workerman.net",
+            "keywords": [
+                "asynchronous",
+                "event-loop"
+            ],
+            "support": {
+                "email": "walkor@workerman.net",
+                "forum": "http://wenda.workerman.net/",
+                "issues": "https://github.com/walkor/workerman/issues",
+                "source": "https://github.com/walkor/workerman",
+                "wiki": "http://doc.workerman.net/"
+            },
+            "funding": [
+                {
+                    "url": "https://opencollective.com/workerman",
+                    "type": "open_collective"
+                },
+                {
+                    "url": "https://www.patreon.com/walkor",
+                    "type": "patreon"
+                }
+            ],
+            "time": "2022-07-19T08:05:44+00:00"
         }
     ],
     "packages-dev": [
@@ -7362,16 +7507,16 @@
         },
         {
             "name": "fakerphp/faker",
-            "version": "v1.19.0",
+            "version": "v1.20.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FakerPHP/Faker.git",
-                "reference": "d7f08a622b3346766325488aa32ddc93ccdecc75"
+                "reference": "37f751c67a5372d4e26353bd9384bc03744ec77b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FakerPHP/Faker/zipball/d7f08a622b3346766325488aa32ddc93ccdecc75",
-                "reference": "d7f08a622b3346766325488aa32ddc93ccdecc75",
+                "url": "https://api.github.com/repos/FakerPHP/Faker/zipball/37f751c67a5372d4e26353bd9384bc03744ec77b",
+                "reference": "37f751c67a5372d4e26353bd9384bc03744ec77b",
                 "shasum": ""
             },
             "require": {
@@ -7398,7 +7543,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "v1.19-dev"
+                    "dev-main": "v1.20-dev"
                 }
             },
             "autoload": {
@@ -7423,9 +7568,9 @@
             ],
             "support": {
                 "issues": "https://github.com/FakerPHP/Faker/issues",
-                "source": "https://github.com/FakerPHP/Faker/tree/v1.19.0"
+                "source": "https://github.com/FakerPHP/Faker/tree/v1.20.0"
             },
-            "time": "2022-02-02T17:38:57+00:00"
+            "time": "2022-07-20T13:12:54+00:00"
         },
         {
             "name": "filp/whoops",

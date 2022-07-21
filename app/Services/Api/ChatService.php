@@ -6,6 +6,7 @@ namespace App\Services\Api;
 
 use App\Models\Chat;
 use App\Models\ChatMessage;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -57,7 +58,9 @@ class ChatService
             return $response;
 
         } else {
-            return false;
+            $response = ['result' => 'success', 'data' => $checkForPreviousChat->id];
+
+            return $response;
         }
 
 
@@ -134,8 +137,32 @@ class ChatService
                 'receiver_id' => $request->receiver_id, 'message' => $request->message
             ]);
 
+            $senderResponseArray = [
+                'first_name' => $chatMessage->sender->first_name,
+                'last_name' => $chatMessage->sender->last_name,
+                'user_name' => $chatMessage->sender->user_name,
+                'profile_image' => $chatMessage->sender->profile_image,
+                'message' => $chatMessage->message,
+                'chat_id' => $chatId,
+                'receiver_id' => $request->receiver_id,
+                'created_at' => Carbon::parse($chatMessage->created_at)->format('H:i:s'),
+                'created_ago' => Carbon::parse($chatMessage->created_at)->diffForHumans()
+            ];
+
+            $receiverResponseArray = [
+                'first_name' => $chatMessage->receiver->first_name,
+                'last_name' => $chatMessage->receiver->last_name,
+                'user_name' => $chatMessage->receiver->user_name,
+                'profile_image' => $chatMessage->receiver->profile_image,
+                'message' => $chatMessage->message,
+                'chat_id' => $chatId,
+                'sender_id' => $request->sender_id,
+                'created_at' => Carbon::parse($chatMessage->created_at)->format('H:i:s'),
+                'created_ago' => Carbon::parse($chatMessage->created_at)->diffForHumans()
+            ];
+
             DB::commit();
-            $response = ['result' => 'success', 'data' => $chatMessage];
+            $response = ['result' => 'success', 'data' => $chatMessage,'senderResponseArray'=>$senderResponseArray,'receiverResponseArray'=>$receiverResponseArray];
         } catch (\Exception $e) {
             DB::rollBack();
             $response = ['result' => 'error', 'data' => $e];
