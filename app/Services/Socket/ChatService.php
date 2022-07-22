@@ -14,6 +14,16 @@ class ChatService
         $this->chatService = $chatService;
     }
 
+    public function conversationList($io, $socket, $data)
+    {
+        $conversations =  $this->chatService->findUserChat($data['user_id']);
+
+        if(sizeof($conversations) > 0)
+        {
+            return $socket->to($socket->user_id)->emit('')
+        }
+    }
+
     public function sendMessage($io, $socket, $data)
     {
         if (!isset($data['sender_id'])) {
@@ -25,17 +35,24 @@ class ChatService
         }
 
         if (!isset($data['receiver_id'])) {
-            $socket->emit($data['sender_id'].'-create_chat_response', [
+            $socket->emit($data['sender_id'] . '-create_chat_response', [
                 'result' => 'error',
                 'message' => 'Receiver ID is a required field ',
                 'data' => null
             ]);
         }
 
+//        if(!isset($data['room_id'])){
+//            $socket->emit($data['sender_id'].'-create_chat_response', [
+//                'result' => 'error',
+//                'message' => 'Receiver ID is a required field ',
+//                'data' => null
+//            ]);
+//        }
+
         try {
             $previousChat = $this->chatService->existingChatChecking($data->sender_id, $data->receiver_id);
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             $socket->emit('create_chat_response', [
                 'result' => 'error',
                 'message' => 'Error in Fetching Previous Conversation',
@@ -61,10 +78,6 @@ class ChatService
             return makeResponse('error', 'Error in Checking Chat: ' . $e, 500);
         }
 
-
-        $senderResponseArray = [
-            'name' => $saveMessage['data']
-        ];
 
         return makeResponse('success', 'Message Send Successfully', 200, $saveMessage['data']);
 

@@ -34,7 +34,7 @@ class Socket extends Command
     public function __construct(ChatService $socketChatService)
     {
         parent::__construct();
-        $this->socketChatService =  $socketChatService;
+        $this->socketChatService = $socketChatService;
     }
 
     /**
@@ -46,8 +46,13 @@ class Socket extends Command
     {
         $io = new SocketIO(8081);
         $io->on('connection', function ($socket) use ($io) {
+
+            $socket->on('conversation-list', function ($data) use ($io, $socket) {
+                return $this->socketChatService->conversationList($io,$socket,$data);
+            });
+
             $socket->on('send-message', function ($data) use ($io, $socket) {
-                return $this->socketChatService->sendMessage($io,$socket,$data);
+                return $this->socketChatService->sendMessage($io, $socket, $data);
             });
         });
 

@@ -45,13 +45,13 @@ class ChatController extends Controller
     {
         try {
             $previousChat = $chatService->existingChatChecking(Auth::user()->id, $request->other_user_id);
-        } catch (\Exception $e) {
+        }
+        catch (\Exception $e) {
             return makeResponse('error', 'Error in Checking Chat: ' . $e, 500);
         }
 
         if (!$previousChat) {
             return makeResponse('error', 'Record Not Found', 404);
-
         }
 
         try {

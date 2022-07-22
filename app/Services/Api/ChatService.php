@@ -162,7 +162,7 @@ class ChatService
             ];
 
             DB::commit();
-            $response = ['result' => 'success', 'data' => $chatMessage,'senderResponseArray'=>$senderResponseArray,'receiverResponseArray'=>$receiverResponseArray];
+            $response = ['result' => 'success', 'data' => $chatMessage, 'senderResponseArray' => $senderResponseArray, 'receiverResponseArray' => $receiverResponseArray];
         } catch (\Exception $e) {
             DB::rollBack();
             $response = ['result' => 'error', 'data' => $e];
@@ -172,10 +172,10 @@ class ChatService
 
     }
 
-    public function findUserChat($userId)
+    public function findUserChat($user_id)
     {
-        $userChats = Chat::with(['firstUser', 'secondUser'])->where(function ($query) {
-            $query->where('user_1', Auth::user()->id)->orWhere('user_2', Auth::user()->id);
+        $userChats = Chat::with(['firstUser', 'secondUser'])->where(function ($query) use ($user_id) {
+            $query->where('user_1', $user_id)->orWhere('user_2',$user_id);
         })
             ->get();
 
@@ -184,11 +184,11 @@ class ChatService
         foreach ($userChats as $chat) {
             if ($chat->user_1 == Auth::user()->id) {
                 $chats[] = ['username' => $chat->secondUser->username,
-                    'socket_id' => $chat->secondUser->socket_id,'user_id'=>$chat->secondUser->id,
+                    'user_id' => $chat->secondUser->id,
                     'profile_image' => $chat->profile_image];
             } elseif ($chat->user_2 == Auth::user()->id) {
                 $chats[] = ['username' => $chat->firstUser->username,
-                    'socket_id' => $chat->firstUser->socket_id,'user_id'=>$chat->firstUser->id,
+                    'user_id' => $chat->firstUser->id,
                     'profile_image' => $chat->firstUser->profile_image];
             }
         }
