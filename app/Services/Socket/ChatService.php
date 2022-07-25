@@ -20,7 +20,18 @@ class ChatService
 
         if(sizeof($conversations) > 0)
         {
-//            return $socket->to($socket->user_id)->emit('');
+            return $socket->to($socket->user_id)->emit('messageHistory',[
+                'result'=>'success',
+                'message'=>'Conversation Found',
+                'data' => $conversations
+            ]);
+        }
+        else{
+            return $socket->to($socket->user_id)->emit('messageHistory',[
+                'result'=>'success',
+                'message'=>'No Conversation Found',
+                'data' => null
+            ]);
         }
     }
 
