@@ -29,7 +29,7 @@ class ChatService
         }
         else{
             return $socket->to($socket->user_id)->emit('conversationList',[
-                'result'=>'success',
+                'result'=>'error',
                 'message'=>'No Conversation Found',
                 'data' => null
             ]);

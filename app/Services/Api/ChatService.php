@@ -181,17 +181,21 @@ class ChatService
 
         $chats = array();
 
+
         foreach ($userChats as $chat) {
-            if ($chat->user_1 == Auth::user()->id) {
+            if ($chat->firstUser->id == $user_id) {
                 $chats[] = ['username' => $chat->secondUser->username,
                     'user_id' => $chat->secondUser->id,
                     'profile_image' => $chat->profile_image];
-            } elseif ($chat->user_2 == Auth::user()->id) {
+            } elseif ($chat->secondUser->id == $user_id) {
                 $chats[] = ['username' => $chat->firstUser->username,
                     'user_id' => $chat->firstUser->id,
                     'profile_image' => $chat->firstUser->profile_image];
             }
+
+
         }
+
 
         return $chats;
     }
