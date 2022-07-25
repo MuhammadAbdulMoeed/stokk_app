@@ -20,7 +20,7 @@ class ChatService
 
         if(sizeof($conversations) > 0)
         {
-            return $socket->to($socket->user_id)->emit('')
+//            return $socket->to($socket->user_id)->emit('');
         }
     }
 

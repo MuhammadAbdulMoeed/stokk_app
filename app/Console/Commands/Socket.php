@@ -45,14 +45,27 @@ class Socket extends Command
     public function handle()
     {
         $io = new SocketIO(8081);
-        $io->on('connection', function ($socket) use ($io) {
+        $users = array();
+        $io->on('connection', function ($socket) use ($io, $users) {
+
+            $socket->on('online', function ($data) use ($io, $socket) {
+//                $users['user_id'] = $socket->id;
+//                $socket->emit('updateUserStatus', $users);
+            });
+
 
             $socket->on('conversation-list', function ($data) use ($io, $socket) {
-                return $this->socketChatService->conversationList($io,$socket,$data);
+                return $this->socketChatService->conversationList($io, $socket, $data);
             });
 
             $socket->on('send-message', function ($data) use ($io, $socket) {
                 return $this->socketChatService->sendMessage($io, $socket, $data);
+            });
+
+            $socket->on('disconnect', function () use ($io, $socket, $users) {
+//                $index = array_search($socket->id, $users);
+//                array_splice($users, $index, 1);
+//                $socket->emit('updateUserStatus', $users);
             });
         });
 
