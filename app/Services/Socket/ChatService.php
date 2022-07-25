@@ -18,16 +18,17 @@ class ChatService
     {
         $conversations =  $this->chatService->findUserChat($data['user_id']);
 
+
         if(sizeof($conversations) > 0)
         {
-            return $socket->to($socket->user_id)->emit('messageHistory',[
+            return $socket->to($socket->user_id)->emit('conversationList',[
                 'result'=>'success',
                 'message'=>'Conversation Found',
                 'data' => $conversations
             ]);
         }
         else{
-            return $socket->to($socket->user_id)->emit('messageHistory',[
+            return $socket->to($socket->user_id)->emit('conversationList',[
                 'result'=>'success',
                 'message'=>'No Conversation Found',
                 'data' => null

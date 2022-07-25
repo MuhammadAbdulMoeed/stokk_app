@@ -54,7 +54,7 @@ class Socket extends Command
             });
 
 
-            $socket->on('conversation-list', function ($data) use ($io, $socket) {
+            $socket->on('get-conversation-list', function ($data) use ($io, $socket) {
                 return $this->socketChatService->conversationList($io, $socket, $data);
             });
 
