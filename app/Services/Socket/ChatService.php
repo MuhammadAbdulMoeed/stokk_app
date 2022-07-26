@@ -39,7 +39,7 @@ class ChatService
         }
         else{
             return $socket->emit('conversationList',[
-                'result'=>'error',
+                'result'=>'success',
                 'message'=>'No Conversation Found',
                 'data' => []
             ]);
@@ -84,14 +84,14 @@ class ChatService
         {
             $socket->emit('chatHistory', [
                 'result' => 'success',
-                'message' => 'Chat Fetch Successfully',
+                'message' => 'Previous Chat Fetch Successfully',
                 'data' => $chatHistory
             ]);
         }
         else{
             $socket->emit('chatHistory', [
-                'result' => 'error',
-                'message' => 'Chat Not Found',
+                'result' => 'success',
+                'message' => 'Previous Chat Not Found',
                 'data' => []
             ]);
         }
@@ -105,7 +105,7 @@ class ChatService
             $socket->emit('sendMessage', [
                 'result' => 'error',
                 'message' => 'Sender ID is a required field ',
-                'data' => null
+                'data' => []
             ]);
         }
 
@@ -113,7 +113,7 @@ class ChatService
             $socket->emit('sendMessage', [
                 'result' => 'error',
                 'message' => 'Receiver ID is a required field ',
-                'data' => null
+                'data' => []
             ]);
         }
 
@@ -123,10 +123,10 @@ class ChatService
                 $previousChat = $this->chatService->existingChatChecking($data->sender_id, $data->receiver_id);
             }
             catch (\Exception $e) {
-                $socket->emit('create_chat_response', [
+                $socket->emit('sendMessage', [
                     'result' => 'error',
                     'message' => 'Error in Fetching Previous Conversation',
-                    'data' => null
+                    'data' => []
                 ]);
             }
 
@@ -136,7 +136,11 @@ class ChatService
             $previousChat = $this->chatService->createConversation($data);
 
             if ($previousChat['result'] == 'error') {
-                return makeResponse('error', 'Error Came in Saving Chat Message: ' . $previousChat['data'], 500);
+                $socket->emit('sendMessage', [
+                    'result' => 'error',
+                    'message' => 'Error in Creating Conversation: '.$previousChat['data'],
+                    'data' => []
+                ]);
             }
         }
 
