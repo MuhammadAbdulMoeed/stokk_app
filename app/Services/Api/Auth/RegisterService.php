@@ -35,7 +35,7 @@ class RegisterService
                 'lat' =>  null,
                 'lng' =>  null,
                 'profile_image' => $user->profile_image,
-                'user_id' => Auth::user()->id
+                'user_id' => $user->id
             ];
 
             DB::commit();
