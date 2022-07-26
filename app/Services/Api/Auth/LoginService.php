@@ -7,6 +7,7 @@ namespace App\Services\Api\Auth;
 use App\Helper\ImageUploadHelper;
 use App\Models\User;
 use App\Models\UserLocation;
+use Egulias\EmailValidator\Exception\AtextAfterCFWS;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -42,6 +43,7 @@ class LoginService
                     'lat' => Auth::user()->userLocation ? Auth::user()->userLocation->lat: null,
                     'lng' => Auth::user()->userLocation ? Auth::user()->userLocation->lng: null,
                     'profile_image' => Auth::user()->profile_image,
+                    'user_id' => Auth::user()->id
                 ];
 
                 DB::commit();
@@ -126,6 +128,7 @@ class LoginService
                 'country' => Auth::user()->userLocation ? Auth::user()->userLocation->country: null,
                 'lat' => Auth::user()->userLocation ? Auth::user()->userLocation->lat: null,
                 'lng' => Auth::user()->userLocation ? Auth::user()->userLocation->lng: null,
+                'user_id' => Auth::user()->id
             ];
 
             DB::commit();

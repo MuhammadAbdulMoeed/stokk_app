@@ -58,6 +58,10 @@ class Socket extends Command
                 return $this->socketChatService->conversationList($io, $socket, $data);
             });
 
+            $socket->on('get-chat-history', function ($data) use ($io, $socket) {
+                return $this->socketChatService->chatHistory($io,$socket,$data);
+            });
+
             $socket->on('send-message', function ($data) use ($io, $socket) {
                 return $this->socketChatService->sendMessage($io, $socket, $data);
             });

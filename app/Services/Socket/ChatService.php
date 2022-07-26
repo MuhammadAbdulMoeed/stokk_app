@@ -8,6 +8,8 @@ use App\Services\Api\ChatService as PassengerChat;
 class ChatService
 {
     public $chatService;
+    public $room = 'privateRoom-';
+
 
     public function __construct(PassengerChat $chatService)
     {
@@ -16,12 +18,20 @@ class ChatService
 
     public function conversationList($io, $socket, $data)
     {
-        $conversations =  $this->chatService->findUserChat($data['user_id']);
 
+        if (!isset($data['user_id'])) {
+            $socket->emit('conversationList', [
+                'result' => 'error',
+                'message' => 'User ID is a required field ',
+                'data' => null
+            ]);
+        }
+
+        $conversations =  $this->chatService->findUserChat($data['user_id']);
 
         if(sizeof($conversations) > 0)
         {
-            return $socket->to($socket->user_id)->emit('conversationList',[
+            return $socket->emit('conversationList',[
                 'result'=>'success',
                 'message'=>'Conversation Found',
                 'data' => $conversations
@@ -92,6 +102,43 @@ class ChatService
 
 
         return makeResponse('success', 'Message Send Successfully', 200, $saveMessage['data']);
+
+    }
+
+    public function chatHistory($io,$socket,$data)
+    {
+        if (!isset($data['user_id'])) {
+            $socket->emit('chatHistory', [
+                'result' => 'error',
+                'message' => 'User ID is a required field ',
+                'data' => null
+            ]);
+        }
+
+        if(isset($data['conversation_id']))
+        {
+//            dd(io.in('YOUR_ROOM').engine.clientsCount );
+            $socket->join($this->room.$data['conversation_id']);
+            $socket->join($this->room.$data['conversation_id']);
+        }
+
+        foreach($io->sockets->adapter->rooms as $key => $item)
+        {
+            dd(sizeof($io->sockets->adapter->rooms));
+        }
+
+
+
+        $socket->emit('chatHistory', [
+            'result' => 'success',
+            'message' => 'Connected TO Room',
+            'data' => null
+        ]);
+
+
+
+//        return $this->chatService->fetchPreviousChat();
+
 
     }
 

@@ -25,7 +25,7 @@
 
                         <div class="float-right">
                             <a href="{{route('productCreate')}}">
-                                <button class="btn btn-primary">Create New  Product</button>
+                                <button class="btn btn-primary">Create New Product</button>
                             </a>
                         </div>
                         <div class="clearfix"></div>
@@ -51,7 +51,7 @@
                                         <th>Name</th>
                                         <th>Category</th>
                                         <th>SubCategory</th>
-                                        <th>Price</th>
+                                        <th>Type</th>
                                         <th>Action</th>
                                     </tr>
                                     </thead>
@@ -65,10 +65,7 @@
                                             <td>{{isset($product->subCategory) ? $product->subCategory->name:'N/A'}}</td>
 
                                             <td>
-                                                <button
-                                                    class="btn-sm {{$product->is_active == 1 ? 'btn btn-outline-success':'btn btn-outline-danger'}}">
-                                                    {{$product->is_active == 1 ? 'Active':'Inactive'}}
-                                                </button>
+                                                {{str_replace('_',' ',ucfirst($product->type))}}
                                             </td>
                                             <td>
                                                 <a title="Edit" href="{{route('productEdit',['id'=>$product->id])}}"
@@ -181,8 +178,6 @@
 
                 });
             });
-
-
 
 
         });

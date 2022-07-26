@@ -69,7 +69,7 @@ class ProfileService
                 'first_name' => Auth::user()->first_name, 'last_name' => Auth::user()->last_name,
                 'user_name' => Auth::user()->user_name, 'date_of_birth' => Auth::user()->date_of_birth,
                 'gender' => Auth::user()->gender, 'bio' => Auth::user()->bio,
-                'profile_image' => Auth::user()->profile_image,
+                'profile_image' => Auth::user()->profile_image,'user_id' => Auth::user()->id
             ];
 
             DB::commit();

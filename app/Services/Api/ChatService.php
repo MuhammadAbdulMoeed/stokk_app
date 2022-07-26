@@ -175,7 +175,7 @@ class ChatService
     public function findUserChat($user_id)
     {
         $userChats = Chat::with(['firstUser', 'secondUser'])->where(function ($query) use ($user_id) {
-            $query->where('user_1', $user_id)->orWhere('user_2',$user_id);
+            $query->where('user_1', $user_id)->orWhere('user_2', $user_id);
         })
             ->get();
 
@@ -185,11 +185,11 @@ class ChatService
         foreach ($userChats as $chat) {
             if ($chat->firstUser->id == $user_id) {
                 $chats[] = ['username' => $chat->secondUser->username,
-                    'user_id' => $chat->secondUser->id,
+                    'user_id' => $chat->secondUser->id, 'conversation_id' => $chat->id,
                     'profile_image' => $chat->profile_image];
             } elseif ($chat->secondUser->id == $user_id) {
                 $chats[] = ['username' => $chat->firstUser->username,
-                    'user_id' => $chat->firstUser->id,
+                    'user_id' => $chat->firstUser->id, 'conversation_id' => $chat->id,
                     'profile_image' => $chat->firstUser->profile_image];
             }
 
