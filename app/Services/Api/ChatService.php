@@ -79,18 +79,18 @@ class ChatService
 
                 $messages[] = [
                     'id' => $chatMessage->id,
-                    'chat_id' => $chatMessage->chat_id,
+                    'conversation_id' => $chatMessage->chat_id,
                     'sender_id' => $chatMessage->sender_id, 'message' => $chatMessage->message,
                     'receiver_id' => $chatMessage->receiver_id,
 //                    'sender_name' => $chatMessage->sender->user_name,
-                    'sender_first_name' => $chatMessage->secondUser->first_name,
-                    'sender_last_name' => $chatMessage->secondUser->last_name,
+                    'sender_first_name' => $chatMessage->sender->first_name,
+                    'sender_last_name' => $chatMessage->sender->last_name,
                     'sender_profile_image' => $chatMessage->sender->profile_image,
                     'receiver_profile_image' => $chatMessage->receiver->profile_image,
-                    'receiver_first_name' => $chatMessage->secondUser->first_name,
-                    'receiver_last_name' => $chatMessage->secondUser->last_name,
+                    'receiver_first_name' => $chatMessage->receiver->first_name,
+                    'receiver_last_name' => $chatMessage->receiver->last_name,
                     'created_ago' => Carbon::parse($chatMessage->created_at)->diffForHumans(),
-                    'created_at' =>  Carbon::parse($chatMessages->created_at)->format('d-m-Y')
+                    'created_at' =>  Carbon::parse($chatMessage->created_at)->format('d-m-Y')
 //                    'receiver_name' => $chatMessage->receiver->user_name,
                 ];
 
