@@ -23,7 +23,7 @@ class ChatService
             $socket->emit('conversationList', [
                 'result' => 'error',
                 'message' => 'User ID is a required field ',
-                'data' => null
+                'data' => []
             ]);
         }
 
@@ -41,7 +41,7 @@ class ChatService
             return $socket->emit('conversationList',[
                 'result'=>'error',
                 'message'=>'No Conversation Found',
-                'data' => null
+                'data' => []
             ]);
         }
     }
@@ -111,7 +111,7 @@ class ChatService
             $socket->emit('chatHistory', [
                 'result' => 'error',
                 'message' => 'User ID is a required field ',
-                'data' => null
+                'data' => []
             ]);
         }
 
@@ -150,7 +150,7 @@ class ChatService
             $socket->emit('chatHistory', [
                 'result' => 'error',
                 'message' => 'Chat Not Found',
-                'data' => null
+                'data' => []
             ]);
         }
 
