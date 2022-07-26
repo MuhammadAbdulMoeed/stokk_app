@@ -38,7 +38,7 @@ class ChatService
             ]);
         }
         else{
-            return $socket->to($socket->user_id)->emit('conversationList',[
+            return $socket->emit('conversationList',[
                 'result'=>'error',
                 'message'=>'No Conversation Found',
                 'data' => null
@@ -117,23 +117,43 @@ class ChatService
 
         if(isset($data['conversation_id']))
         {
-//            dd(io.in('YOUR_ROOM').engine.clientsCount );
-            $socket->join($this->room.$data['conversation_id']);
+            //get all room this socket is connected to
+            foreach($io->sockets->adapter->sids[$socket->id] as $key =>$item)
+            {
+                $socket->leave($key);
+            }
+
             $socket->join($this->room.$data['conversation_id']);
         }
 
+        //get total people in room
+        $roomPeopleCount = 0;
         foreach($io->sockets->adapter->rooms as $key => $item)
         {
-            dd(sizeof($io->sockets->adapter->rooms));
+            if($key == $this->room.$data['conversation_id'])
+            {
+                $roomPeopleCount++;
+            }
         }
 
+        $chatHistory = $this->chatService->fetchPreviousChat($data['conversation_id']);
 
+        if(sizeof($chatHistory) > 0)
+        {
+            $socket->emit('chatHistory', [
+                'result' => 'success',
+                'message' => 'Chat Fetch Successfully',
+                'data' => $chatHistory
+            ]);
+        }
+        else{
+            $socket->emit('chatHistory', [
+                'result' => 'error',
+                'message' => 'Chat Not Found',
+                'data' => null
+            ]);
+        }
 
-        $socket->emit('chatHistory', [
-            'result' => 'success',
-            'message' => 'Connected TO Room',
-            'data' => null
-        ]);
 
 
 

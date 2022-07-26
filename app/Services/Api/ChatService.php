@@ -66,46 +66,32 @@ class ChatService
 
     }
 
-    public function fetchPreviousChat($chatId, $otherUserId)
+    public function fetchPreviousChat($chatId)
     {
         $chatMessages = ChatMessage::with(['sender', 'receiver'])
             ->where('chat_id', $chatId)
-            ->where(function ($query) {
-                $query->where('sender_id', Auth::user()->id)->orWhere('receiver_id', Auth::user()->id);
-            })
-            ->where(function ($query) use ($otherUserId) {
-                $query->where('sender_id', $otherUserId)->orWhere('receiver_id', $otherUserId);
-            })
             ->get();
 
 
         $messages = array();
         if (sizeof($chatMessages) > 0) {
             foreach ($chatMessages as $chatMessage) {
-//                if(Auth::user()->id == $chatMessage->sender_id)
-//                {
+
                 $messages[] = [
                     'id' => $chatMessage->id,
                     'chat_id' => $chatMessage->chat_id,
                     'sender_id' => $chatMessage->sender_id, 'message' => $chatMessage->message,
-                    'receiver_id' => $chatMessage->receiver_id, 'sender_name' => $chatMessage->sender->username,
-                    'sender_profile_image' => $chatMessage->sender->profile_image
+                    'receiver_id' => $chatMessage->receiver_id, 'sender_name' => $chatMessage->sender->user_name,
+                    'sender_profile_image' => $chatMessage->sender->profile_image,
+                    'receiver_profile_image' => $chatMessage->receiver->profile_image,
+                    'receiver_name' => $chatMessage->receiver->user_name,
                 ];
-//                }
-//                else{
-//                    $messages[] = [
-//                        'id' => $chatMessage->id,
-//                        'chat_id'=>$chatMessage->chat_id,
-//                        'sender_id'=>$chatMessage->sender_id,'message'=>$chatMessage->message,
-//                        'receiver_id'=>$chatMessage->receiver_id,'sender_name'=>$chatMessage->sender->username,
-//                        'sender_profile_image'=>$chatMessage->sender->profile_image
-//                    ];
-//                }
 
             }
 
             return $messages;
-        } else {
+        }
+        else {
             return $messages;
         }
     }
