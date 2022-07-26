@@ -170,11 +170,14 @@ class ChatService
 
         foreach ($userChats as $chat) {
             if ($chat->firstUser->id == $user_id) {
-                $chats[] = ['username' => $chat->secondUser->username,
+                $chats[] = ['first_name' => $chat->secondUser->first_name,
+                    'last_name' => $chat->secondUser->last_name,
                     'user_id' => $chat->secondUser->id, 'conversation_id' => $chat->id,
                     'profile_image' => $chat->profile_image];
             } elseif ($chat->secondUser->id == $user_id) {
-                $chats[] = ['username' => $chat->firstUser->username,
+                $chats[] = [
+                    'first_name' => $chat->firstUser->first_name,
+                    'last_name' => $chat->firstUser->last_name,
                     'user_id' => $chat->firstUser->id, 'conversation_id' => $chat->id,
                     'profile_image' => $chat->firstUser->profile_image];
             }
