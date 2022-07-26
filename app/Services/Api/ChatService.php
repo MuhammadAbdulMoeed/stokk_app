@@ -41,7 +41,6 @@ class ChatService
 
     }
 
-
     public function existingChatChecking($sender_id, $receiver_id)
     {
         $checkForPreviousChat = Chat::where('user_1', $sender_id)
@@ -66,49 +65,59 @@ class ChatService
 
     }
 
-    public function fetchPreviousChat($chatId)
+    public function fetchPreviousChat($chatId = null)
     {
-        $chatMessages = ChatMessage::with(['sender', 'receiver'])
-            ->where('chat_id', $chatId)
-            ->get();
-
 
         $messages = array();
-        if (sizeof($chatMessages) > 0) {
-            foreach ($chatMessages as $chatMessage) {
 
-                $messages[] = [
-                    'id' => $chatMessage->id,
-                    'conversation_id' => $chatMessage->chat_id,
-                    'sender_id' => $chatMessage->sender_id, 'message' => $chatMessage->message,
-                    'receiver_id' => $chatMessage->receiver_id,
+        if($chatId)
+        {
+            $chatMessages = ChatMessage::with(['sender', 'receiver'])
+                ->where('chat_id', $chatId)
+                ->get();
+
+
+            if (sizeof($chatMessages) > 0) {
+                foreach ($chatMessages as $chatMessage) {
+
+                    $messages[] = [
+                        'id' => $chatMessage->id,
+                        'conversation_id' => $chatMessage->chat_id,
+                        'sender_id' => $chatMessage->sender_id, 'message' => $chatMessage->message,
+                        'receiver_id' => $chatMessage->receiver_id,
 //                    'sender_name' => $chatMessage->sender->user_name,
-                    'sender_first_name' => $chatMessage->sender->first_name,
-                    'sender_last_name' => $chatMessage->sender->last_name,
-                    'sender_profile_image' => $chatMessage->sender->profile_image,
-                    'receiver_profile_image' => $chatMessage->receiver->profile_image,
-                    'receiver_first_name' => $chatMessage->receiver->first_name,
-                    'receiver_last_name' => $chatMessage->receiver->last_name,
-                    'created_ago' => Carbon::parse($chatMessage->created_at)->diffForHumans(),
-                    'created_at' =>  Carbon::parse($chatMessage->created_at)->format('d-m-Y')
+                        'sender_first_name' => $chatMessage->sender->first_name,
+                        'sender_last_name' => $chatMessage->sender->last_name,
+                        'sender_profile_image' => $chatMessage->sender->profile_image,
+                        'receiver_profile_image' => $chatMessage->receiver->profile_image,
+                        'receiver_first_name' => $chatMessage->receiver->first_name,
+                        'receiver_last_name' => $chatMessage->receiver->last_name,
+                        'created_ago' => Carbon::parse($chatMessage->created_at)->diffForHumans(),
+                        'created_at' =>  Carbon::parse($chatMessage->created_at)->format('d-m-Y')
 //                    'receiver_name' => $chatMessage->receiver->user_name,
-                ];
+                    ];
 
+                }
+
+                return $messages;
             }
+            else {
+                return $messages;
+            }
+        }
+        else{
+            return $messages;
+        }
 
-            return $messages;
-        }
-        else {
-            return $messages;
-        }
     }
 
-    public function create($request)
+    public function createConversation($data)
     {
         DB::beginTransaction();
         try {
-            $createChat = Chat::create(['user_1' => $request->sender_id,
-                'user_2' => $request->receiver_id]);
+            $createChat = Chat::create(['user_1' => $data['sender_id'],
+                'user_2' => $data['receiver_id']
+            ]);
 
             DB::commit();
             $response = ['result' => 'success', 'data' => $createChat->id];
@@ -133,10 +142,9 @@ class ChatService
             $senderResponseArray = [
                 'first_name' => $chatMessage->sender->first_name,
                 'last_name' => $chatMessage->sender->last_name,
-                'user_name' => $chatMessage->sender->user_name,
                 'profile_image' => $chatMessage->sender->profile_image,
                 'message' => $chatMessage->message,
-                'chat_id' => $chatId,
+                'conversation_id' => $chatId,
                 'receiver_id' => $request->receiver_id,
                 'created_at' => Carbon::parse($chatMessage->created_at)->format('H:i:s'),
                 'created_ago' => Carbon::parse($chatMessage->created_at)->diffForHumans()
@@ -145,10 +153,9 @@ class ChatService
             $receiverResponseArray = [
                 'first_name' => $chatMessage->receiver->first_name,
                 'last_name' => $chatMessage->receiver->last_name,
-                'user_name' => $chatMessage->receiver->user_name,
                 'profile_image' => $chatMessage->receiver->profile_image,
                 'message' => $chatMessage->message,
-                'chat_id' => $chatId,
+                'conversation_id' => $chatId,
                 'sender_id' => $request->sender_id,
                 'created_at' => Carbon::parse($chatMessage->created_at)->format('H:i:s'),
                 'created_ago' => Carbon::parse($chatMessage->created_at)->diffForHumans()

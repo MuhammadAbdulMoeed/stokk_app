@@ -28,7 +28,8 @@ class LoginRequest extends FormRequest
         return [
             'email' => 'required|email',
             'password' => 'required',
-            'fcm_token' => 'required'
+            'fcm_token' => 'required',
+            'timezone' => 'required'
         ];
     }
 

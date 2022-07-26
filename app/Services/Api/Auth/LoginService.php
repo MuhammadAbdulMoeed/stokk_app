@@ -20,7 +20,7 @@ class LoginService
             if (Auth::attempt(['email' => request('email'), 'password' => request('password')])) {
 
                 Auth::user()->fcm_token = $request->fcm_token;
-
+                Auth::user()->timezone = $request->timezone;
                 Auth::user()->save();
 
                 if(Auth::user()->uuid != null && Auth::user()->provider != null)
@@ -43,7 +43,8 @@ class LoginService
                     'lat' => Auth::user()->userLocation ? Auth::user()->userLocation->lat: null,
                     'lng' => Auth::user()->userLocation ? Auth::user()->userLocation->lng: null,
                     'profile_image' => Auth::user()->profile_image,
-                    'user_id' => Auth::user()->id
+                    'user_id' => Auth::user()->id,
+
                 ];
 
                 DB::commit();
@@ -154,6 +155,7 @@ class LoginService
             'provider' => $request->provider,
             'fcm_token' => $request->fcm_token,
             'user_name' => $request->full_name,
+            'timezone' => $request->timezone,
 
         ]);
 
@@ -174,7 +176,7 @@ class LoginService
             'role_id' => 2,
             'provider' => $request->provider,
             'fcm_token' => $request->fcm_token,
-
+            'timezone' => $request->timezone,
         ]);
         return $user;
     }
@@ -193,7 +195,7 @@ class LoginService
             'provider' => $request->provider,
             'fcm_token' => $request->fcm_token,
             'user_name' => $request->full_name,
-
+            'timezone' => $request->timezone,
         ]);
 
 

@@ -13,23 +13,11 @@ class LoginController extends Controller
 {
     public function emailLogin(LoginRequest $request,LoginService $loginService)
     {
-        $validator = Validator::make($request->all(), [
-            'email' => 'required|email',
-            'password' => 'required'
-        ]);
-
-
-        if ($validator->fails()) {
-            return makeResponse('error',$validator->errors()->first(),422);
-        }
-
         return $loginService->loginWithEmail($request);
     }
 
     public function socialLogin(SocialLoginRequest $request,LoginService $loginService)
     {
-
         return $loginService->socialLogin($request);
-
     }
 }

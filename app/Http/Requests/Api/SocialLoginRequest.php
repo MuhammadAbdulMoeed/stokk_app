@@ -32,6 +32,7 @@ class SocialLoginRequest extends FormRequest
             'image' => 'mimes:png,jpeg,jpg',
             'email' => 'required_if:provider,GMAIL',
             'fcm_token' => 'required',
+            'timezone' => 'required'
 //            'country' => 'required',
 //            'city' => 'required',
 //            'country_lat' => 'required',

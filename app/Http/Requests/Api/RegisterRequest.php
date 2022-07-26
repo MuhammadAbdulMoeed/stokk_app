@@ -31,6 +31,7 @@ class RegisterRequest extends FormRequest
             'email' => 'required|email|unique:users',
             'password' => 'required|min:8',
             'fcm_token' => 'required',
+            'timezone' => 'required'
 //            'country' => 'required',
 //            'city' => 'required',
 //            'country_lat' => 'required',
