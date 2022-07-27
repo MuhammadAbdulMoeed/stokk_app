@@ -3,6 +3,7 @@
 
 namespace App\Services\Socket;
 
+use App\Models\User;
 use App\Services\Api\ChatService as PassengerChat;
 
 class ChatService
@@ -193,6 +194,52 @@ class ChatService
             $data['user_id'] = $data['receiver_id'];
             return $this->conversationList($io, $socket, $data);
         }
+    }
+
+    public function onlineUser($io,$socket,$data)
+    {
+        if(!isset($data['user_id']))
+        {
+            $socket->emit('onlineUser', [
+                'result' => 'error',
+                'message' => 'User Id is a required field ',
+                'data' => []
+            ]);
+        }
+
+        $data = User::where('id',$data['user_id'])->update(['is_online'=>1,
+            'socket_id',$socket->id]);
+
+        $findAllChatUsers =  $this->chatService->findUserChat($data['user_id']);
+
+        if(sizeof($findAllChatUsers) > 0)
+        {
+            $socket->to($socket->id)->emit('onlineUser',[
+                'result'=>'onlineUser',
+                'message' => 'User Online Successfully',
+                'data' => []
+            ]);
+
+            foreach($findAllChatUsers as $chatUser)
+            {
+                $socket->to($chatUser->socket_id)->emit('onlineUser',[
+                    'result'=>'onlineUser',
+                    'message' => 'User Online Successfully',
+                    'data' => [
+                        'user_id' => $data['user_id']
+                    ]
+                ]);
+            }
+        }
+        else{
+            $socket->to($socket->id)->emit('onlineUser',[
+                'result'=>'onlineUser',
+                'message' => 'User Online Successfully',
+                'data' => []
+            ]);
+        }
+
+
     }
 
 

@@ -227,4 +227,35 @@ class ChatService
 
         return $data;
     }
+
+    public function findConversationUser($data)
+    {
+        $userChats = Chat::with(['firstUser', 'secondUser'])->where(function ($query) use ($user_id) {
+            $query->where('user_1', $user_id)->orWhere('user_2', $user_id);
+        })->get();
+
+
+        $users = array();
+
+
+        foreach ($userChats as $chat) {
+            if ($chat->firstUser->id == $user_id) {
+                if($chat->secondUser->is_online == 1 && $chat->secondUser->socket_id != null)
+                {
+                    $users[] = ['user_id' => $chat->secondUser->id,
+                        'socket_id' =>$chat->secondUser->socket_id ];
+                }
+
+            } elseif ($chat->secondUser->id == $user_id) {
+                if($chat->firstUser->is_online == 1 && $chat->firstUser->socket_id != null) {
+                    $users[] = ['user_id' => $chat->firstUser->id,
+                        'socket_id' => $chat->firstUser->socket_id];
+                }
+            }
+        }
+
+        return $users;
+
+
+    }
 }

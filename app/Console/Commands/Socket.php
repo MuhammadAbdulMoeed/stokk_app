@@ -48,9 +48,8 @@ class Socket extends Command
         $users = array();
         $io->on('connection', function ($socket) use ($io, $users) {
 
-            $socket->on('online', function ($data) use ($io, $socket) {
-//                $users['user_id'] = $socket->id;
-//                $socket->emit('updateUserStatus', $users);
+            $socket->on('online-user', function ($data) use ($io, $socket) {
+                return $this->socketChatService->onlineUser($io,$socket,$data);
             });
 
 
