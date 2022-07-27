@@ -134,14 +134,26 @@ class ChatService
 
     }
 
-    public function saveMessage($data, $chatId)
+    public function saveMessage($data, $chatId,$roomPeopleCount)
     {
         DB::beginTransaction();
         try {
-            $chatMessage = ChatMessage::create([
-                'chat_id' => $chatId, 'sender_id' => $data['sender_id'],
-                'receiver_id' => $data['receiver_id'], 'message' => $data['message']
-            ]);
+            if($roomPeopleCount == 2)
+            {
+                $chatMessage = ChatMessage::create([
+                    'chat_id' => $chatId, 'sender_id' => $data['sender_id'],
+                    'receiver_id' => $data['receiver_id'], 'message' => $data['message'],
+                    'is_read' => 1
+                ]);
+            }
+            else{
+                $chatMessage = ChatMessage::create([
+                    'chat_id' => $chatId, 'sender_id' => $data['sender_id'],
+                    'receiver_id' => $data['receiver_id'], 'message' => $data['message'],
+                    'is_read' => 0
+                ]);
+            }
+
 
             $responseMessage = [
                 'id' => $chatMessage->id,

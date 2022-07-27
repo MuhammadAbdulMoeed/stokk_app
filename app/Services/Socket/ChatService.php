@@ -44,7 +44,6 @@ class ChatService
         }
     }
 
-
     public function chatHistory($io, $socket, $data)
     {
         if (!isset($data['user_id'])) {
@@ -130,7 +129,6 @@ class ChatService
 
         }
 
-
         if ((isset($previousChat['result']) &&  $previousChat['result']== 'error') || !$data['conversation_id']) {
 
             $previousChat = $this->chatService->createConversation($data);
@@ -146,9 +144,26 @@ class ChatService
             }
         }
 
+        //get all room this socket is connected to
+        foreach ($io->sockets->adapter->sids[$socket->id] as $key => $item) {
+            $socket->leave($key);
+        }
+
+        //join room
+        $socket->join($this->room . $data['conversation_id']);
+
+        //get total people in room
+        $roomPeopleCount = 0;
+        foreach ($io->sockets->adapter->rooms as $key => $item) {
+            if ($key == $this->room . $data['conversation_id']) {
+                $roomPeopleCount++;
+            }
+        }
+
+
         try {
 
-            $saveMessage = $this->chatService->saveMessage($data, $data['conversation_id']);
+            $saveMessage = $this->chatService->saveMessage($data, $data['conversation_id'],$roomPeopleCount);
 
             if ($saveMessage['result'] == 'error') {
                 $socket->emit('saveMessage', [
@@ -157,7 +172,8 @@ class ChatService
                     'data' => []
                 ]);
             }
-        } catch (\Exception $e) {
+        }
+        catch (\Exception $e) {
             $socket->emit('saveMessage', [
                 'result' => 'error',
                 'message' => 'Error in Saving Chat Message: ' . $e,
@@ -166,7 +182,7 @@ class ChatService
         }
 
 
-        $socket->emit('saveMessage', [
+        $socket->to($this->room.$data['conversation_id'])->emit('saveMessage', [
             'result' => 'success',
             'message' => 'Message Saved Successfully',
             'data' => [
