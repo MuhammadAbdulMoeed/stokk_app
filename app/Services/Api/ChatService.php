@@ -57,7 +57,7 @@ class ChatService
             return $response;
 
         } else {
-            $response = ['result' => 'success', 'data' => $checkForPreviousChat->id];
+            $response = ['result' => 'error', 'data' => 'No Record Found'];
 
             return $response;
         }

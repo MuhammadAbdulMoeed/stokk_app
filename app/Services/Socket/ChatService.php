@@ -102,7 +102,7 @@ class ChatService
     public function sendMessage($io, $socket, $data)
     {
         if (!isset($data['sender_id'])) {
-            $socket->emit('sendMessage', [
+            $socket->emit('saveMessage', [
                 'result' => 'error',
                 'message' => 'Sender ID is a required field ',
                 'data' => []
@@ -110,7 +110,7 @@ class ChatService
         }
 
         if (!isset($data['receiver_id'])) {
-            $socket->emit('sendMessage', [
+            $socket->emit('saveMessage', [
                 'result' => 'error',
                 'message' => 'Receiver ID is a required field ',
                 'data' => []
@@ -123,16 +123,16 @@ class ChatService
                 $previousChat = $this->chatService->existingChatChecking($data->sender_id, $data->receiver_id);
             }
             catch (\Exception $e) {
-                $socket->emit('sendMessage', [
+                $socket->emit('saveMessage', [
                     'result' => 'error',
-                    'message' => 'Error in Fetching Previous Conversation',
+                    'message' => 'Error in Fetching Previous Conversation: '.$e,
                     'data' => []
                 ]);
             }
 
         }
 
-        if (!$previousChat || !$data['conversation_id']) {
+        if ($previousChat['result'] == 'error' || !$data['conversation_id']) {
             $previousChat = $this->chatService->createConversation($data);
 
             if ($previousChat['result'] == 'error') {
