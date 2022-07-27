@@ -41,7 +41,7 @@ class ChatService
 
     }
 
-    public function existingChatChecking($sender_id, $receiver_id)
+    public function existingChatChecking($sender_id, $receiver_id, $conversation_id)
     {
         $checkForPreviousChat = Chat::where('user_1', $sender_id)
             ->where('user_2', $receiver_id)->first();
@@ -52,16 +52,19 @@ class ChatService
         }
 
         if ($checkForPreviousChat) {
+            if ($checkForPreviousChat->id != $conversation_id) {
+                $response = ['result' => 'not_match_error', 'message' => 'Conversation ID Not Match'];
+
+                return $response;
+            }
             $response = ['result' => 'success', 'data' => $checkForPreviousChat->id];
 
             return $response;
-
         } else {
             $response = ['result' => 'error', 'data' => 'No Record Found'];
 
             return $response;
         }
-
 
     }
 
@@ -70,8 +73,7 @@ class ChatService
 
         $messages = array();
 
-        if($chatId)
-        {
+        if ($chatId) {
             $chatMessages = ChatMessage::with(['sender', 'receiver'])
                 ->where('chat_id', $chatId)
                 ->get();
@@ -92,20 +94,22 @@ class ChatService
                         'receiver_profile_image' => $chatMessage->receiver->profile_image,
                         'receiver_first_name' => $chatMessage->receiver->first_name,
                         'receiver_last_name' => $chatMessage->receiver->last_name,
+                        'is_read' => $chatMessage->is_read,
                         'created_ago' => Carbon::parse($chatMessage->created_at)->diffForHumans(),
-                        'created_at' =>  Carbon::parse($chatMessage->created_at)->format('d-m-Y')
+                        'created_at' => Carbon::parse($chatMessage->created_at)->format('d-m-Y'),
+                        'receiver_time' => Carbon::parse($chatMessage->created_at)->tz($chatMessage->receiver->timezone)->format('h:i A'),
+                        'sender_time' => Carbon::parse($chatMessage->created_at)->tz($chatMessage->sender->timezone)->format('h:i A')
+
 //                    'receiver_name' => $chatMessage->receiver->user_name,
                     ];
 
                 }
 
                 return $messages;
-            }
-            else {
+            } else {
                 return $messages;
             }
-        }
-        else{
+        } else {
             return $messages;
         }
 
@@ -130,39 +134,36 @@ class ChatService
 
     }
 
-    public function saveMessage($request, $chatId)
+    public function saveMessage($data, $chatId)
     {
         DB::beginTransaction();
         try {
             $chatMessage = ChatMessage::create([
-                'chat_id' => $chatId, 'sender_id' => $request->sender_id,
-                'receiver_id' => $request->receiver_id, 'message' => $request->message
+                'chat_id' => $chatId, 'sender_id' => $data['sender_id'],
+                'receiver_id' => $data['receiver_id'], 'message' => $data['message']
             ]);
 
-            $senderResponseArray = [
-                'first_name' => $chatMessage->sender->first_name,
-                'last_name' => $chatMessage->sender->last_name,
-                'profile_image' => $chatMessage->sender->profile_image,
-                'message' => $chatMessage->message,
-                'conversation_id' => $chatId,
-                'receiver_id' => $request->receiver_id,
-                'created_at' => Carbon::parse($chatMessage->created_at)->format('H:i:s'),
-                'created_ago' => Carbon::parse($chatMessage->created_at)->diffForHumans()
-            ];
-
-            $receiverResponseArray = [
-                'first_name' => $chatMessage->receiver->first_name,
-                'last_name' => $chatMessage->receiver->last_name,
-                'profile_image' => $chatMessage->receiver->profile_image,
-                'message' => $chatMessage->message,
-                'conversation_id' => $chatId,
-                'sender_id' => $request->sender_id,
-                'created_at' => Carbon::parse($chatMessage->created_at)->format('H:i:s'),
-                'created_ago' => Carbon::parse($chatMessage->created_at)->diffForHumans()
+            $responseMessage = [
+                'id' => $chatMessage->id,
+                'conversation_id' => $chatMessage->chat_id,
+                'sender_id' => $chatMessage->sender_id, 'message' => $chatMessage->message,
+                'receiver_id' => $chatMessage->receiver_id,
+//                    'sender_name' => $chatMessage->sender->user_name,
+                'sender_first_name' => $chatMessage->sender->first_name,
+                'sender_last_name' => $chatMessage->sender->last_name,
+                'sender_profile_image' => $chatMessage->sender->profile_image,
+                'receiver_profile_image' => $chatMessage->receiver->profile_image,
+                'receiver_first_name' => $chatMessage->receiver->first_name,
+                'receiver_last_name' => $chatMessage->receiver->last_name,
+                'is_read' => $chatMessage->is_read,
+                'created_ago' => Carbon::parse($chatMessage->created_at)->diffForHumans(),
+                'created_at' => Carbon::parse($chatMessage->created_at)->format('d-m-Y'),
+                'receiver_time' => Carbon::parse($chatMessage->created_at)->tz($chatMessage->receiver->timezone)->format('h:i A'),
+                'sender_time' => Carbon::parse($chatMessage->created_at)->tz($chatMessage->sender->timezone)->format('h:i A')
             ];
 
             DB::commit();
-            $response = ['result' => 'success', 'data' => $chatMessage, 'senderResponseArray' => $senderResponseArray, 'receiverResponseArray' => $receiverResponseArray];
+            $response = ['result' => 'success', 'data' => $responseMessage];
         } catch (\Exception $e) {
             DB::rollBack();
             $response = ['result' => 'error', 'data' => $e];

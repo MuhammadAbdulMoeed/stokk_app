@@ -27,27 +27,25 @@ class ChatService
             ]);
         }
 
-        $conversations =  $this->chatService->findUserChat($data['user_id']);
+        $conversations = $this->chatService->findUserChat($data['user_id']);
 
-        if(sizeof($conversations) > 0)
-        {
-            return $socket->emit('conversationList',[
-                'result'=>'success',
-                'message'=>'Conversation Found',
+        if (sizeof($conversations) > 0) {
+            return $socket->emit('conversationList', [
+                'result' => 'success',
+                'message' => 'Conversation Found',
                 'data' => $conversations
             ]);
-        }
-        else{
-            return $socket->emit('conversationList',[
-                'result'=>'success',
-                'message'=>'No Conversation Found',
+        } else {
+            return $socket->emit('conversationList', [
+                'result' => 'success',
+                'message' => 'No Conversation Found',
                 'data' => []
             ]);
         }
     }
 
 
-    public function chatHistory($io,$socket,$data)
+    public function chatHistory($io, $socket, $data)
     {
         if (!isset($data['user_id'])) {
             $socket->emit('chatHistory', [
@@ -57,38 +55,32 @@ class ChatService
             ]);
         }
 
-        if(isset($data['conversation_id']))
-        {
+        if (isset($data['conversation_id'])) {
             //get all room this socket is connected to
-            foreach($io->sockets->adapter->sids[$socket->id] as $key =>$item)
-            {
+            foreach ($io->sockets->adapter->sids[$socket->id] as $key => $item) {
                 $socket->leave($key);
             }
 
-            $socket->join($this->room.$data['conversation_id']);
+            $socket->join($this->room . $data['conversation_id']);
         }
 
         //get total people in room
         $roomPeopleCount = 0;
-        foreach($io->sockets->adapter->rooms as $key => $item)
-        {
-            if($key == $this->room.$data['conversation_id'])
-            {
+        foreach ($io->sockets->adapter->rooms as $key => $item) {
+            if ($key == $this->room . $data['conversation_id']) {
                 $roomPeopleCount++;
             }
         }
 
         $chatHistory = $this->chatService->fetchPreviousChat($data['conversation_id']);
 
-        if(sizeof($chatHistory) > 0)
-        {
+        if (sizeof($chatHistory) > 0) {
             $socket->emit('chatHistory', [
                 'result' => 'success',
                 'message' => 'Previous Chat Fetch Successfully',
                 'data' => $chatHistory
             ]);
-        }
-        else{
+        } else {
             $socket->emit('chatHistory', [
                 'result' => 'success',
                 'message' => 'Previous Chat Not Found',
@@ -117,49 +109,71 @@ class ChatService
             ]);
         }
 
-        if($data['conversation_id'])
-        {
+        if ($data['conversation_id']) {
             try {
-                $previousChat = $this->chatService->existingChatChecking($data->sender_id, $data->receiver_id);
-            }
-            catch (\Exception $e) {
+                $previousChat = $this->chatService->existingChatChecking($data['sender_id'], $data['receiver_id'], $data['conversation_id']);
+
+                if ($previousChat['result'] == 'not_match_error') {
+                    $socket->emit('saveMessage', [
+                        'result' => 'error',
+                        'message' => $previousChat['message'],
+                        'data' => []
+                    ]);
+                }
+            } catch (\Exception $e) {
                 $socket->emit('saveMessage', [
                     'result' => 'error',
-                    'message' => 'Error in Fetching Previous Conversation: '.$e,
+                    'message' => 'Error in Fetching Previous Conversation: ' . $e,
                     'data' => []
                 ]);
             }
 
         }
 
-        if ($previousChat['result'] == 'error' || !$data['conversation_id']) {
+
+        if ((isset($previousChat['result']) &&  $previousChat['result']== 'error') || !$data['conversation_id']) {
+
             $previousChat = $this->chatService->createConversation($data);
 
+            $data['conversation_id'] = $previousChat['data'];
+
             if ($previousChat['result'] == 'error') {
-                $socket->emit('sendMessage', [
+                $socket->emit('saveMessage', [
                     'result' => 'error',
-                    'message' => 'Error in Creating Conversation: '.$previousChat['data'],
+                    'message' => 'Error in Creating Conversation: ' . $previousChat['data'],
                     'data' => []
                 ]);
             }
         }
 
-
         try {
-            $saveMessage = $this->chatService->saveMessage($data, $previousChat['data']);
+
+            $saveMessage = $this->chatService->saveMessage($data, $data['conversation_id']);
 
             if ($saveMessage['result'] == 'error') {
-                return makeResponse('error', 'Error Came in Saving Chat Message: ' . $saveMessage['data'], 500);
+                $socket->emit('saveMessage', [
+                    'result' => 'error',
+                    'message' => 'Error in Saving Chat Message: ' . $saveMessage['data'],
+                    'data' => []
+                ]);
             }
         } catch (\Exception $e) {
-            return makeResponse('error', 'Error in Checking Chat: ' . $e, 500);
+            $socket->emit('saveMessage', [
+                'result' => 'error',
+                'message' => 'Error in Saving Chat Message: ' . $e,
+                'data' => []
+            ]);
         }
 
 
-        return makeResponse('success', 'Message Send Successfully', 200, $saveMessage['data']);
-
+        $socket->emit('saveMessage', [
+            'result' => 'success',
+            'message' => 'Message Saved Successfully',
+            'data' => [
+                $saveMessage['data'],
+            ]
+        ]);
     }
-
 
 
 }
