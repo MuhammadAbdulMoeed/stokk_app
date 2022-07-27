@@ -81,6 +81,7 @@ class ChatService
 
             if (sizeof($chatMessages) > 0) {
                 foreach ($chatMessages as $chatMessage) {
+                    $chatMessage->update(['is_read'=>1]);
 
                     $messages[] = [
                         'id' => $chatMessage->id,
@@ -192,6 +193,7 @@ class ChatService
         })
             ->get();
 
+
         $chats = array();
 
 
@@ -200,12 +202,14 @@ class ChatService
                 $chats[] = ['first_name' => $chat->secondUser->first_name,
                     'last_name' => $chat->secondUser->last_name,
                     'user_id' => $chat->secondUser->id, 'conversation_id' => $chat->id,
-                    'profile_image' => $chat->profile_image];
+                    'unread_message' => $this->getUnreadMessageCount($chat->id,$chat->firstUser->id),
+                    'profile_image' => $chat->secondUser->profile_image];
             } elseif ($chat->secondUser->id == $user_id) {
                 $chats[] = [
                     'first_name' => $chat->firstUser->first_name,
                     'last_name' => $chat->firstUser->last_name,
                     'user_id' => $chat->firstUser->id, 'conversation_id' => $chat->id,
+                    'unread_message' => $this->getUnreadMessageCount($chat->id,$chat->secondUser->id),
                     'profile_image' => $chat->firstUser->profile_image];
             }
 
@@ -214,5 +218,13 @@ class ChatService
 
 
         return $chats;
+    }
+
+    public function getUnreadMessageCount($conversation_id,$user_id)
+    {
+        $data =  ChatMessage::where('chat_id',$conversation_id)->where('receiver_id',$user_id)
+            ->where('is_read',0)->count();
+
+        return $data;
     }
 }

@@ -59,11 +59,23 @@ class Socket extends Command
             });
 
             $socket->on('get-chat-history', function ($data) use ($io, $socket) {
-                return $this->socketChatService->chatHistory($io,$socket,$data);
+                return $this->socketChatService->chatHistory($io, $socket, $data);
             });
 
             $socket->on('send-message', function ($data) use ($io, $socket) {
                 return $this->socketChatService->sendMessage($io, $socket, $data);
+            });
+
+            $socket->on('leave-room', function ($data) use ($io, $socket) {
+                foreach ($io->sockets->adapter->sids[$socket->id] as $key => $item) {
+                    $socket->leave($key);
+                }
+
+                $socket->to($socket->id)->emit('leaveRoom',[
+                    'result'=>'success',
+                    'message' => 'User Leave The Room Successfully',
+                    'data' => []
+                ]);
             });
 
             $socket->on('disconnect', function () use ($io, $socket, $users) {

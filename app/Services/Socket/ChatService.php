@@ -18,7 +18,6 @@ class ChatService
 
     public function conversationList($io, $socket, $data)
     {
-
         if (!isset($data['user_id'])) {
             $socket->emit('conversationList', [
                 'result' => 'error',
@@ -189,6 +188,11 @@ class ChatService
                 $saveMessage['data'],
             ]
         ]);
+
+        if($roomPeopleCount != 2) {
+            $data['user_id'] = $data['receiver_id'];
+            return $this->conversationList($io, $socket, $data);
+        }
     }
 
 

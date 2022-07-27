@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Chat extends Model
 {
@@ -20,4 +21,11 @@ class Chat extends Model
     {
         return $this->belongsTo(User::class,'user_2');
     }
+
+    public function messages()
+    {
+        return $this->hasMany(ChatMessage::class,'chat_id');
+    }
+
+
 }
