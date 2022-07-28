@@ -167,20 +167,20 @@ class ChatService
         }
 
         //get all room this socket is connected to
-        foreach ($io->sockets->adapter->sids[$socket->id] as $key => $item) {
-            $socket->leave($key);
-        }
+//        foreach ($io->sockets->adapter->sids[$socket->id] as $key => $item) {
+//            $socket->leave($key);
+//        }
 
         //join room
-        $socket->join($this->room . $data['conversation_id']);
+//        $socket->join($this->room . $data['conversation_id']);
 
         //get total people in room
         $roomPeopleCount = 0;
-        foreach ($io->sockets->adapter->rooms as $key => $item) {
-            if ($key == $this->room . $data['conversation_id']) {
-                $roomPeopleCount++;
-            }
-        }
+//        foreach ($io->sockets->adapter->rooms as $key => $item) {
+//            if ($key == $this->room . $data['conversation_id']) {
+//                $roomPeopleCount++;
+//            }
+//        }
 
 
         try {
@@ -194,7 +194,8 @@ class ChatService
                     'data' => []
                 ]);
             }
-        } catch (\Exception $e) {
+        }
+        catch (\Exception $e) {
             $socket->emit('saveMessage', [
                 'result' => 'error',
                 'message' => 'Error in Saving Chat Message: ' . $e,
