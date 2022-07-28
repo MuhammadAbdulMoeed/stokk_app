@@ -229,7 +229,7 @@ class ChatService
             ]);
         }
 
-        $user = User::where('id', $data['user_id']);
+        $user = User::find($data['user_id']);
 
         if($user)
         {
