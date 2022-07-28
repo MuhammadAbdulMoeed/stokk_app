@@ -229,7 +229,7 @@ class ChatService
             ]);
         }
 
-        $data = User::where('id', $data['user_id'])->update(['is_online' => 1,
+        $user = User::where('id', $data['user_id'])->update(['is_online' => 1,
             'socket_id', $socket->id]);
 
         $socket->to($socket->id)->emit('onlineUser', [
