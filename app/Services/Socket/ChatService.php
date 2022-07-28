@@ -240,7 +240,7 @@ class ChatService
             ]
         ]);
 
-        if ($roomPeopleCount != 2) {
+//        if ($roomPeopleCount != 2) {
 //            $data['user_id'] = null;
 //            $data['user_id'] = $data['receiver_id'];
             $getReceiver =  User::find($data['receiver_id']);
@@ -251,7 +251,7 @@ class ChatService
                 return $this->conversationList($io, $socket, $data,$type,$getReceiver->id);
             }
 
-        }
+//        }
     }
 
     public function onlineUser($io, $socket, $data)
