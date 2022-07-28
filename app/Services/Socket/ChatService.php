@@ -233,17 +233,17 @@ class ChatService
             ]
         ]);
 
-        if ($roomPeopleCount != 2) {
-            $data['user_id'] = $data['receiver_id'];
-            $getReceiver =  User::find($data['receiver_id']);
-            if($getReceiver)
-            {
-                $data['socket_id'] = $getReceiver->socket_id;
-                $type='from_send';
-                return $this->conversationList($io, $socket, $data,$type);
-            }
-
-        }
+//        if ($roomPeopleCount != 2) {
+//            $data['user_id'] = $data['receiver_id'];
+//            $getReceiver =  User::find($data['receiver_id']);
+//            if($getReceiver)
+//            {
+//                $data['socket_id'] = $getReceiver->socket_id;
+//                $type='from_send';
+//                return $this->conversationList($io, $socket, $data,$type);
+//            }
+//
+//        }
     }
 
     public function onlineUser($io, $socket, $data)
