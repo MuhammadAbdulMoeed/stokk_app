@@ -5,6 +5,7 @@ namespace App\Services\Api;
 
 
 use App\Helper\ImageUploadHelper;
+use App\Models\Chat;
 use App\Models\CustomField;
 use App\Models\PivotProductCustomField;
 use App\Models\Product;
@@ -245,9 +246,27 @@ class ProductService
 
             $relatedProducts = $this->fetchProduct($relatedProductsArray);
 
+
+            $productUser =  $data->created_by;
+
+            //findUserChat
+            $userChat = Chat::with(['firstUser', 'secondUser'])->where(function ($query) use ($user_id,$productUser) {
+                $query->where('user_1', $user_id)->where('user_2', $productUser);
+            })->orwhere(function ($query) use ($user_id,$productUser) {
+                $query->where('user_1', $productUser)->where('user_2', $user_id);
+            })
+                ->first();
+
+            $conversation_id = null;
+            if($userChat)
+            {
+                $conversation_id = $userChat->id;
+            }
+
             $data = [
                 'product_detail' => $product,
-                'related_products' =>  $relatedProducts
+                'related_products' =>  $relatedProducts,
+                'conversation_id' => $conversation_id
             ];
 
 

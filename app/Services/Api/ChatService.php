@@ -242,13 +242,13 @@ class ChatService
 
 
         foreach ($userChats as $chat) {
-            if ($chat->firstUser->id == $user_id) {
+            if ($chat->firstUser->id == $data['user_id']) {
                 if ($chat->secondUser->is_online == 1 && $chat->secondUser->socket_id != null) {
                     $users[] = ['user_id' => $chat->secondUser->id,
                         'socket_id' => $chat->secondUser->socket_id];
                 }
 
-            } elseif ($chat->secondUser->id == $user_id) {
+            } elseif ($chat->secondUser->id == $data['user_id']) {
                 if ($chat->firstUser->is_online == 1 && $chat->firstUser->socket_id != null) {
                     $users[] = ['user_id' => $chat->firstUser->id,
                         'socket_id' => $chat->firstUser->socket_id];
