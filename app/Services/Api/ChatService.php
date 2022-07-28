@@ -273,7 +273,7 @@ class ChatService
             $response = [
                 'lastMessageTime' => Carbon::parse($userChats->created_at)->tz($timeZone)->format('h:i A'),
                 'lastMessage' => $userChats->message,
-                'messageSendTime' => $userChats->created_at
+                'messageSendTime' => strtotime($userChats->created_at)
             ];
 
             return $response;
