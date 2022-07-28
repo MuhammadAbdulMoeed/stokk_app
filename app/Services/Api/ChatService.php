@@ -81,7 +81,7 @@ class ChatService
 
             if (sizeof($chatMessages) > 0) {
                 foreach ($chatMessages as $chatMessage) {
-                    $chatMessage->update(['is_read'=>1]);
+                    $chatMessage->update(['is_read' => 1]);
 
                     $messages[] = [
                         'id' => $chatMessage->id,
@@ -135,19 +135,17 @@ class ChatService
 
     }
 
-    public function saveMessage($data, $chatId,$roomPeopleCount)
+    public function saveMessage($data, $chatId, $roomPeopleCount)
     {
         DB::beginTransaction();
         try {
-            if($roomPeopleCount == 2)
-            {
+            if ($roomPeopleCount == 2) {
                 $chatMessage = ChatMessage::create([
                     'chat_id' => $chatId, 'sender_id' => $data['sender_id'],
                     'receiver_id' => $data['receiver_id'], 'message' => $data['message'],
                     'is_read' => 1
                 ]);
-            }
-            else{
+            } else {
                 $chatMessage = ChatMessage::create([
                     'chat_id' => $chatId, 'sender_id' => $data['sender_id'],
                     'receiver_id' => $data['receiver_id'], 'message' => $data['message'],
@@ -199,39 +197,44 @@ class ChatService
 
         foreach ($userChats as $chat) {
             if ($chat->firstUser->id == $user_id) {
+                $fetchLastMessageRecord = $this->lastMessageTime($chat->id,$chat->firstUser->timezone);
+
                 $chats[] = ['first_name' => $chat->secondUser->first_name,
                     'last_name' => $chat->secondUser->last_name,
                     'user_id' => $chat->secondUser->id, 'conversation_id' => $chat->id,
-                    'unread_message' => $this->getUnreadMessageCount($chat->id,$chat->firstUser->id),
+                    'last_message_time' => $fetchLastMessageRecord['lastMessageTime'],
+                    'last_message' => $fetchLastMessageRecord['lastMessage'],
+                    'unread_message' => $this->getUnreadMessageCount($chat->id, $chat->firstUser->id),
                     'profile_image' => $chat->secondUser->profile_image];
             } elseif ($chat->secondUser->id == $user_id) {
+                $fetchLastMessageRecord = $this->lastMessageTime($chat->id,$chat->secondUser->timezone);
+
                 $chats[] = [
                     'first_name' => $chat->firstUser->first_name,
                     'last_name' => $chat->firstUser->last_name,
                     'user_id' => $chat->firstUser->id, 'conversation_id' => $chat->id,
-                    'unread_message' => $this->getUnreadMessageCount($chat->id,$chat->secondUser->id),
+                    'last_message_time' => $fetchLastMessageRecord['lastMessageTime'],
+                    'last_message' => $fetchLastMessageRecord['lastMessage'],
+                    'unread_message' => $this->getUnreadMessageCount($chat->id, $chat->secondUser->id),
                     'profile_image' => $chat->firstUser->profile_image];
             }
-
-
         }
-
 
         return $chats;
     }
 
-    public function getUnreadMessageCount($conversation_id,$user_id)
+    public function getUnreadMessageCount($conversation_id, $user_id)
     {
-        $data =  ChatMessage::where('chat_id',$conversation_id)->where('receiver_id',$user_id)
-            ->where('is_read',0)->count();
+        $data = ChatMessage::where('chat_id', $conversation_id)->where('receiver_id', $user_id)
+            ->where('is_read', 0)->count();
 
         return $data;
     }
 
     public function findConversationUser($data)
     {
-        $userChats = Chat::with(['firstUser', 'secondUser'])->where(function ($query) use ($user_id) {
-            $query->where('user_1', $user_id)->orWhere('user_2', $user_id);
+        $userChats = Chat::with(['firstUser', 'secondUser'])->where(function ($query) use ($data) {
+            $query->where('user_1', $data['user_id'])->orWhere('user_2', $data['user_id']);
         })->get();
 
 
@@ -240,22 +243,40 @@ class ChatService
 
         foreach ($userChats as $chat) {
             if ($chat->firstUser->id == $user_id) {
-                if($chat->secondUser->is_online == 1 && $chat->secondUser->socket_id != null)
-                {
+                if ($chat->secondUser->is_online == 1 && $chat->secondUser->socket_id != null) {
                     $users[] = ['user_id' => $chat->secondUser->id,
-                        'socket_id' =>$chat->secondUser->socket_id ];
+                        'socket_id' => $chat->secondUser->socket_id];
                 }
 
             } elseif ($chat->secondUser->id == $user_id) {
-                if($chat->firstUser->is_online == 1 && $chat->firstUser->socket_id != null) {
+                if ($chat->firstUser->is_online == 1 && $chat->firstUser->socket_id != null) {
                     $users[] = ['user_id' => $chat->firstUser->id,
                         'socket_id' => $chat->firstUser->socket_id];
                 }
             }
         }
-
         return $users;
+    }
 
+    public function lastMessageTime($conversation_id,$timeZone)
+    {
+        $userChats = ChatMessage::where('chat_id',$conversation_id)
+            ->orderBy('id','desc')->first();
+
+        $response =  array();
+
+        if($userChats)
+        {
+            $response = [
+                'lastMessageTime' => Carbon::parse($userChats->created_at)->tz($timeZone)->format('h:i A'),
+                'lastMessage' => $userChats->message
+            ];
+
+            return $response;
+        }
+        else{
+            return $response;
+        }
 
     }
 }

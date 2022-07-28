@@ -129,7 +129,7 @@ class ChatService
 
         }
 
-        if ((isset($previousChat['result']) &&  $previousChat['result']== 'error') || !$data['conversation_id']) {
+        if ((isset($previousChat['result']) && $previousChat['result'] == 'error') || !$data['conversation_id']) {
 
             $previousChat = $this->chatService->createConversation($data);
 
@@ -163,7 +163,7 @@ class ChatService
 
         try {
 
-            $saveMessage = $this->chatService->saveMessage($data, $data['conversation_id'],$roomPeopleCount);
+            $saveMessage = $this->chatService->saveMessage($data, $data['conversation_id'], $roomPeopleCount);
 
             if ($saveMessage['result'] == 'error') {
                 $socket->emit('saveMessage', [
@@ -172,8 +172,7 @@ class ChatService
                     'data' => []
                 ]);
             }
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             $socket->emit('saveMessage', [
                 'result' => 'error',
                 'message' => 'Error in Saving Chat Message: ' . $e,
@@ -182,7 +181,7 @@ class ChatService
         }
 
 
-        $io->in($this->room.$data['conversation_id'])->emit('saveMessage', [
+        $io->in($this->room . $data['conversation_id'])->emit('saveMessage', [
             'result' => 'success',
             'message' => 'Message Saved Successfully',
             'data' => [
@@ -190,16 +189,15 @@ class ChatService
             ]
         ]);
 
-        if($roomPeopleCount != 2) {
+        if ($roomPeopleCount != 2) {
             $data['user_id'] = $data['receiver_id'];
             return $this->conversationList($io, $socket, $data);
         }
     }
 
-    public function onlineUser($io,$socket,$data)
+    public function onlineUser($io, $socket, $data)
     {
-        if(!isset($data['user_id']))
-        {
+        if (!isset($data['user_id'])) {
             $socket->emit('onlineUser', [
                 'result' => 'error',
                 'message' => 'User Id is a required field ',
@@ -207,37 +205,42 @@ class ChatService
             ]);
         }
 
-        $data = User::where('id',$data['user_id'])->update(['is_online'=>1,
-            'socket_id',$socket->id]);
+        $data = User::where('id', $data['user_id'])->update(['is_online' => 1,
+            'socket_id', $socket->id]);
 
-        $findAllChatUsers =  $this->chatService->findUserChat($data['user_id']);
+        $socket->to($socket->id)->emit('onlineUser', [
+            'result' => 'onlineUser',
+            'message' => 'User Online Successfully',
+            'data' => []
+        ]);
 
-        if(sizeof($findAllChatUsers) > 0)
-        {
-            $socket->to($socket->id)->emit('onlineUser',[
-                'result'=>'onlineUser',
-                'message' => 'User Online Successfully',
-                'data' => []
-            ]);
-
-            foreach($findAllChatUsers as $chatUser)
-            {
-                $socket->to($chatUser->socket_id)->emit('onlineUser',[
-                    'result'=>'onlineUser',
-                    'message' => 'User Online Successfully',
-                    'data' => [
-                        'user_id' => $data['user_id']
-                    ]
-                ]);
-            }
-        }
-        else{
-            $socket->to($socket->id)->emit('onlineUser',[
-                'result'=>'onlineUser',
-                'message' => 'User Online Successfully',
-                'data' => []
-            ]);
-        }
+//        $findAllChatUsers = $this->chatService->findConversationUser($data['user_id']);
+//
+//        if (sizeof($findAllChatUsers) > 0) {
+//            $socket->to($socket->id)->emit('onlineUser', [
+//                'result' => 'onlineUser',
+//                'message' => 'User Online Successfully',
+//                'data' => []
+//            ]);
+//
+//            foreach ($findAllChatUsers as $chatUser) {
+//                $chats = $this->chatService->findUserChat($chatUser->user_id);
+//
+//                if (sizeof($chats) > 0) {
+//                    $socket->emit('conversationList', [
+//                        'result' => 'success',
+//                        'message' => 'Conversation Found',
+//                        'data' => $chats
+//                    ]);
+//                }
+//            }
+//        } else {
+//            $socket->to($socket->id)->emit('onlineUser', [
+//                'result' => 'onlineUser',
+//                'message' => 'User Online Successfully',
+//                'data' => []
+//            ]);
+//        }
 
 
     }
