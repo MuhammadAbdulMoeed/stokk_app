@@ -17,7 +17,7 @@ class ChatService
         $this->chatService = $chatService;
     }
 
-    public function conversationList($io, $socket, $data)
+    public function conversationList($io, $socket, $data,$type=null)
     {
         if (!isset($data['user_id'])) {
             $socket->emit('conversationList', [
@@ -30,17 +30,38 @@ class ChatService
         $conversations = $this->chatService->findUserChat($data['user_id']);
 
         if (sizeof($conversations) > 0) {
-            return $socket->emit('conversationList', [
-                'result' => 'success',
-                'message' => 'Conversation Found',
-                'data' => $conversations
-            ]);
+            if($type != null)
+            {
+                return $socket->to($data['socket->id'])->emit('conversationList', [
+                    'result' => 'success',
+                    'message' => 'Conversation Found',
+                    'data' => $conversations
+                ]);
+            }
+            else{
+                return $socket->to($socket->id)->emit('conversationList', [
+                    'result' => 'success',
+                    'message' => 'Conversation Found',
+                    'data' => $conversations
+                ]);
+            }
+
         } else {
-            return $socket->emit('conversationList', [
-                'result' => 'success',
-                'message' => 'No Conversation Found',
-                'data' => []
-            ]);
+            if($type != null)
+            {
+                return $socket->to($data['socket_id'])->emit('conversationList', [
+                    'result' => 'success',
+                    'message' => 'No Conversation Found',
+                    'data' => []
+                ]);
+            }
+            else {
+                return $socket->to($socket->id)->emit('conversationList', [
+                    'result' => 'success',
+                    'message' => 'No Conversation Found',
+                    'data' => []
+                ]);
+            }
         }
     }
 
@@ -191,7 +212,9 @@ class ChatService
 
         if ($roomPeopleCount != 2) {
             $data['user_id'] = $data['receiver_id'];
-            return $this->conversationList($io, $socket, $data);
+            $data['socket_id'] = $data['socket_id'];
+            $type='from_send';
+            return $this->conversationList($io, $socket, $data,$type);
         }
     }
 
