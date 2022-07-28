@@ -202,8 +202,9 @@ class ChatService
                 $chats[] = ['first_name' => $chat->secondUser->first_name,
                     'last_name' => $chat->secondUser->last_name,
                     'user_id' => $chat->secondUser->id, 'conversation_id' => $chat->id,
-                    'last_message_time' => $fetchLastMessageRecord['lastMessageTime'],
-                    'last_message' => $fetchLastMessageRecord['lastMessage'],
+                    'last_message_time' => isset($fetchLastMessageRecord['lastMessageTime']) ? $fetchLastMessageRecord['lastMessageTime']:null,
+                    'last_message' => isset($fetchLastMessageRecord['lastMessage']) ? $fetchLastMessageRecord['lastMessage']:null,
+                    'message_send_time' => isset($fetchLastMessageRecord['messageSendTime']) ? $fetchLastMessageRecord['messageSendTime']:null,
                     'unread_message' => $this->getUnreadMessageCount($chat->id, $chat->firstUser->id),
                     'profile_image' => $chat->secondUser->profile_image];
             } elseif ($chat->secondUser->id == $user_id) {
@@ -213,8 +214,10 @@ class ChatService
                     'first_name' => $chat->firstUser->first_name,
                     'last_name' => $chat->firstUser->last_name,
                     'user_id' => $chat->firstUser->id, 'conversation_id' => $chat->id,
-                    'last_message_time' => $fetchLastMessageRecord['lastMessageTime'],
-                    'last_message' => $fetchLastMessageRecord['lastMessage'],
+                    'last_message_time' => isset($fetchLastMessageRecord['lastMessageTime']) ? $fetchLastMessageRecord['lastMessageTime']:null,
+                    'last_message' => isset($fetchLastMessageRecord['lastMessage']) ? $fetchLastMessageRecord['lastMessage']:null,
+                    'message_send_time' => isset($fetchLastMessageRecord['messageSendTime']) ? $fetchLastMessageRecord['messageSendTime']:null,
+
                     'unread_message' => $this->getUnreadMessageCount($chat->id, $chat->secondUser->id),
                     'profile_image' => $chat->firstUser->profile_image];
             }
@@ -269,7 +272,8 @@ class ChatService
         {
             $response = [
                 'lastMessageTime' => Carbon::parse($userChats->created_at)->tz($timeZone)->format('h:i A'),
-                'lastMessage' => $userChats->message
+                'lastMessage' => $userChats->message,
+                'messageSendTime' => $userChats->created_at
             ];
 
             return $response;
