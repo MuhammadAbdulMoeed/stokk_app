@@ -251,9 +251,9 @@ class ProductService
 
             //findUserChat
             $userChat = Chat::with(['firstUser', 'secondUser'])->where(function ($query) use ($user_id,$productUser) {
-                $query->where('user_1', $user_id)->where('user_2', $productUser);
+                $query->where('user_1', Auth::user()->id)->where('user_2', $productUser);
             })->orwhere(function ($query) use ($user_id,$productUser) {
-                $query->where('user_1', $productUser)->where('user_2', $user_id);
+                $query->where('user_1', $productUser)->where('user_2', Auth::user()->id);
             })
                 ->first();
 
