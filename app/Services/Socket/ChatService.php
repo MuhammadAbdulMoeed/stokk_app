@@ -216,7 +216,7 @@ class ChatService
 //        }
 
 
-        $io->emit($data['sender_id'].'-saveMessage', [
+        $io->emit($data['receiver_id'].'-'.$data['sender_id'].'-saveMessage', [
             'result' => 'success',
             'message' => 'Message Saved Successfully',
             'data' => [
@@ -224,7 +224,7 @@ class ChatService
             ]
         ]);
 
-        $io->emit($data['receiver_id'].'-saveMessage', [
+        $io->emit($data['sender_id'].'-'.$data['receiver_id'].'-saveMessage', [
             'result' => 'success',
             'message' => 'Message Saved Successfully',
             'data' => [
