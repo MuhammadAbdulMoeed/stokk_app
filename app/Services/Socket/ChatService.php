@@ -39,12 +39,13 @@ class ChatService
                 ]);
             }
             else{
-                return $socket->to($socket->id)->emit('conversationList', [
+                return $io->to($socket->id)->emit('conversationList', [
                     'result' => 'success',
                     'message' => 'Conversation Found',
                     'data' => $conversations
                 ]);
             }
+
 
         } else {
             if($type != null)
@@ -56,7 +57,7 @@ class ChatService
                 ]);
             }
             else {
-                return $socket->to($socket->id)->emit('conversationList', [
+                return $io->to($socket->id)->emit('conversationList', [
                     'result' => 'success',
                     'message' => 'No Conversation Found',
                     'data' => []
