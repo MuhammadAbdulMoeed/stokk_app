@@ -202,21 +202,29 @@ class ChatService
             ]);
         }
 
-        $getReceiver =  User::find($data['receiver_id']);
-        $socketID = null;
-        if($getReceiver) {
-            $socketID= $getReceiver->socket_id;
-            $io->to($socketID)->emit('saveMessage', [
-                'result' => 'success',
-                'message' => 'Message Saved Successfully',
-                'data' => [
-                    $saveMessage['data'],
-                ]
-            ]);
-        }
+//        $getReceiver =  User::find($data['receiver_id']);
+//        $socketID = null;
+//        if($getReceiver) {
+//            $socketID= $getReceiver->socket_id;
+//            $io->to($socketID)->emit('saveMessage', [
+//                'result' => 'success',
+//                'message' => 'Message Saved Successfully',
+//                'data' => [
+//                    $saveMessage['data'],
+//                ]
+//            ]);
+//        }
 
 
-        $io->to($socket->id)->emit('saveMessage', [
+        $io->emit($data['sender_id'].'-saveMessage', [
+            'result' => 'success',
+            'message' => 'Message Saved Successfully',
+            'data' => [
+                $saveMessage['data'],
+            ]
+        ]);
+
+        $io->emit($data['receiver_id'].'-saveMessage', [
             'result' => 'success',
             'message' => 'Message Saved Successfully',
             'data' => [
