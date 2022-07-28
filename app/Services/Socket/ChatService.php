@@ -203,7 +203,7 @@ class ChatService
         }
 
 
-        $io->in($this->room . $data['conversation_id'])->emit('saveMessage', [
+        $socket->in($this->room . $data['conversation_id'])->emit('saveMessage', [
             'result' => 'success',
             'message' => 'Message Saved Successfully',
             'data' => [
