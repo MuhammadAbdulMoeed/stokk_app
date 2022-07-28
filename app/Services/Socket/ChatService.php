@@ -203,7 +203,7 @@ class ChatService
         }
 
 
-        $socket->in($this->room . $data['conversation_id'])->emit('saveMessage', [
+        $io->to()->emit('saveMessage', [
             'result' => 'success',
             'message' => 'Message Saved Successfully',
             'data' => [
@@ -213,9 +213,14 @@ class ChatService
 
         if ($roomPeopleCount != 2) {
             $data['user_id'] = $data['receiver_id'];
-            $data['socket_id'] = $data['socket_id'];
-            $type='from_send';
-            return $this->conversationList($io, $socket, $data,$type);
+            $getReceiver =  User::find($data['receiver_id']);
+            if($getReceiver)
+            {
+                $data['socket_id'] = $getReceiver->socket_id;
+                $type='from_send';
+                return $this->conversationList($io, $socket, $data,$type);
+            }
+
         }
     }
 
