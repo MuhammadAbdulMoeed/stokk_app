@@ -234,6 +234,7 @@ class ChatService
         ]);
 
         if ($roomPeopleCount != 2) {
+            $data['user_id'] = null;
             $data['user_id'] = $data['receiver_id'];
             $getReceiver =  User::find($data['receiver_id']);
             if($getReceiver)
