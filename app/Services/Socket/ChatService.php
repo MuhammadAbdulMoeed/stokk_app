@@ -200,8 +200,8 @@ class ChatService
 //            ]);
 //        }
 
-        $io->to($this->room.$data['conversation_id'])->emit('sendMessage',[
-           'result' => 'error',
+        $io->to($this->room.$data['conversation_id'])->emit('saveMessage',[
+           'result' => 'success',
             'message' => 'Message Saved Successfully',
             'data' => [
                 $saveMessage['data'],
