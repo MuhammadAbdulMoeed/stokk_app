@@ -17,7 +17,7 @@ class ChatService
         $this->chatService = $chatService;
     }
 
-    public function conversationList($io, $socket, $data,$type=null,$receiver_id = null)
+    public function conversationList($io, $socket, $data)
     {
         if (!isset($data['user_id'])) {
             $socket->emit('conversationList', [
@@ -27,50 +27,28 @@ class ChatService
             ]);
         }
 
-        if($type == "from_send")
-        {
-            $conversations = $this->chatService->findUserChat($receiver_id);
-        }
-        else{
-            $conversations = $this->chatService->findUserChat($data['user_id']);
-        }
+
+        $conversations = $this->chatService->findUserChat($data['user_id']);
 
 
         if (sizeof($conversations) > 0) {
-            if($type == "from_send")
-            {
-                return $io->to($data['socket->id'])->emit('conversationList', [
-                    'result' => 'success',
-                    'message' => 'Conversation Found',
-                    'data' => $conversations
-                ]);
-            }
-            else{
-                return $io->to($socket->id)->emit('conversationList', [
-                    'result' => 'success',
-                    'message' => 'Conversation Found',
-                    'data' => $conversations
-                ]);
-            }
+
+            return $io->to($socket->id)->emit('conversationList', [
+                'result' => 'success',
+                'message' => 'Conversation Found',
+                'data' => $conversations
+            ]);
 
 
         } else {
-            if($type != null)
-            {
-                return $io->to($data['socket_id'])->emit('conversationList', [
-                    'result' => 'success',
-                    'message' => 'No Conversation Found',
-                    'data' => []
-                ]);
-            }
-            else {
-                return $io->to($socket->id)->emit('conversationList', [
-                    'result' => 'success',
-                    'message' => 'No Conversation Found',
-                    'data' => []
-                ]);
-            }
+
+            return $io->to($socket->id)->emit('conversationList', [
+                'result' => 'success',
+                'message' => 'No Conversation Found',
+                'data' => []
+            ]);
         }
+
     }
 
     public function chatHistory($io, $socket, $data)
@@ -174,20 +152,20 @@ class ChatService
         }
 
         //get all room this socket is connected to
-//        foreach ($io->sockets->adapter->sids[$socket->id] as $key => $item) {
-//            $socket->leave($key);
-//        }
+        foreach ($io->sockets->adapter->sids[$socket->id] as $key => $item) {
+            $socket->leave($key);
+        }
 
         //join room
-//        $socket->join($this->room . $data['conversation_id']);
+        $socket->join($this->room . $data['conversation_id']);
 
         //get total people in room
         $roomPeopleCount = 0;
-//        foreach ($io->sockets->adapter->rooms as $key => $item) {
-//            if ($key == $this->room . $data['conversation_id']) {
-//                $roomPeopleCount++;
-//            }
-//        }
+        foreach ($io->sockets->adapter->rooms as $key => $item) {
+            if ($key == $this->room . $data['conversation_id']) {
+                $roomPeopleCount++;
+            }
+        }
 
 
         try {
@@ -201,8 +179,7 @@ class ChatService
                     'data' => []
                 ]);
             }
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             $socket->emit('saveMessage', [
                 'result' => 'error',
                 'message' => 'Error in Saving Chat Message: ' . $e,
@@ -210,10 +187,10 @@ class ChatService
             ]);
         }
 
-//        $getReceiver =  User::find($data['receiver_id']);
+//        $getReceiver = User::find($data['receiver_id']);
 //        $socketID = null;
-//        if($getReceiver) {
-//            $socketID= $getReceiver->socket_id;
+//        if ($getReceiver) {
+//            $socketID = $getReceiver->socket_id;
 //            $io->to($socketID)->emit('saveMessage', [
 //                'result' => 'success',
 //                'message' => 'Message Saved Successfully',
@@ -223,35 +200,54 @@ class ChatService
 //            ]);
 //        }
 
-
-        $io->emit($data['receiver_id'].'-'.$data['sender_id'].'-saveMessage', [
-            'result' => 'success',
+        $io->to($this->room.$data['conversation_id'])->emit('sendMessage',[
+           'result' => 'error',
             'message' => 'Message Saved Successfully',
             'data' => [
                 $saveMessage['data'],
             ]
+
         ]);
 
-        $io->emit($data['sender_id'].'-'.$data['receiver_id'].'-saveMessage', [
-            'result' => 'success',
-            'message' => 'Message Saved Successfully',
-            'data' => [
-                $saveMessage['data'],
-            ]
-        ]);
 
-//        if ($roomPeopleCount != 2) {
+//        $io->emit($data['receiver_id'] . '-' . $data['sender_id'] . '-saveMessage', [
+//            'result' => 'success',
+//            'message' => 'Message Saved Successfully',
+//            'data' => [
+//                $saveMessage['data'],
+//            ]
+//        ]);
+//
+//        $io->emit($data['sender_id'] . '-' . $data['receiver_id'] . '-saveMessage', [
+//            'result' => 'success',
+//            'message' => 'Message Saved Successfully',
+//            'data' => [
+//                $saveMessage['data'],
+//            ]
+//        ]);
+
+        if ($roomPeopleCount != 2) {
 //            $data['user_id'] = null;
             $data['user_id'] = $data['receiver_id'];
-            $getReceiver =  User::find($data['receiver_id']);
-            if($getReceiver)
-            {
+            $getReceiver = User::find($data['receiver_id']);
+            if ($getReceiver) {
                 $data['socket_id'] = $getReceiver->socket_id;
-                $type='from_send';
-                return $this->conversationList($io, $socket, $data,$type,$getReceiver->id);
+
+                $getReceiverConversation = $this->chatService->findUserChat($getReceiver);
+
+                if (sizeof($getReceiverConversation) > 0) {
+                    return $io
+                        ->to($getReceiver->socket_id)
+                        ->emit('conversationList', [
+                        'result' => 'success',
+                        'message' => 'Conversation Found',
+                        'data' => $getReceiverConversation
+                    ]);
+                }
+
             }
 
-//        }
+        }
     }
 
     public function onlineUser($io, $socket, $data)
@@ -266,10 +262,9 @@ class ChatService
 
         $user = User::find($data['user_id']);
 
-        if($user)
-        {
+        if ($user) {
             $user->is_online = 1;
-            $user->socket_id =  $socket->id;
+            $user->socket_id = $socket->id;
             $user->save();
         }
 

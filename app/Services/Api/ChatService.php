@@ -217,7 +217,6 @@ class ChatService
                     'last_message_time' => isset($fetchLastMessageRecord['lastMessageTime']) ? $fetchLastMessageRecord['lastMessageTime']:null,
                     'last_message' => isset($fetchLastMessageRecord['lastMessage']) ? $fetchLastMessageRecord['lastMessage']:null,
                     'message_send_time' => isset($fetchLastMessageRecord['messageSendTime']) ? $fetchLastMessageRecord['messageSendTime']:null,
-
                     'unread_message' => $this->getUnreadMessageCount($chat->id, $chat->secondUser->id),
                     'profile_image' => $chat->firstUser->profile_image];
             }
