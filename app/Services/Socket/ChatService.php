@@ -27,7 +27,10 @@ class ChatService
             ]);
         }
 
-
+        foreach ($io->sockets->adapter->sids[$socket->id] as $key => $item) {
+            $socket->leave($key);
+        }
+        
         $conversations = $this->chatService->findUserChat($data['user_id']);
 
 
