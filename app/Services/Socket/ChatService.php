@@ -229,6 +229,7 @@ class ChatService
 //            ]
 //        ]);
 
+        dd($roomPeopleCount);
         if ($roomPeopleCount != 2) {
 //            $data['user_id'] = null;
             $data['user_id'] = $data['receiver_id'];
