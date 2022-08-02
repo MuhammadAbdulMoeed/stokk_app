@@ -37,7 +37,7 @@ class ChatService
         if (sizeof($conversations) > 0) {
 
 
-            $io->to($socket->id)->emit('conversationList', [
+            $socket->emit('conversationList', [
                 'result' => 'success',
                 'message' => 'Conversation Found',
                 'data' => $conversations
@@ -51,7 +51,7 @@ class ChatService
 
         } else {
 
-            $io->to($socket->id)->emit('conversationList', [
+            $socket->emit('conversationList', [
                 'result' => 'success',
                 'message' => 'No Conversation Found',
                 'data' => []
