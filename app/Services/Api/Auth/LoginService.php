@@ -44,6 +44,7 @@ class LoginService
                     'lng' => Auth::user()->userLocation ? Auth::user()->userLocation->lng: null,
                     'profile_image' => Auth::user()->profile_image,
                     'user_id' => Auth::user()->id,
+                    'location' => Auth::user()->userLocation ? Auth::user()->userLocation->location:null,
 
                 ];
 
@@ -129,7 +130,9 @@ class LoginService
                 'country' => Auth::user()->userLocation ? Auth::user()->userLocation->country: null,
                 'lat' => Auth::user()->userLocation ? Auth::user()->userLocation->lat: null,
                 'lng' => Auth::user()->userLocation ? Auth::user()->userLocation->lng: null,
-                'user_id' => Auth::user()->id
+                'user_id' => Auth::user()->id,
+                'location' => Auth::user()->userLocation ? Auth::user()->userLocation->location:null,
+
             ];
 
             DB::commit();

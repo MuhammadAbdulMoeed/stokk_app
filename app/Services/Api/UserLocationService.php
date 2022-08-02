@@ -34,7 +34,8 @@ class UserLocationService
             $data = [
                 'country' => $saveLocation->country,
                 'city' => $saveLocation->city,
-                'lat' => $saveLocation->lat, 'lng' => $saveLocation->lng
+                'location' => $saveLocation->location,
+                 'lat' => $saveLocation->lat, 'lng' => $saveLocation->lng
             ];
 
             DB::commit();
