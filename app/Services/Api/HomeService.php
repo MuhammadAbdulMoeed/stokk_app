@@ -30,11 +30,11 @@ class HomeService
             $data =  $data->where('type',$request->type);
         }
 
-        //        if (isset(Auth::user()->userLocation->city)) {
-//            $data = $data->where('city', Auth::user()->userLocation->city)->get();
-//        } else {
+                if (isset(Auth::user()->userLocation->city)) {
+            $data = $data->where('city', Auth::user()->userLocation->country)->get();
+        } else {
         $data = $data->get();
-//        }
+        }
 
 
         $products = array();
