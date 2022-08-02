@@ -93,7 +93,7 @@ class ChatService
         $chatHistory = $this->chatService->fetchPreviousChat($data['conversation_id']);
 
         if (sizeof($chatHistory) > 0) {
-            $socket->to($socket->id)->emit('chatHistory', [
+            $io->to($socket->id)->emit('chatHistory', [
                 'result' => 'success',
                 'message' => 'Previous Chat Fetch Successfully',
                 'data' => $chatHistory
@@ -102,7 +102,7 @@ class ChatService
                 'message' => 'done'
             ]);
         } else {
-            $socket->to($socket->id)->emit('chatHistory', [
+            $io->to($socket->id)->emit('chatHistory', [
                 'result' => 'success',
                 'message' => 'Previous Chat Not Found',
                 'data' => []
