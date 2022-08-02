@@ -44,7 +44,8 @@ class ChatService
             ]);
 
             $socket->broadcast->emit('testing', [
-                'message' => 'done'
+                'message' => 'done in conversation found',
+                'data' => $conversations
             ]);
 
 
@@ -57,7 +58,8 @@ class ChatService
             ]);
 
             $socket->broadcast->emit('testing', [
-                'message' => 'done'
+                'message' => 'done in no conversation found',
+                'data' => $conversations
             ]);
         }
 
