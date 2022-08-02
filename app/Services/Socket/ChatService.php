@@ -98,7 +98,7 @@ class ChatService
                 'message' => 'Previous Chat Fetch Successfully',
                 'data' => $chatHistory
             ]);
-            $socket->emit('testing', [
+            $socket->broadcast->emit('testing', [
                 'message' => 'done'
             ]);
         } else {
@@ -107,7 +107,7 @@ class ChatService
                 'message' => 'Previous Chat Not Found',
                 'data' => []
             ]);
-            $socket->emit('testing', [
+            $socket->broadcast->emit('testing', [
                 'message' => 'done'
             ]);
         }
