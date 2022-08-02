@@ -233,7 +233,6 @@ class ChatService
 //            $data['user_id'] = null;
             $data['user_id'] = $data['receiver_id'];
             $getReceiver = User::find($data['receiver_id']);
-            dd($getReceiver);
             if ($getReceiver) {
                 $data['socket_id'] = $getReceiver->socket_id;
 
