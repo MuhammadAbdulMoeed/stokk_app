@@ -43,10 +43,10 @@ class ChatService
                 'data' => $conversations
             ]);
 
-            $socket->broadcast->emit('testing', [
-                'message' => 'done in conversation found',
-                'data' => $conversations
-            ]);
+//            $socket->broadcast->emit('testing', [
+//                'message' => 'done in conversation found',
+//                'data' => $conversations
+//            ]);
 
 
         } else {
@@ -57,10 +57,10 @@ class ChatService
                 'data' => []
             ]);
 
-            $socket->broadcast->emit('testing', [
-                'message' => 'done in no conversation found',
-                'data' => $conversations
-            ]);
+//            $socket->broadcast->emit('testing', [
+//                'message' => 'done in no conversation found',
+//                'data' => $conversations
+//            ]);
         }
 
     }
@@ -100,18 +100,18 @@ class ChatService
                 'message' => 'Previous Chat Fetch Successfully',
                 'data' => $chatHistory
             ]);
-            $socket->broadcast->emit('testing', [
-                'message' => 'done'
-            ]);
+//            $socket->broadcast->emit('testing', [
+//                'message' => 'done'
+//            ]);
         } else {
             $socket->emit('chatHistory', [
                 'result' => 'success',
                 'message' => 'Previous Chat Not Found',
                 'data' => []
             ]);
-            $socket->broadcast->emit('testing', [
-                'message' => 'done'
-            ]);
+//            $socket->broadcast->emit('testing', [
+//                'message' => 'done'
+//            ]);
         }
 
 
