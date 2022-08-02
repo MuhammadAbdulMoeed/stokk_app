@@ -36,19 +36,28 @@ class ChatService
 
         if (sizeof($conversations) > 0) {
 
-            return $io->to($socket->id)->emit('conversationList', [
+
+            $io->to($socket->id)->emit('conversationList', [
                 'result' => 'success',
                 'message' => 'Conversation Found',
                 'data' => $conversations
             ]);
 
+            $socket->emit('testing', [
+                'message' => 'done'
+            ]);
+
 
         } else {
 
-            return $io->to($socket->id)->emit('conversationList', [
+            $io->to($socket->id)->emit('conversationList', [
                 'result' => 'success',
                 'message' => 'No Conversation Found',
                 'data' => []
+            ]);
+
+            $socket->emit('testing', [
+                'message' => 'done'
             ]);
         }
 
@@ -84,13 +93,13 @@ class ChatService
         $chatHistory = $this->chatService->fetchPreviousChat($data['conversation_id']);
 
         if (sizeof($chatHistory) > 0) {
-            $socket->emit('chatHistory', [
+            $io->to($socket->id)->emit('chatHistory', [
                 'result' => 'success',
                 'message' => 'Previous Chat Fetch Successfully',
                 'data' => $chatHistory
             ]);
         } else {
-            $socket->emit('chatHistory', [
+            $io->to($socket->id)->emit('chatHistory', [
                 'result' => 'success',
                 'message' => 'Previous Chat Not Found',
                 'data' => []
@@ -203,8 +212,8 @@ class ChatService
 //            ]);
 //        }
 
-        $io->to($this->room.$data['conversation_id'])->emit('saveMessage',[
-           'result' => 'success',
+        $io->to($this->room . $data['conversation_id'])->emit('saveMessage', [
+            'result' => 'success',
             'message' => 'Message Saved Successfully',
             'data' => [
                 $saveMessage['data'],
@@ -241,10 +250,10 @@ class ChatService
                 if (sizeof($getReceiverConversation) > 0) {
                     return $io->to($getReceiver->socket_id)
                         ->emit('conversationList', [
-                        'result' => 'success',
-                        'message' => 'Conversation Found',
-                        'data' => $getReceiverConversation
-                    ]);
+                            'result' => 'success',
+                            'message' => 'Conversation Found',
+                            'data' => $getReceiverConversation
+                        ]);
                 }
 
             }
