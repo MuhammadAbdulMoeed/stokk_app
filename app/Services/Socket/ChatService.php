@@ -236,7 +236,7 @@ class ChatService
             if ($getReceiver) {
                 $data['socket_id'] = $getReceiver->socket_id;
 
-                $getReceiverConversation = $this->chatService->findUserChat($getReceiver);
+                $getReceiverConversation = $this->chatService->findUserChat($data['receiver_id']);
 
                 if (sizeof($getReceiverConversation) > 0) {
                     return $io->to($getReceiver->socket_id)
