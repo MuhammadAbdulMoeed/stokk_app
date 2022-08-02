@@ -272,8 +272,8 @@ class ChatService
         }
 
 
-        $socket->to($socket->id)->emit('onlineUser', [
-            'result' => 'onlineUser',
+        return $io->to($socket->id)->emit('onlineUser', [
+            'result' => 'success',
             'message' => 'User Online Successfully',
             'data' => []
         ]);
