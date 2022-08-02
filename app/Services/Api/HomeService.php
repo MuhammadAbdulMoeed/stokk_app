@@ -15,7 +15,8 @@ class HomeService
 
     public function getNearbyProduct($request = null)
     {
-        $data = Product::where('is_active', 1)->where('created_by',Auth::user()->id)
+        $data = Product::where('is_active', 1)
+//            ->where('created_by',Auth::user()->id)
             ->inRandomOrder()
             ->limit(8);
 
