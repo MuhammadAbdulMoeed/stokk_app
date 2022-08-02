@@ -26,10 +26,11 @@ class UserLocationRequest extends FormRequest
     public function rules()
     {
         return [
-            'country' => 'required',
-            'city' => 'required',
+//            'country' => 'required',
+//            'city' => 'required',
             'lat' => 'required',
-            'lng' => 'required'
+            'lng' => 'required',
+            'location' => 'required'
         ];
     }
 

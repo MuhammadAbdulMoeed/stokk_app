@@ -22,8 +22,9 @@ class UserLocationService
 
             }
 
-            $saveLocation->country = $request->country;
-            $saveLocation->city = $request->city;
+//            $saveLocation->country = $request->country;
+//            $saveLocation->city = $request->city;
+            $saveLocation->location = $request->location;
             $saveLocation->lat = $request->lat;
             $saveLocation->lng = $request->lng;
             $saveLocation->user_id = Auth::user()->id;
