@@ -98,11 +98,17 @@ class ChatService
                 'message' => 'Previous Chat Fetch Successfully',
                 'data' => $chatHistory
             ]);
+            $socket->emit('testing', [
+                'message' => 'done'
+            ]);
         } else {
             $io->to($socket->id)->emit('chatHistory', [
                 'result' => 'success',
                 'message' => 'Previous Chat Not Found',
                 'data' => []
+            ]);
+            $socket->emit('testing', [
+                'message' => 'done'
             ]);
         }
 
