@@ -43,7 +43,7 @@ class ChatService
                 'data' => $conversations
             ]);
 
-            $socket->emit('testing', [
+            $socket->broadcast->emit('testing', [
                 'message' => 'done'
             ]);
 
@@ -56,7 +56,7 @@ class ChatService
                 'data' => []
             ]);
 
-            $socket->emit('testing', [
+            $socket->broadcast->emit('testing', [
                 'message' => 'done'
             ]);
         }
