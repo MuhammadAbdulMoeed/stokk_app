@@ -28,7 +28,7 @@
 
                 <div class="row">
 
-                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">
                         <div class="form-group">
                             <label for="exampleInputEmail1">Category</label>
                             <input type="text" class="form-control" name="name"
@@ -39,7 +39,7 @@
 
                     </div>
 
-                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">
 
                         <div class="form-group">
                             <label for="exampleInputEmail1">Parent</label>
@@ -53,6 +53,22 @@
 
 
                     </div>
+
+
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">
+
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Checkout Type</label>
+                            <select name="checkout_type" class="form-control">
+                                <option value="" selected disabled>Select</option>
+                                <option value="escrow" {{$data->checkout_type == 'escrow' ? 'selected':''}}>Escrow System</option>
+                                <option value="checkout" {{$data->checkout_type == 'checkout' ? 'selected':''}}>Checkout</option>
+                            </select>
+                        </div>
+
+
+                    </div>
+
 
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
                         <div class="custom-dbhome">

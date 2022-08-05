@@ -21,19 +21,16 @@ class HomeService
             ->limit(8);
 
 
-        if(isset($request) && $request->type == 'for_rent')
-        {
-            $data =  $data->where('type',$request->type);
-        }
-        elseif(isset($request) && $request->type == 'for_sale')
-        {
-            $data =  $data->where('type',$request->type);
+        if (isset($request) && $request->type == 'for_rent') {
+            $data = $data->where('type', $request->type);
+        } elseif (isset($request) && $request->type == 'for_sale') {
+            $data = $data->where('type', $request->type);
         }
 
-                if (isset(Auth::user()->userLocation->city)) {
-            $data = $data->where('city', Auth::user()->userLocation->country)->get();
+        if (isset(Auth::user()->userLocation->city)) {
+            $data = $data->where('city', Auth::user()->userLocation->location)->get();
         } else {
-        $data = $data->get();
+            $data = $data->get();
         }
 
 
@@ -50,19 +47,16 @@ class HomeService
     {
         $data = Product::where('is_active', 1);
 
-        if($request->has('name'))
-        {
+        if ($request->has('name')) {
             $data = $data->where('name', 'like', '%' . $request->name . '%');
         }
 
-        if($request->has('category_id'))
-        {
-            $data = $data->where('category_id',$request->category_id);
+        if ($request->has('category_id')) {
+            $data = $data->where('category_id', $request->category_id);
         }
 
-        if($request->has('sub_category_id'))
-        {
-            $data =  $data->where('sub_category_id',$request->sub_category_id);
+        if ($request->has('sub_category_id')) {
+            $data = $data->where('sub_category_id', $request->sub_category_id);
         }
 
         $data = $data->get();

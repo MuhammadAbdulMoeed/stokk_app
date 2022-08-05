@@ -25,7 +25,9 @@ class CategoryRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'icon' => 'mimes:png,jpg,jpeg'
+            'icon' => 'mimes:png,jpg,jpeg',
+            'checkout_type' => 'required',
+            'image' => 'mimes:png,jpg,jpeg'
         ];
     }
 }

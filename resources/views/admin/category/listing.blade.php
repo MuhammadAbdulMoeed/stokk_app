@@ -53,6 +53,7 @@
                                         <th>Icon</th>
                                         <th>Image</th>
                                         <th>Slug</th>
+                                        <th>Checkout Type</th>
                                         <th>Status</th>
                                         <th>Action</th>
                                     </tr>
@@ -81,9 +82,10 @@
 
                                             </td>
                                             <td>{{$category->slug}}</td>
+                                            <td>{{$category->checkout_type ? ucfirst($category->checkout_type) : 'N/A'}}</td>
 
                                             <td>
-                                                <button class="btn-sm {{$category->is_active == 1 ? 'btn btn-outline-success':'btn btn-outline-danger'}}">
+                                                <button class="btn-lg {{$category->is_active == 1 ? 'btn btn-outline-success':'btn btn-outline-danger'}}">
                                                     {{$category->is_active == 1 ? 'Active':'Inactive'}}
                                                 </button>
                                             </td>
@@ -202,8 +204,7 @@
                 });
             });
 
-
-            $('.changeStatus').click(function () {
+            $(document).on('click', '.changeStatus', function (){
 
                 var data = $(this).data('id');
 
