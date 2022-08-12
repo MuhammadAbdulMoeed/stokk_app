@@ -101,6 +101,8 @@ Route::group(['middleware' => ['json.response']], function () {
             Route::post('update-shipping-address',[ShippingAddressController::class,'update']);
             Route::get('delete-shipping-address',[ShippingAddressController::class,'delete']);
 
+            Route::get('set-default-shipping-address',[ShippingAddressController::class,'defaultShippingAddress']);
+
         });
 
     });

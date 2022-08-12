@@ -50,4 +50,9 @@ class ShippingAddressController extends Controller
     {
         return $this->shippingAddress->delete($request);
     }
+
+    public function defaultShippingAddress(DeleteShippingAddressRequest $request)
+    {
+        return $this->shippingAddress->makeDefault($request);
+    }
 }
