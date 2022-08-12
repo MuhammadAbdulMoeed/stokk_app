@@ -19,6 +19,7 @@ use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\ReviewController;
 use App\Http\Controllers\Api\ChatController;
 use App\Http\Controllers\Api\CheckoutController;
+use App\Http\Controllers\Api\ShippingAddressController;
 /*
 |------------------------------------------------.
 --------------------------
@@ -94,6 +95,11 @@ Route::group(['middleware' => ['json.response']], function () {
 
 
             Route::post('checkout',[CheckoutController::class,'checkout']);
+
+            Route::get('get-shipping-address',[ShippingAddressController::class,'index']);
+            Route::post('save-shipping-address',[ShippingAddressController::class,'save']);
+            Route::post('update-shipping-address',[ShippingAddressController::class,'update']);
+            Route::get('delete-shipping-address',[ShippingAddressController::class,'delete']);
 
         });
 
