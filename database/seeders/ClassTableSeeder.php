@@ -24,15 +24,15 @@ class ClassTableSeeder extends Seeder
 
 
         $classes = [
-            ['name' => 'Lux', 'icon' => 'upload/brand/1649055352-Crown.png',
+            ['name' => 'Lux', 'icon' => 'admin/default_class_images/Lux.png',
                 'category_id' => Category::where('name', 'Car')->first()->id, 'is_active' => 1],
-            ['name' => 'Van', 'icon' => 'upload/brand/1649055485-Shuttle bus.png',
+            ['name' => 'Van', 'icon' => 'admin/default_class_images/Van.png',
                 'category_id' => Category::where('name', 'Car')->first()->id, 'is_active' => 1],
-            ['name' => 'Sports', 'icon' => 'upload/brand/1649055515-Speedometer.png',
+            ['name' => 'Sports', 'icon' => 'admin/default_class_images/Sports.png',
                 'category_id' => Category::where('name', 'Car')->first()->id, 'is_active' => 1],
-            ['name' => 'Economic', 'icon' => 'upload/brand/1649055545-Expensive.png',
+            ['name' => 'Economic', 'icon' => 'admin/default_class_images/Economic.png',
                 'category_id' => Category::where('name', 'Car')->first()->id, 'is_active' => 1],
-            ['name' => 'Electric', 'icon' => 'upload/brand/1649055567-Lightning Bolt.png',
+            ['name' => 'Electric', 'icon' => 'admin/default_class_images/Electric.png',
                 'category_id' => Category::where('name', 'Car')->first()->id, 'is_active' => 1],
 
         ];

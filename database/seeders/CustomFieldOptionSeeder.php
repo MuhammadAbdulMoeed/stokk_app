@@ -18,7 +18,6 @@ class CustomFieldOptionSeeder extends Seeder
 
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         CustomFieldOption::truncate();
-        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
         DB::statement(
             DB::raw("
@@ -28,5 +27,8 @@ class CustomFieldOptionSeeder extends Seeder
             (3, 'Male', 16, '2022-05-23 01:14:33', '2022-05-23 01:14:33'),
             (4, 'Female', 16, '2022-05-23 01:14:33', '2022-05-23 01:14:33');
        "));
+
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+
     }
 }

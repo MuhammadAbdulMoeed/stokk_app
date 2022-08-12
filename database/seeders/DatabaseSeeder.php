@@ -23,6 +23,11 @@ class DatabaseSeeder extends Seeder
             BrandTableSeeder::class,
             ItemConditionTableSeeder::class,
             AdditionalOptionTableSeeder::class,
+            CustomFieldSeeder::class,
+            CustomFieldOptionSeeder::class,
+            PivotCategoryFieldSeeder::class,
+            PivotCategoryFilterSeeder::class,
+            PivotProductCustomFieldSeeder::class
         ]);
     }
 }

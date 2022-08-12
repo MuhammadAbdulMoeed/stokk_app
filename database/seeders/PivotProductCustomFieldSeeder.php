@@ -17,7 +17,6 @@ class PivotProductCustomFieldSeeder extends Seeder
     {
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         PivotProductCustomField::truncate();
-        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
         DB::statement(
             DB::raw("
@@ -39,5 +38,8 @@ INSERT INTO `pivot_products_custom_fields` (`id`, `product_id`, `custom_field_id
 (216, 20, 17, '7', '2022-07-04 17:16:49', '2022-07-04 17:16:49'),
 (217, 20, 18, '2', '2022-07-04 17:16:49', '2022-07-04 17:16:49');
             "));
+
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+
     }
 }

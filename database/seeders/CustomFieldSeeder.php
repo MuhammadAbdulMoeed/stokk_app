@@ -17,7 +17,6 @@ class CustomFieldSeeder extends Seeder
     {
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         CustomField::truncate();
-        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
         DB::statement(
             DB::raw("
@@ -41,6 +40,10 @@ class CustomFieldSeeder extends Seeder
 (17, 'Size', 'multi_select_option', 'size', 'sizes', 'pre_included_field', NULL, NULL, NULL, 1, 1, 'simple_select_option', NULL, NULL, 1, '2022-05-23 02:27:47', '2022-05-23 06:19:34'),
 (18, 'Item Condition', 'simple_select_option', 'item_condition', 'item_conditions', 'pre_included_field', NULL, NULL, NULL, 1, 1, 'simple_select_option', NULL, NULL, 1, '2022-05-23 06:19:01', '2022-05-23 06:19:28');
     "));
+
+
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+
     }
 
 

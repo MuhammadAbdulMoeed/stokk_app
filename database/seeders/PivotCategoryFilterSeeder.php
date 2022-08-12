@@ -17,7 +17,6 @@ class PivotCategoryFilterSeeder extends Seeder
     {
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         PivotCategoryFilter::truncate();
-        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
         DB::statement(
             DB::raw("
@@ -33,5 +32,8 @@ INSERT INTO `pivot_category_filters` (`id`, `category_id`, `filter_id`, `order`,
 (12, 1, 4, NULL, '2022-05-24 02:05:59', '2022-05-24 02:05:59');
 
             "));
+
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+
     }
 }

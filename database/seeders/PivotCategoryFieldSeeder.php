@@ -18,7 +18,6 @@ class PivotCategoryFieldSeeder extends Seeder
 
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         PivotCategoryField::truncate();
-        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
         DB::statement(
             DB::raw("
@@ -40,6 +39,9 @@ class PivotCategoryFieldSeeder extends Seeder
 (40, 4, 10, 18, NULL, '2022-05-23 06:22:22', '2022-05-23 06:22:22');
 
             "));
+
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+
 
     }
 }
