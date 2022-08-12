@@ -66,5 +66,10 @@ class User extends Authenticatable
         return $this->hasMany(Favorite::class,'user_id');
     }
 
+    public function defaultShippingAddress()
+    {
+        return $this->belongsTo(ShippingAddress::class,'default_shipping_address');
+    }
+
 
 }

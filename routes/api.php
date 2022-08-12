@@ -102,6 +102,7 @@ Route::group(['middleware' => ['json.response']], function () {
             Route::get('delete-shipping-address',[ShippingAddressController::class,'delete']);
 
             Route::get('set-default-shipping-address',[ShippingAddressController::class,'defaultShippingAddress']);
+            Route::get('get-default-shipping-address',[ShippingAddressController::class,'getDefaultShippingAddress']);
 
         });
 

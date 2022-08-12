@@ -37,6 +37,7 @@ class RegisterService
                 'profile_image' => $user->profile_image,
                 'user_id' => $user->id,
                 'location' => null,
+//                'default_shipping_address' => null
 
             ];
 

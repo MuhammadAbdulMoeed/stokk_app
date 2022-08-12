@@ -55,4 +55,9 @@ class ShippingAddressController extends Controller
     {
         return $this->shippingAddress->makeDefault($request);
     }
+
+    public function getDefaultShippingAddress()
+    {
+        return $this->shippingAddress->getDefaultShippingAddress();
+    }
 }
