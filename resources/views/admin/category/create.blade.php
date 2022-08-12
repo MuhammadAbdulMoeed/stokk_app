@@ -60,6 +60,7 @@
                                 <option value="" selected disabled>Select</option>
                                 <option value="escrow">Escrow System</option>
                                 <option value="checkout">Checkout</option>
+                                <option value="stripe">Stripe</option>
                             </select>
                         </div>
 

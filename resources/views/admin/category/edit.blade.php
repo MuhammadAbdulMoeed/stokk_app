@@ -63,6 +63,7 @@
                                 <option value="" selected disabled>Select</option>
                                 <option value="escrow" {{$data->checkout_type == 'escrow' ? 'selected':''}}>Escrow System</option>
                                 <option value="checkout" {{$data->checkout_type == 'checkout' ? 'selected':''}}>Checkout</option>
+                                <option value="stripe" {{$data->checkout_type == 'checkout' ? 'selected':''}}>Stripe</option>
                             </select>
                         </div>
 

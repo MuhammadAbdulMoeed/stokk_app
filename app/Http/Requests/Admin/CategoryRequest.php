@@ -26,8 +26,15 @@ class CategoryRequest extends FormRequest
         return [
             'name' => 'required',
             'icon' => 'mimes:png,jpg,jpeg',
-            'checkout_type' => 'required',
+            'checkout_type' => 'required_without:parent_id',
             'image' => 'mimes:png,jpg,jpeg'
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'checkout_type.required_without' => "Checkout Type is a required field"
         ];
     }
 }

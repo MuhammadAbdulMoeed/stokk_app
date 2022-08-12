@@ -31,6 +31,7 @@ class CategoryController extends Controller
 
     public function update(CategoryRequest $request,CategoryService $categoryService)
     {
+
         return $categoryService->update($request);
     }
 
