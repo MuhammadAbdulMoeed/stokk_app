@@ -20,6 +20,7 @@ use App\Http\Controllers\Api\ReviewController;
 use App\Http\Controllers\Api\ChatController;
 use App\Http\Controllers\Api\CheckoutController;
 use App\Http\Controllers\Api\ShippingAddressController;
+use App\Http\Controllers\Api\OrderController;
 /*
 |------------------------------------------------.
 --------------------------
@@ -103,6 +104,9 @@ Route::group(['middleware' => ['json.response']], function () {
 
             Route::get('set-default-shipping-address',[ShippingAddressController::class,'defaultShippingAddress']);
             Route::get('get-default-shipping-address',[ShippingAddressController::class,'getDefaultShippingAddress']);
+
+            Route::post('create-order',[OrderController::class,'create']);
+            Route::get('fetch-orders',[OrderController::class,'getPendingOrder']);
 
         });
 
