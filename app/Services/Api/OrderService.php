@@ -92,7 +92,20 @@ class OrderService
 
         return makeResponse('success','Order List Fetch Successfully',200,$data);
 
+    }
 
+    public function changeStatus($request)
+    {
+        $order = Order::find($request->order_id);
 
+        if($order)
+        {
+            $order->update(['order_status'=>$request->order_status]);
+            return makeResponse('success','Order Status Updated',200);
+        }
+        else{
+            return makeResponse('error','Record Not Found',500);
+        }
     }
 }
+

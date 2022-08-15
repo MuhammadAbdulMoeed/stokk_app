@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\ChangeOrderStatus;
 use App\Http\Requests\Api\CreateOrderRequest;
 use App\Services\Api\OrderService;
 use Illuminate\Http\Request;
@@ -25,5 +26,10 @@ class OrderController extends Controller
     public function getPendingOrder()
     {
         return $this->orderService->getPendingOrder();
+    }
+
+    public function changeStatus(ChangeOrderStatus $request)
+    {
+        return $this->orderService->changeStatus($request);
     }
 }

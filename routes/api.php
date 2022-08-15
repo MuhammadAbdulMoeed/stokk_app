@@ -108,6 +108,8 @@ Route::group(['middleware' => ['json.response']], function () {
             Route::post('create-order',[OrderController::class,'create']);
             Route::get('fetch-orders',[OrderController::class,'getPendingOrder']);
 
+            Route::post('change-order-status',[OrderController::class,'changeStatus']);
+
         });
 
     });
