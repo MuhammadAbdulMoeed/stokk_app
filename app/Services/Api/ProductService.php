@@ -237,6 +237,7 @@ class ProductService
 //            $product['location'] = $data->location;
             $product['cart_available'] = $data->created_by == Auth::user()->id ? 'no' : 'yes';
 
+
             $relatedProductsArray = Product::where('category_id',$data->category_id)
                 ->where('sub_category_id',$data->sub_category_id)
                 ->where('id','!=',$data->id)
