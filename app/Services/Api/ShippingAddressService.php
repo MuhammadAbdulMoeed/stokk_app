@@ -122,7 +122,7 @@ class ShippingAddressService
         $data = ShippingAddress::where('user_id', Auth::user()->id)
             ->where('id', Auth::user()->default_shipping_address)->first();
 
-        $shippingAddress = null;
+        $shippingAddress = array();
         if ($data) {
             $shippingAddress = ['id' => $data->id,
                 'latitude' => $data->latitude, 'longitude' => $data->longitude,
