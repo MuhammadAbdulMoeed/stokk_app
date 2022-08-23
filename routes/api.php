@@ -106,9 +106,11 @@ Route::group(['middleware' => ['json.response']], function () {
             Route::get('get-default-shipping-address',[ShippingAddressController::class,'getDefaultShippingAddress']);
 
             Route::post('create-order',[OrderController::class,'create']);
-            Route::get('fetch-orders',[OrderController::class,'getPendingOrder']);
 
             Route::post('change-order-status',[OrderController::class,'changeStatus']);
+
+            Route::get('new-order-list',[OrderController::class,'getNewOrder']);
+
 
         });
 

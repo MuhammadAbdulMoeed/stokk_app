@@ -32,4 +32,9 @@ class OrderController extends Controller
     {
         return $this->orderService->changeStatus($request);
     }
+
+    public function getNewOrder()
+    {
+        return $this->orderService->getNewOrder();
+    }
 }
