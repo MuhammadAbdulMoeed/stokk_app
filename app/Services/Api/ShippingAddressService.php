@@ -6,6 +6,7 @@ namespace App\Services\Api;
 
 use App\Models\ShippingAddress;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ShippingAddressService
 {
@@ -92,6 +93,7 @@ class ShippingAddressService
 
     public function makeDefault($request)
     {
+        DB::beginTransaction();
         $data = ShippingAddress::find($request->id);
 
         if ($data) {
@@ -100,19 +102,25 @@ class ShippingAddressService
             }
 
             try {
-                $data->user->default_shipping_address = $data->id;
 
-                $data->user->save();
+                Auth::user()->default_shipping_address = $data->id;
+//                $data->user->default_shipping_address = $data->id;
 
-                $data = $this->getShippingAddress();
+//                $data->user->save();
+                Auth::user()->save();
+                DB::commit();
 
-
-                return makeResponse('success', 'Shipping Address Set As Default', 200, $data);
             } catch (\Exception $e) {
+                DB::rollBack();
                 return makeResponse('error', 'Error in Making Shipping Address Default: ' . $e, 500);
             }
 
+
+            $shippingAddress = $this->getShippingAddress();
+            return makeResponse('success', 'Shipping Address Set As Default', 200, $shippingAddress);
+
         } else {
+            DB::rollBack();
             return makeResponse('error', 'Record Not Found', 404);
         }
     }
