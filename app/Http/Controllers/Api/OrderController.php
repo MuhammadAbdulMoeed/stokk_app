@@ -23,10 +23,6 @@ class OrderController extends Controller
         return $this->orderService->create($request);
     }
 
-    public function getPendingOrder()
-    {
-        return $this->orderService->getPendingOrder();
-    }
 
     public function changeStatus(ChangeOrderStatus $request)
     {
@@ -36,5 +32,17 @@ class OrderController extends Controller
     public function getNewOrder()
     {
         return $this->orderService->getNewOrder();
+    }
+
+    public function getActiveOrder()
+    {
+        return $this->orderService->getActiveOrder();
+
+    }
+
+    public function getCompletedOrder()
+    {
+        return $this->orderService->getCompletedOrder();
+
     }
 }

@@ -110,6 +110,8 @@ Route::group(['middleware' => ['json.response']], function () {
             Route::post('change-order-status',[OrderController::class,'changeStatus']);
 
             Route::get('new-order-list',[OrderController::class,'getNewOrder']);
+            Route::get('active-order-list',[OrderController::class,'getActiveOrder']);
+            Route::get('completed-order-list',[OrderController::class,'getCompletedOrder']);
 
 
         });

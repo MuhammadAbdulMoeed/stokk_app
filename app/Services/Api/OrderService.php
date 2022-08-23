@@ -43,56 +43,6 @@ class OrderService
         }
     }
 
-    public function getPendingOrder()
-    {
-        $getOwnOrders = Order::where('created_by', Auth::user()->id)
-//            ->where('order_status','pending')
-            ->get();
-
-        $myOrders = array();
-        foreach ($getOwnOrders as $order) {
-            $myOrders[] = ['product_name' => $order->product->name,
-                'category_name' => $order->category->name,
-                'sub_category_name' => $order->category->name,
-                'price' => $order->price,
-                'type' => $order->type,
-                'price_type' => $order->price_type,
-                'order_detail' => json_decode($order->detail_json),
-                'order_status' => $order->order_status,
-            ];
-        }
-
-        $getAcceptedOrder = Product::where('created_by', Auth::user()->id)->pluck('id')
-            ->toArray();
-
-        $getPendingProductOrders =  Order::whereIn('product_id',[$getAcceptedOrder])
-            ->where('created_by','!=',Auth::user()->id)
-//            ->where('order_status','pending')
-            ->get();
-
-        $orderForRequest = array();
-
-        foreach($orderForRequest as $orderRequest)
-        {
-            $pendingOrders[] = ['product_name' => $orderRequest->product->name,
-                'category_name' => $orderRequest->category->name,
-                'sub_category_name' => $orderRequest->category->name,
-                'price' => $orderRequest->price,
-                'type' => $orderRequest->type,
-                'price_type' => $orderRequest->price_type,
-                'order_detail' => json_decode($orderRequest->detail_json),
-                'order_status' => $orderRequest->order_status,
-            ];
-        }
-
-        $data = [
-            'myOrder' =>  $myOrders,
-            'orderForApproval' => $orderForRequest
-        ];
-
-        return makeResponse('success','Order List Fetch Successfully',200,$data);
-
-    }
 
     public function changeStatus($request)
     {
@@ -136,9 +86,9 @@ class OrderService
             ->where('order_status','pending')
             ->get();
 
-        $orderForRequest = array();
+        $pendingOrders = array();
 
-        foreach($orderForRequest as $orderRequest)
+        foreach($getPendingProductOrders as $orderRequest)
         {
             $pendingOrders[] = ['product_name' => $orderRequest->product->name,
                 'category_name' => $orderRequest->category->name,
@@ -153,12 +103,115 @@ class OrderService
 
         $data = [
             'myOrderRequest' =>  $myOrders,
-            'orderForApproval' => $orderForRequest
+            'orderForApproval' => $pendingOrders
         ];
 
         return makeResponse('success','Order List Fetch Successfully',200,$data);
 
     }
+
+    public function getActiveOrder()
+    {
+        $getOwnOrders = Order::where('created_by', Auth::user()->id)
+            ->where('order_status','accept')
+            ->get();
+
+        $myOrders = array();
+        foreach ($getOwnOrders as $order) {
+            $myOrders[] = ['product_name' => $order->product->name,
+                'category_name' => $order->category->name,
+                'sub_category_name' => $order->category->name,
+                'price' => $order->price,
+                'type' => $order->type,
+                'price_type' => $order->price_type,
+//                'order_detail' => json_decode($order->detail_json),
+                'order_status' => $order->order_status,
+            ];
+        }
+
+        $getUserProductOrder = Product::where('created_by', Auth::user()->id)->pluck('id')
+            ->toArray();
+
+        $getAcceptedProductOrders =  Order::whereIn('product_id',[$getUserProductOrder])
+            ->where('created_by','!=',Auth::user()->id)
+            ->where('order_status','accept')
+            ->get();
+
+        $acceptOrders = array();
+
+        foreach($getAcceptedProductOrders as $orderRequest)
+        {
+            $acceptOrders[] = ['product_name' => $orderRequest->product->name,
+                'category_name' => $orderRequest->category->name,
+                'sub_category_name' => $orderRequest->category->name,
+                'price' => $orderRequest->price,
+                'type' => $orderRequest->type,
+                'price_type' => $orderRequest->price_type,
+//                'order_detail' => json_decode($orderRequest->detail_json),
+                'order_status' => $orderRequest->order_status,
+            ];
+        }
+
+        $data = [
+            'myActiveOrders' =>  $myOrders,
+            'approvedOrders' => $acceptOrders
+        ];
+
+        return makeResponse('success','Order List Fetch Successfully',200,$data);
+
+    }
+
+    public function getCompletedOrder()
+    {
+        $getOwnOrders = Order::where('created_by', Auth::user()->id)
+            ->where('order_status','complete')
+            ->get();
+
+        $myOrders = array();
+        foreach ($getOwnOrders as $order) {
+            $myOrders[] = ['product_name' => $order->product->name,
+                'category_name' => $order->category->name,
+                'sub_category_name' => $order->category->name,
+                'price' => $order->price,
+                'type' => $order->type,
+                'price_type' => $order->price_type,
+//                'order_detail' => json_decode($order->detail_json),
+                'order_status' => $order->order_status,
+            ];
+        }
+
+        $getUserProductOrder = Product::where('created_by', Auth::user()->id)->pluck('id')
+            ->toArray();
+
+        $getAcceptedProductOrders =  Order::whereIn('product_id',[$getUserProductOrder])
+            ->where('created_by','!=',Auth::user()->id)
+            ->where('order_status','complete')
+            ->get();
+
+        $completeOrders = array();
+
+        foreach($getAcceptedProductOrders as $orderRequest)
+        {
+            $completeOrders[] = ['product_name' => $orderRequest->product->name,
+                'category_name' => $orderRequest->category->name,
+                'sub_category_name' => $orderRequest->category->name,
+                'price' => $orderRequest->price,
+                'type' => $orderRequest->type,
+                'price_type' => $orderRequest->price_type,
+//                'order_detail' => json_decode($orderRequest->detail_json),
+                'order_status' => $orderRequest->order_status,
+            ];
+        }
+
+        $data = [
+            'myCompletedOrders' =>  $myOrders,
+            'completedOrders' => $completeOrders
+        ];
+
+        return makeResponse('success','Order List Fetch Successfully',200,$data);
+
+    }
+
 
 }
 
