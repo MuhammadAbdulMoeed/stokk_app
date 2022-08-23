@@ -6,6 +6,7 @@ namespace App\Services\Api;
 
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\ShippingAddress;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -31,6 +32,17 @@ class OrderService
 //            $order->detail_json = json_encode($request->except('product_id', 'category_id', 'sub_category_id',
 //                'price', 'type', 'price_type'));
             $order->created_by = Auth::user()->id;
+
+            $getShippingAddress = Auth::user()->default_shipping_address;
+
+            if($getShippingAddress)
+            {
+                $order->shipping_address_id =  $getShippingAddress;
+            }
+            else{
+                return makeResponse('error','Default Shipping Address is Not Set',500);
+            }
+
 
             $order->save();
 
