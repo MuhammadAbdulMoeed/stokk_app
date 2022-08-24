@@ -244,7 +244,7 @@ class OrderService
             return makeResponse('success','Order List Fetch Successfully',200,$data);
         }
         else{
-            return makeResponse('success','Record Not Found',404,$data);
+            return makeResponse('success','Record Not Found',200,$data);
         }
     }
 
@@ -282,7 +282,7 @@ class OrderService
             return makeResponse('success','Order List Fetch Successfully',200,$data);
         }
         else{
-            return makeResponse('success','Record Not Found',404,$data);
+            return makeResponse('success','Record Not Found',200,$data);
         }
     }
 
