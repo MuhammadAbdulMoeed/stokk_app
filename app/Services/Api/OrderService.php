@@ -166,7 +166,7 @@ class OrderService
             return makeResponse('success','Order List Fetch Successfully',200,$data);
         }
         else{
-            return makeResponse('success','Record Not Found',404,$data);
+            return makeResponse('success','Record Not Found',200,$data);
         }
     }
 
@@ -178,7 +178,7 @@ class OrderService
         $getUserProductOrder = Product::where('created_by', Auth::user()->id)->pluck('id')
             ->toArray();
 
-        $getPendingProductOrders =  Order::whereIn('product_id',[$getUserProductOrder])
+        $getPendingProductOrders =  Order::whereIn('product_id',$getUserProductOrder)
             ->where('created_by','!=',Auth::user()->id)
             ->where('order_status','pending')
             ->get();
@@ -206,7 +206,7 @@ class OrderService
             return makeResponse('success','Order List Fetch Successfully',200,$data);
         }
         else{
-            return makeResponse('success','Record Not Found',404,$data);
+            return makeResponse('success','Record Not Found',200,$data);
         }
     }
 
@@ -217,7 +217,7 @@ class OrderService
         $getUserProductOrder = Product::where('created_by', Auth::user()->id)->pluck('id')
             ->toArray();
 
-        $getAcceptedProductOrders =  Order::whereIn('product_id',[$getUserProductOrder])
+        $getAcceptedProductOrders =  Order::whereIn('product_id',$getUserProductOrder)
             ->where('created_by','!=',Auth::user()->id)
             ->where('order_status','accept')
             ->get();
