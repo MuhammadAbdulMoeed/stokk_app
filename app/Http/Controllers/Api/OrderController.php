@@ -43,6 +43,21 @@ class OrderController extends Controller
     public function getCompletedOrder()
     {
         return $this->orderService->getCompletedOrder();
+    }
 
+    public function getNewOrderForApproval()
+    {
+        return $this->orderService->getNewOrderForApproval();
+    }
+
+    public function getActiveOrderForApproval()
+    {
+        return $this->orderService->getActiveOrderForApproval();
+
+    }
+
+    public function getCompletedOrderForApproval()
+    {
+        return $this->orderService->getCompletedOrderForApproval();
     }
 }

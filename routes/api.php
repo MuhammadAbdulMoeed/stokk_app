@@ -113,6 +113,10 @@ Route::group(['middleware' => ['json.response']], function () {
             Route::get('active-order-list',[OrderController::class,'getActiveOrder']);
             Route::get('completed-order-list',[OrderController::class,'getCompletedOrder']);
 
+            Route::get('new-order-list-for-approval',[OrderController::class,'getNewOrderForApproval']);
+            Route::get('active-order-list-for-approval',[OrderController::class,'getActiveOrderForApproval']);
+            Route::get('completed-order-list-for-approval',[OrderController::class,'getCompletedOrderForApproval']);
+
 
         });
 

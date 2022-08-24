@@ -90,6 +90,91 @@ class OrderService
             ];
         }
 
+
+        $data = $myOrders;
+
+        if(sizeof($data) > 0)
+        {
+            return makeResponse('error','Order List Fetch Successfully',200,$data);
+        }
+        else{
+            return makeResponse('error','Record Not Found',404,$data);
+        }
+
+
+
+    }
+
+    public function getActiveOrder()
+    {
+        $getOwnOrders = Order::where('created_by', Auth::user()->id)
+            ->where('order_status','accept')
+            ->get();
+
+        $myOrders = array();
+        foreach ($getOwnOrders as $order) {
+            $myOrders[] = ['product_name' => $order->product->name,
+                'category_name' => $order->category->name,
+                'sub_category_name' => $order->category->name,
+                'price' => $order->price,
+                'type' => $order->type,
+                'price_type' => $order->price_type,
+//                'order_detail' => json_decode($order->detail_json),
+                'order_status' => $order->order_status,
+            ];
+        }
+
+
+        $data = $myOrders;
+
+
+        if(sizeof($data) > 0)
+        {
+            return makeResponse('error','Order List Fetch Successfully',200,$data);
+        }
+        else{
+            return makeResponse('error','Record Not Found',404,$data);
+        }
+    }
+
+    public function getCompletedOrder()
+    {
+        $getOwnOrders = Order::where('created_by', Auth::user()->id)
+            ->where('order_status','complete')
+            ->get();
+
+        $myOrders = array();
+        foreach ($getOwnOrders as $order) {
+            $myOrders[] = ['product_name' => $order->product->name,
+                'category_name' => $order->category->name,
+                'sub_category_name' => $order->category->name,
+                'price' => $order->price,
+                'type' => $order->type,
+                'price_type' => $order->price_type,
+//                'order_detail' => json_decode($order->detail_json),
+                'order_status' => $order->order_status,
+            ];
+        }
+
+
+
+        $data =   $myOrders;
+
+
+        if(sizeof($data) > 0)
+        {
+            return makeResponse('error','Order List Fetch Successfully',200,$data);
+        }
+        else{
+            return makeResponse('error','Record Not Found',404,$data);
+        }
+    }
+
+
+    public function getNewOrderForApproval()
+    {
+
+
         $getUserProductOrder = Product::where('created_by', Auth::user()->id)->pluck('id')
             ->toArray();
 
@@ -113,33 +198,21 @@ class OrderService
             ];
         }
 
-        $data = [
-            'myOrderRequest' =>  $myOrders,
-            'orderForApproval' => $pendingOrders
-        ];
+        $data = $pendingOrders;
 
-        return makeResponse('success','Order List Fetch Successfully',200,$data);
 
+        if(sizeof($data) > 0)
+        {
+            return makeResponse('error','Order List Fetch Successfully',200,$data);
+        }
+        else{
+            return makeResponse('error','Record Not Found',404,$data);
+        }
     }
 
-    public function getActiveOrder()
+    public function getActiveOrderForApproval()
     {
-        $getOwnOrders = Order::where('created_by', Auth::user()->id)
-            ->where('order_status','accept')
-            ->get();
 
-        $myOrders = array();
-        foreach ($getOwnOrders as $order) {
-            $myOrders[] = ['product_name' => $order->product->name,
-                'category_name' => $order->category->name,
-                'sub_category_name' => $order->category->name,
-                'price' => $order->price,
-                'type' => $order->type,
-                'price_type' => $order->price_type,
-//                'order_detail' => json_decode($order->detail_json),
-                'order_status' => $order->order_status,
-            ];
-        }
 
         $getUserProductOrder = Product::where('created_by', Auth::user()->id)->pluck('id')
             ->toArray();
@@ -164,33 +237,20 @@ class OrderService
             ];
         }
 
-        $data = [
-            'myActiveOrders' =>  $myOrders,
-            'approvedOrders' => $acceptOrders
-        ];
+        $data = $acceptOrders;
 
-        return makeResponse('success','Order List Fetch Successfully',200,$data);
-
+        if(sizeof($data) > 0)
+        {
+            return makeResponse('error','Order List Fetch Successfully',200,$data);
+        }
+        else{
+            return makeResponse('error','Record Not Found',404,$data);
+        }
     }
 
-    public function getCompletedOrder()
+    public function getCompletedOrderForApproval()
     {
-        $getOwnOrders = Order::where('created_by', Auth::user()->id)
-            ->where('order_status','complete')
-            ->get();
 
-        $myOrders = array();
-        foreach ($getOwnOrders as $order) {
-            $myOrders[] = ['product_name' => $order->product->name,
-                'category_name' => $order->category->name,
-                'sub_category_name' => $order->category->name,
-                'price' => $order->price,
-                'type' => $order->type,
-                'price_type' => $order->price_type,
-//                'order_detail' => json_decode($order->detail_json),
-                'order_status' => $order->order_status,
-            ];
-        }
 
         $getUserProductOrder = Product::where('created_by', Auth::user()->id)->pluck('id')
             ->toArray();
@@ -215,14 +275,17 @@ class OrderService
             ];
         }
 
-        $data = [
-            'myCompletedOrders' =>  $myOrders,
-            'completedOrders' => $completeOrders
-        ];
+        $data = $completeOrders;
 
-        return makeResponse('success','Order List Fetch Successfully',200,$data);
-
+        if(sizeof($data) > 0)
+        {
+            return makeResponse('error','Order List Fetch Successfully',200,$data);
+        }
+        else{
+            return makeResponse('error','Record Not Found',404,$data);
+        }
     }
+
 
 
 }
