@@ -35,12 +35,10 @@ class OrderService
 
             $getShippingAddress = Auth::user()->default_shipping_address;
 
-            if($getShippingAddress)
-            {
-                $order->shipping_address_id =  $getShippingAddress;
-            }
-            else{
-                return makeResponse('error','Default Shipping Address is Not Set',500);
+            if ($getShippingAddress) {
+                $order->shipping_address_id = $getShippingAddress;
+            } else {
+                return makeResponse('error', 'Default Shipping Address is Not Set', 500);
             }
 
 
@@ -60,13 +58,11 @@ class OrderService
     {
         $order = Order::find($request->order_id);
 
-        if($order)
-        {
-            $order->update(['order_status'=>$request->order_status]);
-            return makeResponse('success','Order Status Updated',200);
-        }
-        else{
-            return makeResponse('error','Record Not Found',500);
+        if ($order) {
+            $order->update(['order_status' => $request->order_status]);
+            return makeResponse('success', 'Order Status Updated', 200);
+        } else {
+            return makeResponse('error', 'Record Not Found', 500);
         }
     }
 
@@ -74,7 +70,7 @@ class OrderService
     public function getNewOrder()
     {
         $getOwnOrders = Order::where('created_by', Auth::user()->id)
-            ->where('order_status','pending')
+            ->where('order_status', 'pending')
             ->get();
 
         $myOrders = array();
@@ -93,14 +89,11 @@ class OrderService
 
         $data = $myOrders;
 
-        if(sizeof($data) > 0)
-        {
-            return makeResponse('success','Order List Fetch Successfully',200,$data);
+        if (sizeof($data) > 0) {
+            return makeResponse('success', 'Order List Fetch Successfully', 200, $data);
+        } else {
+            return makeResponse('success', 'Record Not Found', 404, $data);
         }
-        else{
-            return makeResponse('success','Record Not Found',404,$data);
-        }
-
 
 
     }
@@ -108,7 +101,7 @@ class OrderService
     public function getActiveOrder()
     {
         $getOwnOrders = Order::where('created_by', Auth::user()->id)
-            ->where('order_status','accept')
+            ->where('order_status', 'accept')
             ->get();
 
         $myOrders = array();
@@ -128,19 +121,17 @@ class OrderService
         $data = $myOrders;
 
 
-        if(sizeof($data) > 0)
-        {
-            return makeResponse('success','Order List Fetch Successfully',200,$data);
-        }
-        else{
-            return makeResponse('success','Record Not Found',404,$data);
+        if (sizeof($data) > 0) {
+            return makeResponse('success', 'Order List Fetch Successfully', 200, $data);
+        } else {
+            return makeResponse('success', 'Record Not Found', 404, $data);
         }
     }
 
     public function getCompletedOrder()
     {
         $getOwnOrders = Order::where('created_by', Auth::user()->id)
-            ->where('order_status','complete')
+            ->where('order_status', 'complete')
             ->get();
 
         $myOrders = array();
@@ -157,16 +148,13 @@ class OrderService
         }
 
 
+        $data = $myOrders;
 
-        $data =   $myOrders;
 
-
-        if(sizeof($data) > 0)
-        {
-            return makeResponse('success','Order List Fetch Successfully',200,$data);
-        }
-        else{
-            return makeResponse('success','Record Not Found',200,$data);
+        if (sizeof($data) > 0) {
+            return makeResponse('success', 'Order List Fetch Successfully', 200, $data);
+        } else {
+            return makeResponse('success', 'Record Not Found', 200, $data);
         }
     }
 
@@ -178,15 +166,14 @@ class OrderService
         $getUserProductOrder = Product::where('created_by', Auth::user()->id)->pluck('id')
             ->toArray();
 
-        $getPendingProductOrders =  Order::whereIn('product_id',$getUserProductOrder)
-            ->where('created_by','!=',Auth::user()->id)
-            ->where('order_status','pending')
+        $getPendingProductOrders = Order::whereIn('product_id', $getUserProductOrder)
+            ->where('created_by', '!=', Auth::user()->id)
+            ->where('order_status', 'pending')
             ->get();
 
         $pendingOrders = array();
 
-        foreach($getPendingProductOrders as $orderRequest)
-        {
+        foreach ($getPendingProductOrders as $orderRequest) {
             $pendingOrders[] = ['product_name' => $orderRequest->product->name,
                 'category_name' => $orderRequest->category->name,
                 'sub_category_name' => $orderRequest->category->name,
@@ -201,12 +188,10 @@ class OrderService
         $data = $pendingOrders;
 
 
-        if(sizeof($data) > 0)
-        {
-            return makeResponse('success','Order List Fetch Successfully',200,$data);
-        }
-        else{
-            return makeResponse('success','Record Not Found',200,$data);
+        if (sizeof($data) > 0) {
+            return makeResponse('success', 'Order List Fetch Successfully', 200, $data);
+        } else {
+            return makeResponse('success', 'Record Not Found', 200, $data);
         }
     }
 
@@ -217,15 +202,14 @@ class OrderService
         $getUserProductOrder = Product::where('created_by', Auth::user()->id)->pluck('id')
             ->toArray();
 
-        $getAcceptedProductOrders =  Order::whereIn('product_id',$getUserProductOrder)
-            ->where('created_by','!=',Auth::user()->id)
-            ->where('order_status','accept')
+        $getAcceptedProductOrders = Order::whereIn('product_id', $getUserProductOrder)
+            ->where('created_by', '!=', Auth::user()->id)
+            ->where('order_status', 'accept')
             ->get();
 
         $acceptOrders = array();
 
-        foreach($getAcceptedProductOrders as $orderRequest)
-        {
+        foreach ($getAcceptedProductOrders as $orderRequest) {
             $acceptOrders[] = ['product_name' => $orderRequest->product->name,
                 'category_name' => $orderRequest->category->name,
                 'sub_category_name' => $orderRequest->category->name,
@@ -239,12 +223,10 @@ class OrderService
 
         $data = $acceptOrders;
 
-        if(sizeof($data) > 0)
-        {
-            return makeResponse('success','Order List Fetch Successfully',200,$data);
-        }
-        else{
-            return makeResponse('success','Record Not Found',200,$data);
+        if (sizeof($data) > 0) {
+            return makeResponse('success', 'Order List Fetch Successfully', 200, $data);
+        } else {
+            return makeResponse('success', 'Record Not Found', 200, $data);
         }
     }
 
@@ -255,15 +237,14 @@ class OrderService
         $getUserProductOrder = Product::where('created_by', Auth::user()->id)->pluck('id')
             ->toArray();
 
-        $getAcceptedProductOrders =  Order::whereIn('product_id',[$getUserProductOrder])
-            ->where('created_by','!=',Auth::user()->id)
-            ->where('order_status','complete')
+        $getAcceptedProductOrders = Order::whereIn('product_id', $getUserProductOrder)
+            ->where('created_by', '!=', Auth::user()->id)
+            ->where('order_status', 'complete')
             ->get();
 
         $completeOrders = array();
 
-        foreach($getAcceptedProductOrders as $orderRequest)
-        {
+        foreach ($getAcceptedProductOrders as $orderRequest) {
             $completeOrders[] = ['product_name' => $orderRequest->product->name,
                 'category_name' => $orderRequest->category->name,
                 'sub_category_name' => $orderRequest->category->name,
@@ -277,15 +258,12 @@ class OrderService
 
         $data = $completeOrders;
 
-        if(sizeof($data) > 0)
-        {
-            return makeResponse('success','Order List Fetch Successfully',200,$data);
-        }
-        else{
-            return makeResponse('success','Record Not Found',200,$data);
+        if (sizeof($data) > 0) {
+            return makeResponse('success', 'Order List Fetch Successfully', 200, $data);
+        } else {
+            return makeResponse('success', 'Record Not Found', 200, $data);
         }
     }
-
 
 
 }
