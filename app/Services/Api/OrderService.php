@@ -75,6 +75,14 @@ class OrderService
 
         $myOrders = array();
         foreach ($getOwnOrders as $order) {
+            $image =  array();
+            foreach($order->product->productImages as $productImage)
+            {
+                $image[] = ['image'=>$productImage->image];
+            }
+
+
+
             $myOrders[] = ['product_name' => $order->product->name,
                 'category_name' => $order->category->name,
                 'sub_category_name' => $order->category->name,
@@ -83,6 +91,7 @@ class OrderService
                 'price_type' => $order->price_type,
 //                'order_detail' => json_decode($order->detail_json),
                 'order_status' => $order->order_status,
+                'images' => $image
             ];
         }
 
@@ -106,6 +115,12 @@ class OrderService
 
         $myOrders = array();
         foreach ($getOwnOrders as $order) {
+            $image =  array();
+            foreach($order->product->productImages as $productImage)
+            {
+                $image[] = ['image'=>$productImage->image];
+            }
+
             $myOrders[] = ['product_name' => $order->product->name,
                 'category_name' => $order->category->name,
                 'sub_category_name' => $order->category->name,
@@ -114,6 +129,8 @@ class OrderService
                 'price_type' => $order->price_type,
 //                'order_detail' => json_decode($order->detail_json),
                 'order_status' => $order->order_status,
+                'images' => $image
+
             ];
         }
 
@@ -136,6 +153,13 @@ class OrderService
 
         $myOrders = array();
         foreach ($getOwnOrders as $order) {
+            $image =  array();
+            foreach($order->product->productImages as $productImage)
+            {
+                $image[] = ['image'=>$productImage->image];
+            }
+
+
             $myOrders[] = ['product_name' => $order->product->name,
                 'category_name' => $order->category->name,
                 'sub_category_name' => $order->category->name,
@@ -144,6 +168,7 @@ class OrderService
                 'price_type' => $order->price_type,
 //                'order_detail' => json_decode($order->detail_json),
                 'order_status' => $order->order_status,
+                'images' => $image
             ];
         }
 
@@ -174,6 +199,12 @@ class OrderService
         $pendingOrders = array();
 
         foreach ($getPendingProductOrders as $orderRequest) {
+            $image =  array();
+            foreach($orderRequest->product->productImages as $productImage)
+            {
+                $image[] = ['image'=>$productImage->image];
+            }
+
             $pendingOrders[] = ['product_name' => $orderRequest->product->name,
                 'category_name' => $orderRequest->category->name,
                 'sub_category_name' => $orderRequest->category->name,
@@ -182,6 +213,7 @@ class OrderService
                 'price_type' => $orderRequest->price_type,
 //                'order_detail' => json_decode($orderRequest->detail_json),
                 'order_status' => $orderRequest->order_status,
+                'images' => $image
             ];
         }
 
@@ -210,6 +242,12 @@ class OrderService
         $acceptOrders = array();
 
         foreach ($getAcceptedProductOrders as $orderRequest) {
+            $image =  array();
+            foreach($orderRequest->product->productImages as $productImage)
+            {
+                $image[] = ['image'=>$productImage->image];
+            }
+
             $acceptOrders[] = ['product_name' => $orderRequest->product->name,
                 'category_name' => $orderRequest->category->name,
                 'sub_category_name' => $orderRequest->category->name,
@@ -218,6 +256,7 @@ class OrderService
                 'price_type' => $orderRequest->price_type,
 //                'order_detail' => json_decode($orderRequest->detail_json),
                 'order_status' => $orderRequest->order_status,
+                'images' => $image
             ];
         }
 
@@ -245,6 +284,13 @@ class OrderService
         $completeOrders = array();
 
         foreach ($getAcceptedProductOrders as $orderRequest) {
+
+            $image =  array();
+            foreach($orderRequest->product->productImages as $productImage)
+            {
+                $image[] = ['image'=>$productImage->image];
+            }
+
             $completeOrders[] = ['product_name' => $orderRequest->product->name,
                 'category_name' => $orderRequest->category->name,
                 'sub_category_name' => $orderRequest->category->name,
@@ -253,6 +299,7 @@ class OrderService
                 'price_type' => $orderRequest->price_type,
 //                'order_detail' => json_decode($orderRequest->detail_json),
                 'order_status' => $orderRequest->order_status,
+                'images' => $image
             ];
         }
 
