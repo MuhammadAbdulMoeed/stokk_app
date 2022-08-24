@@ -95,10 +95,10 @@ class OrderService
 
         if(sizeof($data) > 0)
         {
-            return makeResponse('error','Order List Fetch Successfully',200,$data);
+            return makeResponse('success','Order List Fetch Successfully',200,$data);
         }
         else{
-            return makeResponse('error','Record Not Found',404,$data);
+            return makeResponse('success','Record Not Found',404,$data);
         }
 
 
@@ -130,10 +130,10 @@ class OrderService
 
         if(sizeof($data) > 0)
         {
-            return makeResponse('error','Order List Fetch Successfully',200,$data);
+            return makeResponse('success','Order List Fetch Successfully',200,$data);
         }
         else{
-            return makeResponse('error','Record Not Found',404,$data);
+            return makeResponse('success','Record Not Found',404,$data);
         }
     }
 
@@ -163,10 +163,10 @@ class OrderService
 
         if(sizeof($data) > 0)
         {
-            return makeResponse('error','Order List Fetch Successfully',200,$data);
+            return makeResponse('success','Order List Fetch Successfully',200,$data);
         }
         else{
-            return makeResponse('error','Record Not Found',404,$data);
+            return makeResponse('success','Record Not Found',404,$data);
         }
     }
 
@@ -203,10 +203,10 @@ class OrderService
 
         if(sizeof($data) > 0)
         {
-            return makeResponse('error','Order List Fetch Successfully',200,$data);
+            return makeResponse('success','Order List Fetch Successfully',200,$data);
         }
         else{
-            return makeResponse('error','Record Not Found',404,$data);
+            return makeResponse('success','Record Not Found',404,$data);
         }
     }
 
@@ -241,10 +241,10 @@ class OrderService
 
         if(sizeof($data) > 0)
         {
-            return makeResponse('error','Order List Fetch Successfully',200,$data);
+            return makeResponse('success','Order List Fetch Successfully',200,$data);
         }
         else{
-            return makeResponse('error','Record Not Found',404,$data);
+            return makeResponse('success','Record Not Found',404,$data);
         }
     }
 
@@ -279,10 +279,10 @@ class OrderService
 
         if(sizeof($data) > 0)
         {
-            return makeResponse('error','Order List Fetch Successfully',200,$data);
+            return makeResponse('success','Order List Fetch Successfully',200,$data);
         }
         else{
-            return makeResponse('error','Record Not Found',404,$data);
+            return makeResponse('success','Record Not Found',404,$data);
         }
     }
 
