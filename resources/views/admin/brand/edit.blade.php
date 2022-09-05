@@ -40,10 +40,11 @@
                     <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">
                         <div class="form-group">
                             <label for="exampleInputEmail1">Category</label>
-                            <select  name="category_id" class="form-control category">
+                            <select class="form-control category" name="parent_category_id">
                                 <option value="" selected disabled>Select</option>
                                 @foreach($categories as $category)
-                                    <option value="{{$category->id}}" {{isset($data->category->parent) ? $data->category->parent->id == $category->id ? 'selected':'':'selected'}}>{{$category->name}}</option>
+                                    <option
+                                        value="{{$category->id}}" {{isset($data->parent_category_id) ? $data->parent_category_id == $category->id ? 'selected':'':'selected'}}>{{$category->name}}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -55,6 +56,9 @@
                         <div class="form-group">
                             <label for="exampleInputEmail1">Sub Category</label>
                             <select name="category_id" class="form-control subCategory">
+                                @if(!$data->category_id)
+                                    <option value="" selected disabled>Select</option>
+                                @endif
                                 @foreach($subCategories as $subCategory)
                                     <option value="{{$subCategory->id}}" {{$subCategory->id == $data->category_id ? 'selected':''}}>{{$subCategory->name}}</option>
                                 @endforeach
@@ -165,7 +169,7 @@
 
             });
 
-            $('.category').change(function(){
+            $('.category').change(function () {
                 var data = $(this).val();
 
                 $.blockUI({
@@ -184,7 +188,7 @@
 
                     type: 'GET',
                     url: '{{route("getSubCategory")}}',
-                    data: {'category_id':data},
+                    data: {'category_id': data},
 
                     success: function (response, status) {
 
@@ -192,9 +196,9 @@
                             $.unblockUI();
 
                             var html = '<option value="" selected disabled>Select</option>';
-                            $.each(response.data,function(index,value){
+                            $.each(response.data, function (index, value) {
 
-                                html += '<option value="'+value.id+'">'+value.name+'</option>'
+                                html += '<option value="' + value.id + '">' + value.name + '</option>'
 
                             });
 
@@ -217,7 +221,6 @@
 
 
                 });
-
 
 
             });

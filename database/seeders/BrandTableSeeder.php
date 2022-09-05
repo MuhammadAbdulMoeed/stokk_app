@@ -23,20 +23,24 @@ class BrandTableSeeder extends Seeder
 
         $brands = [
             ['name' => 'Audi', 'icon' => 'admin/default_brand_images/Audi.png', 'is_active' => 1,
+                'parent_category_id' => Category::where('name','Vehicles')->first()->id,
                 'category_id' => Category::where('name', 'Car')->first()->id],
             ['name' => 'Mercedes', 'icon' => 'admin/default_brand_images/Mercedes.png', 'is_active' => 1,
+                'parent_category_id' => Category::where('name','Vehicles')->first()->id,
                 'category_id' => Category::where('name', 'Car')->first()->id],
             ['name' => 'BMW', 'icon' => 'admin/default_brand_images/BMW.png', 'is_active' => 1,
+                'parent_category_id' => Category::where('name','Vehicles')->first()->id,
                 'category_id' => Category::where('name', 'Car')->first()->id],
             ['name' => 'FIAT', 'icon' => 'admin/default_brand_images/FIAT.png', 'is_active' => 1,
+                'parent_category_id' => Category::where('name','Vehicles')->first()->id,
                 'category_id' => Category::where('name', 'Car')->first()->id],
 
             ['name' => 'Zara', 'icon' => null, 'is_active' => 1,
-                'category_id' => Category::where('name', 'Fashion')->first()->id],
+                'parent_category_id' => Category::where('name', 'Fashion')->first()->id],
             ['name' => 'Nike', 'icon' => null, 'is_active' => 1,
-                'category_id' => Category::where('name', 'Fashion')->first()->id],
+                'parent_category_id' => Category::where('name', 'Fashion')->first()->id],
             ['name' => 'Addidas', 'icon' => null, 'is_active' => 1,
-                'category_id' => Category::where('name', 'Fashion')->first()->id],
+                'parent_category_id' => Category::where('name', 'Fashion')->first()->id],
 
         ];
 

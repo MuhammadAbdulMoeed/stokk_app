@@ -37,7 +37,7 @@
                     <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">
                         <div class="form-group">
                             <label for="exampleInputEmail1">Category</label>
-                            <select class="form-control category">
+                            <select class="form-control category" name="parent_category_id">
                                 <option value="" selected disabled>Select</option>
                                 @foreach($categories as $category)
                                     <option value="{{$category->id}}">{{$category->name}}</option>

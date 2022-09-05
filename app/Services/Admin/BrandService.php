@@ -19,7 +19,7 @@ class BrandService
 
     public function create()
     {
-        $categories = Category::whereNull('parent_id')->where('is_active',1)->get();
+        $categories = Category::whereNull('parent_id')->where('is_active', 1)->get();
         return view('admin.brand.create', compact('categories'));
     }
 
@@ -57,19 +57,19 @@ class BrandService
         $data = Brand::find($id);
 
         if ($data) {
-            $categories = Category::whereNull('parent_id')->where('is_active',1)->get();
-
+            $categories = Category::whereNull('parent_id')->where('is_active', 1)->get();
             $subCategories = array();
 
-            if($data->category->parent)
-            {
-                $subCategories = Category::where('parent_id',$data->category->parent->id)
-                    ->where('is_active',1)
-                    ->get();
-            }
+
+            $subCategories = Category::where('parent_id', $data->parent_category_id)
+                ->where('is_active', 1)
+                ->get();
+
+
+
 
 //            $subCategory = Category::
-            return view('admin.brand.edit', compact( 'data','categories','subCategories'));
+            return view('admin.brand.edit', compact('data', 'categories', 'subCategories'));
 
         } else {
             return redirect()->route('brandListing')->with('error', 'Record Not Found');
@@ -155,25 +155,23 @@ class BrandService
 
     public function getSubCategory($request)
     {
-        $data =  Category::find($request->category_id);
+        $data = Category::find($request->category_id);
 
-        if($data)
-        {
+        if ($data) {
             $subCategories = $data->subCategory;
 
 
-            return response()->json(['result'=>'success','data'=>$subCategories]);
-        }
-        else {
+            return response()->json(['result' => 'success', 'data' => $subCategories]);
+        } else {
             return response()->json(['result' => 'error', 'message' => 'SubCategory Not Found']);
         }
     }
 
     public function getCategoryBrand($request)
     {
-        $data =  Brand::where('category_id',$request->category_id)->get();
+        $data = Brand::where('category_id', $request->category_id)->get();
 
-        return response()->json(['result'=>'success','data'=>$data]);
+        return response()->json(['result' => 'success', 'data' => $data]);
 
 
     }

@@ -49,6 +49,7 @@
                                     <tr>
                                         <th>#</th>
                                         <th>Name</th>
+                                        <th>Parent Category</th>
                                         <th>Category</th>
                                         <th>Icon</th>
                                         <th>Status</th>
@@ -61,6 +62,7 @@
                                         <tr>
                                             <td>{{$loop->iteration}}</td>
                                             <td>{{$brand->name}}</td>
+                                            <td>{{isset($brand->parent_category_id) ? $brand->parentCategory->name:'N/A'}}</td>
                                             <td>{{isset($brand->category) ? $brand->category->name:'N/A'}}</td>
                                             <td>
                                                 @if($brand->icon)

@@ -4,6 +4,7 @@
 namespace App\Services\Api;
 
 
+use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
 use App\Traits\ProductFetchTrait;
@@ -66,19 +67,16 @@ class CategoryService
 
         $productsList = Product::where('is_active', 1);
 
-        if($request->category_id)
-        {
+        if ($request->category_id) {
             $findCategory = Category::where('id', $request->category_id)
                 ->whereNull('parent_id')
                 ->where('is_active', 1)
                 ->first();
 
-            if(!$findCategory)
-            {
+            if (!$findCategory) {
                 return makeResponse('error', 'Category Not Found', 404);
 
-            }
-            else {
+            } else {
 
                 $productsList = $productsList->where('category_id', $request->category_id);
 
@@ -102,16 +100,45 @@ class CategoryService
         }
 
 
-
-        $productsList = $productsList->get();
+        $productsList = $productsList->orderBy('id','desc')->get();
 
 
         if (sizeof($productsList) > 0) {
             $products = $this->fetchProduct($productsList);
-            return makeResponse('success', 'Record Found', 200, $products);
-        } else {
-            return makeResponse('error', 'Record Not Found', 404);
+//            return makeResponse('success', 'Record Found', 200, $products);
         }
+//        else {
+//            return makeResponse('error', 'Record Not Found', 404);
+//        }
+
+        $brands = array();
+
+        if ($request->sub_category_id) {
+            $brands = Brand::select('id', 'name', 'icon')
+                ->where('parent_category_id', $request->category_id)
+                ->where('category_id', $request->sub_category_id)
+                ->where('is_active', 1)
+                ->get();
+
+        } elseif ($request->category_id) {
+            $brands = Brand::select('id', 'name', 'icon')
+                ->where('parent_category_id', $request->category_id)
+                ->where('is_active', 1)
+                ->get();
+        }
+
+        $getCategorySubCategory = Category::select('id', 'name', 'image', 'icon')
+            ->where('is_active', 1)
+            ->where('parent_id', $request->category_id)->get();
+
+        $data = [
+            'products' => $products,
+            'brands' => $brands,
+            'sub_categories' => $getCategorySubCategory
+        ];
+
+
+        return makeResponse('success', 'Record Found', 200, $data);
 
 
     }
