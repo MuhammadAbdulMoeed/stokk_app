@@ -186,7 +186,8 @@ class ChatService
 
     public function findUserChat($user_id)
     {
-        $userChats = Chat::with(['firstUser', 'secondUser'])->where(function ($query) use ($user_id) {
+        $userChats = Chat::with(['firstUser', 'secondUser'])
+            ->where(function ($query) use ($user_id) {
             $query->where('user_1', $user_id)->orWhere('user_2', $user_id);
         })
             ->get();
@@ -207,7 +208,8 @@ class ChatService
                     'message_send_time' => isset($fetchLastMessageRecord['messageSendTime']) ? $fetchLastMessageRecord['messageSendTime']:null,
                     'unread_message' => $this->getUnreadMessageCount($chat->id, $chat->firstUser->id),
                     'profile_image' => $chat->secondUser->profile_image];
-            } elseif ($chat->secondUser->id == $user_id) {
+            }
+            elseif ($chat->secondUser->id == $user_id) {
                 $fetchLastMessageRecord = $this->lastMessageTime($chat->id,$chat->secondUser->timezone);
 
                 $chats[] = [
