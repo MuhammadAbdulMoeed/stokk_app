@@ -141,7 +141,7 @@ class CategoryService
         return makeResponse('success', 'Record Found', 200, $data);
 
 
-        
+
     }
 
 

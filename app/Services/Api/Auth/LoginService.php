@@ -44,6 +44,7 @@ class LoginService
                     'lng' => Auth::user()->userLocation ? Auth::user()->userLocation->lng: null,
                     'profile_image' => Auth::user()->profile_image,
                     'user_id' => Auth::user()->id,
+                    'date_of_birth' =>  Auth::user()->date_of_birth,
                     'location' => Auth::user()->userLocation ? Auth::user()->userLocation->location:null,
 //                    'default_shipping_address' =>  Auth::user()->defaultShippingAddress->address
 
