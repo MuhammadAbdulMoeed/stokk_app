@@ -4,6 +4,10 @@
 namespace App\Traits;
 
 
+use App\Models\CustomField;
+use App\Models\PivotCategoryField;
+use App\Models\PivotCategoryFilter;
+use App\Models\PivotProductCustomField;
 use App\Models\ProductReview;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -27,6 +31,18 @@ trait ProductFetchTrait
                 $productImage[] = $image->image;
             }
 
+            $product_brand_id =  null;
+
+            if($product->category->name == 'Vehicles' || $product->category->name == 'Car')
+            {
+                $customField = CustomField::where('slug','brands')->first();
+
+                if($customField)
+                {
+                    $product_brand_id = PivotProductCustomField::where('custom_field_id',$customField->id)
+                        ->first()->value;
+                }
+            }
 
 
             $products[] = ['name' => $product->name, 'id' => $product->id, 'images' => $productImage,
@@ -38,6 +54,7 @@ trait ProductFetchTrait
                 'daily_price' => $product->type == 'for_rent' ? $product->per_day_rent_price : null,
                 'hourly_price' => $product->type == 'for_rent' ? $product->per_hour_rent_price : null,
                 'product_creator_id' => $product->created_by,
+                'brand_id' => $product_brand_id,
                 'product_created_ago' => Carbon::parse($product->created_at)->diffForHumans(),
                 'avg_rating' => number_format(ProductReview::where('product_id', $product->id)->avg('rating'), '2', '.', ',')
 
