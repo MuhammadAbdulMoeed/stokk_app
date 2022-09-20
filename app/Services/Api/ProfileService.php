@@ -91,7 +91,14 @@ class ProfileService
             Auth::user()->save();
 
             DB::commit();
-            return makeResponse('success','Token Updated Successfully',200);
+
+            $data = [
+                'first_name' => Auth::user()->first_name, 'last_name' => Auth::user()->last_name,
+                'user_name' => Auth::user()->user_name, 'date_of_birth' => Auth::user()->date_of_birth,
+                'gender' => Auth::user()->gender, 'bio' => Auth::user()->bio,
+                'profile_image' => Auth::user()->profile_image,'user_id' => Auth::user()->id
+            ];
+            return makeResponse('success','Token Updated Successfully',200,$data);
         }
         catch (\Exception $e)
         {
