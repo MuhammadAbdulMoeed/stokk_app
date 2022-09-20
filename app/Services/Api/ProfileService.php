@@ -78,7 +78,27 @@ class ProfileService
         catch (\Exception $e)
         {
             DB::rollBack();
-            return makeResponse('error','Error in Saving Profile',500);
+            return makeResponse('error','Error in Saving Profile: '.$e,500);
         }
+    }
+
+    public function updateFCMToken($request)
+    {
+        DB::beginTransaction();
+
+        try{
+            Auth::user()->fcm_token = $request->fcm_token;
+            Auth::user()->save();
+
+            DB::commit();
+            return makeResponse('success','Token Updated Successfully',200);
+        }
+        catch (\Exception $e)
+        {
+            DB::rollBack();
+            return makeResponse('error','Error in Update FCM Token: '.$e,500);
+        }
+
+
     }
 }

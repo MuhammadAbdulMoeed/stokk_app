@@ -117,6 +117,8 @@ Route::group(['middleware' => ['json.response']], function () {
             Route::get('active-order-list-for-approval',[OrderController::class,'getActiveOrderForApproval']);
             Route::get('completed-order-list-for-approval',[OrderController::class,'getCompletedOrderForApproval']);
 
+            Route::get('update-fcm-token',[ProfileController::class,'updateFCMToken']);
+
 
         });
 

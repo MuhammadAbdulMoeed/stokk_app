@@ -19,4 +19,9 @@ class ProfileController extends Controller
     {
         return $profileService->saveProfile($request);
     }
+
+    public function updateFCMToken(Request $request,ProfileService $profileService)
+    {
+        return $profileService->updateFCMToken($request);
+    }
 }
