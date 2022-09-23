@@ -57,6 +57,10 @@ trait ProductFetchTrait
                 'hourly_price' => $product->type == 'for_rent' ? $product->per_hour_rent_price : null,
                 'product_creator_id' => $product->created_by,
                 'brand_id' => $product_brand_id,
+                'category_id' => $product->category_id,
+                'sub_category_id' => $product->sub_category_id,
+                'category_name' => $product->category->name,
+                'sub_category_name' => $product->subCategory->name,
                 'product_created_ago' => Carbon::parse($product->created_at)->diffForHumans(),
                 'avg_rating' => number_format(ProductReview::where('product_id', $product->id)->avg('rating'), '2', '.', ',')
 
