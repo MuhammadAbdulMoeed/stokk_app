@@ -213,7 +213,8 @@ class OrderService
                 'price_type' => $orderRequest->price_type,
 //                'order_detail' => json_decode($orderRequest->detail_json),
                 'order_status' => $orderRequest->order_status,
-                'images' => $image
+                'images' => $image,
+                'product_id' => $orderRequest->product_id
             ];
         }
 
@@ -256,7 +257,8 @@ class OrderService
                 'price_type' => $orderRequest->price_type,
 //                'order_detail' => json_decode($orderRequest->detail_json),
                 'order_status' => $orderRequest->order_status,
-                'images' => $image
+                'images' => $image,
+                'product_id' => $orderRequest->product_id
             ];
         }
 
@@ -299,7 +301,8 @@ class OrderService
                 'price_type' => $orderRequest->price_type,
 //                'order_detail' => json_decode($orderRequest->detail_json),
                 'order_status' => $orderRequest->order_status,
-                'images' => $image
+                'images' => $image,
+                'product_id' => $orderRequest->product_id
             ];
         }
 
