@@ -39,9 +39,14 @@ trait ProductFetchTrait
 
                 if($customField)
                 {
-                    $product_brand_id = PivotProductCustomField::
+                    $product_brand_fetch= PivotProductCustomField::
                     where('custom_field_id',$customField->id)->where('product_id',$product->id)
-                        ->first()->value;
+                        ->first();
+
+                    if($product_brand_fetch)
+                    {
+                        $product_brand_id = $product_brand_fetch->value;
+                    }
 
                 }
             }
