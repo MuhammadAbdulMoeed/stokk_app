@@ -204,6 +204,7 @@ class CategoryCustomFieldService
         {
             $fields[] = CustomField::where('id', $fieldID)->with('customFieldOption')
                 ->first();
+
         }
 
 
@@ -225,15 +226,27 @@ class CategoryCustomFieldService
                         ->where('is_active', 1)
                         ->get()->toArray();
 
-                    $categoryFieldRecords = DB::table($singleField->value_taken_from)
-                        ->where('category_id',$request->category_id)
-                        ->select('name','id')
-                        ->where('is_active',1)
-                        ->get()->toArray();
+                    if($singleField->value_taken_from == 'brands')
+                    {
+                        $categoryFieldRecords = DB::table($singleField->value_taken_from)
+                            ->where('parent_category_id',$request->category_id)
+                            ->select('name','id')
+                            ->where('is_active',1)
+                            ->get()->toArray();
+                    }
+                    else{
+                        $categoryFieldRecords = DB::table($singleField->value_taken_from)
+                            ->where('category_id',$request->category_id)
+                            ->select('name','id')
+                            ->where('is_active',1)
+                            ->get()->toArray();
+                    }
+
 
                     $fieldRecords = array_merge($subCategoryFieldRecords,$categoryFieldRecords);
 
-                } elseif ($singleField->type == 'custom_field') {
+                }
+                elseif ($singleField->type == 'custom_field') {
                     $field = ['name' => $singleField->name, 'type' => $singleField->field_type, 'slug' => $singleField->slug,
                         'parent_id' => $singleField->parent_id, 'option_id' => $singleField->option_id, 'id' => $singleField->id,
                         'is_required' => $singleField->is_required];
