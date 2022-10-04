@@ -63,7 +63,7 @@ class CategoryFilterService
                         $getCategoriesBrands = DB::table($customField->value_taken_from)
                             ->select('name', 'id','icon')
                             ->where('is_active', 1)
-                            ->where('category_id',$request->category_id)
+                            ->where('parent_category_id',$request->category_id)
                             ->get()->toArray();
 
                         $getSubCategoriesBrands = DB::table($customField->value_taken_from)
