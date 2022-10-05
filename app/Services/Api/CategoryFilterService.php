@@ -72,7 +72,9 @@ class CategoryFilterService
                             ->whereIn('category_id',$getCategory->subCategory->pluck('id')->toArray())
                             ->get()->toArray();
 
-                        $getSubCategories = array_unique(array_merge($getCategoriesBrands,$getSubCategoriesBrands));
+                        $getSubCategories = array_merge($getCategoriesBrands,$getSubCategoriesBrands);
+
+                        $getSubCategories = array_unique($getSubCategories);
 
 
                     }
