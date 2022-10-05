@@ -69,7 +69,7 @@ class CategoryFilterService
                         $getSubCategoriesBrands = DB::table($customField->value_taken_from)
                             ->select('name', 'id','icon')
                             ->where('is_active', 1)
-                            ->where('category_id',$getCategory->subCategory->pluck('id')->toArray())
+                            ->whereIn('category_id',$getCategory->subCategory->pluck('id')->toArray())
                             ->get()->toArray();
 
                         $getSubCategories = array_merge($getCategoriesBrands,$getSubCategoriesBrands);
