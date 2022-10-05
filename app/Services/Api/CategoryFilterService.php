@@ -42,7 +42,8 @@ class CategoryFilterService
             if ($customField->is_active == 1) {
 
                 if ($customField->type == 'pre_included_field') {
-                    $filter = ['name' => $customField->name, 'type' => $customField->filter_field_type,
+                    $filter = ['name' => $customField->name,
+                        'type' => $customField->filter_field_type,
                         'id' => $customField->id, 'slug' => $customField->slug,
                         'min' => $customField->min ? $customField->min : null, 'max' => $customField->max ? $customField->max : null
                     ];
@@ -53,7 +54,8 @@ class CategoryFilterService
                             ->select('name', 'id')
                             ->where('is_active', 1)
                             ->get()->toArray();
-                    } else if ($customField->value_taken_from == 'additional_options' || $customField->value_taken_from == 'item_conditions') {
+                    }
+                    else if ($customField->value_taken_from == 'additional_options' || $customField->value_taken_from == 'item_conditions') {
                         $getSubCategories = DB::table($customField->value_taken_from)
                             ->select('name', 'id')
                             ->where('is_active', 1)
@@ -88,7 +90,8 @@ class CategoryFilterService
                     $filterRecords = $getSubCategories;
 
 
-                } elseif ($customField->type == 'custom_field') {
+                }
+                elseif ($customField->type == 'custom_field') {
                     $filter = ['name' => $customField->name, 'type' => $customField->filter_field_type,
                         'id' => $customField->id, 'slug' => $customField->slug,
                         'min' => $customField->min, 'max' => $customField->max
@@ -106,6 +109,7 @@ class CategoryFilterService
 
             }
         }
+
 
         return makeResponse('success', 'Filter Retrieve Successfully', 200, $custom_fields);
     }
@@ -132,31 +136,53 @@ class CategoryFilterService
             $checkFilter = in_array($filter['id'], $getFilterRecords);
 
 
-
             if (!$checkFilter) {
                 return makeResponse('error', 'Filter Record Not Exist In: ' . $filter['id'], 500);
             }
 
             $getFieldRecord = CustomField::find($filter['id']);
+
+
             $operator = '=';
 
             if($getFieldRecord->type == 'custom_field' && $getFieldRecord->field_type == 'number_field')
             {
-                $operator = '>=';
+                $operator = '=';
+            }
+            elseif($getFieldRecord->field_type == 'multi_select_option')
+            {
+                $operator = 'IN';
             }
 
 
-            if($key == 0)
+            if($key == 0 &&  $operator != 'IN')
             {
-                $whereStatement[$key] = "( custom_field_id = " . $filter['id'] . " AND value ".$operator.''. $filter['value'] . ")";
+                $whereStatement[$key] = "(custom_field_id = " . $filter['id'] . " AND value ".$operator.''. $filter['value'] . ")";
+            }
+            elseif(sizeof($request->filters) == $i &&  $operator == 'IN')
+            {
+                if($key == 0)
+                {
+                    $whereStatement[$key] = "(custom_field_id = " . $filter['id'] . " AND value ".$operator.' ('. implode(',',$filter['value']) . "))";
+                }
+                else{
+                    $whereStatement[$key] = "OR (custom_field_id = " . $filter['id'] . " AND value ".$operator.' ('. implode(',',$filter['value']) . "))";
+                }
+
             }
             else {
 
-                if (sizeof($request->filters) == $i || $key != 0) {
-                    $whereStatement[$key] = "OR ( custom_field_id = " . $filter['id'] . " AND value  ".$operator.'' . $filter['value'] . ")";
-                } else {
-                    $whereStatement[$key] = "( custom_field_id = " . $filter['id'] . " AND value ".$operator.'' . $filter['value'] . ")";
+//                dd((sizeof($request->filters) == $i || $key != 0) &&  $operator != 'IN');
+                if ((sizeof($request->filters) == $i || $key != 0) &&  $operator != 'IN') {
+                    $whereStatement[$key] = "OR (custom_field_id = " . $filter['id'] . " AND value  ".$operator.'' . $filter['value'] . ")";
+                }
+                elseif($operator == 'IN')
+                {
+                    $whereStatement[$key] = "(custom_field_id = " . $filter['id'] . " AND value ".$operator.' ('. implode(',',$filter['value']) . "))";
+                }
 
+                else {
+                    $whereStatement[$key] = "(custom_field_id = " . $filter['id'] . " AND value ".$operator.'' . $filter['value'] . ")";
                 }
             }
 
@@ -184,7 +210,6 @@ class CategoryFilterService
 
         $record = PivotProductCustomField::select('product_id')->whereRaw($statement)->distinct()->get();
 
-//        dd($record);
 
 
         foreach ($record as $singleRecord) {
