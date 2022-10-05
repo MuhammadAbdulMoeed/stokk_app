@@ -72,7 +72,7 @@ class CategoryFilterService
                             ->whereIn('category_id',$getCategory->subCategory->pluck('id')->toArray())
                             ->get()->toArray();
 
-                        $getSubCategories = array_diff($getCategoriesBrands,$getSubCategoriesBrands);
+                        $getSubCategories = array_merge_recursive_distinct($getCategoriesBrands,$getSubCategoriesBrands);
 
 
 
