@@ -75,7 +75,7 @@ class OrderService
             $order->update(['order_status' => $request->order_status]);
 
 
-            $fcmToken =  $order->product->user->fcm_token;
+            $fcmToken =  $order->user->fcm_token;
 
             if($fcmToken)
             {
