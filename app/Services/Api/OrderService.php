@@ -7,11 +7,14 @@ namespace App\Services\Api;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\ShippingAddress;
+use App\Traits\SendFirebaseNotificationTrait;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class OrderService
 {
+    use SendFirebaseNotificationTrait;
+
     public function create($request)
     {
         DB::beginTransaction();
@@ -44,6 +47,15 @@ class OrderService
 
             $order->save();
 
+            $fcmToken =  $order->product->user->fcm_token;
+
+            if($fcmToken)
+            {
+                $title = "Order Create Notification";
+                $message = 'User: '.Auth::user()->first_name.' '.Auth::user()->last_name.' has placed an order on your product:  '.$order->product->name;
+                $this->sendPushNotification($title,$message,$fcmToken);
+            }
+
             DB::commit();
             return makeResponse('success', 'Order Save Successfully', 200, (object)$order);
 
@@ -75,12 +87,10 @@ class OrderService
 
         $myOrders = array();
         foreach ($getOwnOrders as $order) {
-            $image =  array();
-            foreach($order->product->productImages as $productImage)
-            {
-                $image[] = ['image'=>$productImage->image];
+            $image = array();
+            foreach ($order->product->productImages as $productImage) {
+                $image[] = ['image' => $productImage->image];
             }
-
 
 
             $myOrders[] = ['product_name' => $order->product->name,
@@ -115,10 +125,9 @@ class OrderService
 
         $myOrders = array();
         foreach ($getOwnOrders as $order) {
-            $image =  array();
-            foreach($order->product->productImages as $productImage)
-            {
-                $image[] = ['image'=>$productImage->image];
+            $image = array();
+            foreach ($order->product->productImages as $productImage) {
+                $image[] = ['image' => $productImage->image];
             }
 
             $myOrders[] = ['product_name' => $order->product->name,
@@ -153,10 +162,9 @@ class OrderService
 
         $myOrders = array();
         foreach ($getOwnOrders as $order) {
-            $image =  array();
-            foreach($order->product->productImages as $productImage)
-            {
-                $image[] = ['image'=>$productImage->image];
+            $image = array();
+            foreach ($order->product->productImages as $productImage) {
+                $image[] = ['image' => $productImage->image];
             }
 
 
@@ -199,10 +207,9 @@ class OrderService
         $pendingOrders = array();
 
         foreach ($getPendingProductOrders as $orderRequest) {
-            $image =  array();
-            foreach($orderRequest->product->productImages as $productImage)
-            {
-                $image[] = ['image'=>$productImage->image];
+            $image = array();
+            foreach ($orderRequest->product->productImages as $productImage) {
+                $image[] = ['image' => $productImage->image];
             }
 
             $pendingOrders[] = ['product_name' => $orderRequest->product->name,
@@ -243,10 +250,9 @@ class OrderService
         $acceptOrders = array();
 
         foreach ($getAcceptedProductOrders as $orderRequest) {
-            $image =  array();
-            foreach($orderRequest->product->productImages as $productImage)
-            {
-                $image[] = ['image'=>$productImage->image];
+            $image = array();
+            foreach ($orderRequest->product->productImages as $productImage) {
+                $image[] = ['image' => $productImage->image];
             }
 
             $acceptOrders[] = ['product_name' => $orderRequest->product->name,
@@ -287,10 +293,9 @@ class OrderService
 
         foreach ($getAcceptedProductOrders as $orderRequest) {
 
-            $image =  array();
-            foreach($orderRequest->product->productImages as $productImage)
-            {
-                $image[] = ['image'=>$productImage->image];
+            $image = array();
+            foreach ($orderRequest->product->productImages as $productImage) {
+                $image[] = ['image' => $productImage->image];
             }
 
             $completeOrders[] = ['product_name' => $orderRequest->product->name,
