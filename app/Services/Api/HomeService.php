@@ -27,8 +27,8 @@ class HomeService
             $data = $data->where('type', $request->type);
         }
 
-        if (isset(Auth::user()->userLocation->city)) {
-            $data = $data->where('city', Auth::user()->userLocation->location)->get();
+        if (isset(Auth::user()->userLocation->location)) {
+            $data = $data->where('location', Auth::user()->userLocation->location)->get();
         } else {
             $data = $data->get();
         }
