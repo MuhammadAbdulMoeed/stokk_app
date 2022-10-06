@@ -53,7 +53,8 @@ class OrderService
             {
                 $title = "Order Create Notification";
                 $message = 'User: '.Auth::user()->first_name.' '.Auth::user()->last_name.' has placed an order on your product:  '.$order->product->name;
-                $this->sendPushNotification($title,$message,$fcmToken);
+
+                $this->orderNotification($title,$message,$fcmToken);
             }
 
             DB::commit();
