@@ -73,6 +73,19 @@ class OrderService
 
         if ($order) {
             $order->update(['order_status' => $request->order_status]);
+
+
+            $fcmToken =  $order->product->user->fcm_token;
+
+            if($fcmToken)
+            {
+                $title = "Order Notification";
+                $message = 'Your Order: '.$order->product->name.' status has been changed to: '.$order->order_status;
+
+                $this->orderNotification($title,$message,$fcmToken);
+            }
+
+
             return makeResponse('success', 'Order Status Updated', 200);
         } else {
             return makeResponse('error', 'Record Not Found', 500);
