@@ -77,7 +77,6 @@ class ChatService
 
         if (isset($data['conversation_id'])) {
             //get all room this socket is connected to
-            dd($io->sockets->adapter->sids[$socket->id]);
             foreach ($io->sockets->adapter->sids[$socket->id] as $key => $item) {
                 $socket->leave($key);
             }
@@ -87,12 +86,13 @@ class ChatService
 
         //get total people in room
         $roomPeopleCount = 0;
-        dd($io->sockets->adapter->rooms);
         foreach ($io->sockets->adapter->rooms as $key => $item) {
             if ($key == $this->room . $data['conversation_id']) {
-                $roomPeopleCount++;
+                $roomPeopleCount =  $roomPeopleCount+1;
             }
         }
+
+        dd($roomPeopleCount);
 
         $chatHistory = $this->chatService->fetchPreviousChat($data['conversation_id']);
 
@@ -188,6 +188,8 @@ class ChatService
                 $roomPeopleCount = $roomPeopleCount+1;
             }
         }
+
+        dd($roomPeopleCount);
 
 
         try {
