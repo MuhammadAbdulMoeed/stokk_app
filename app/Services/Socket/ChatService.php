@@ -37,7 +37,7 @@ class ChatService
         if (sizeof($conversations) > 0) {
 
 
-            $socket->emit('conversationList', [
+            $io->emit($data['user_id'].'-conversationList', [
                 'result' => 'success',
                 'message' => 'Conversation Found',
                 'data' => $conversations
@@ -51,7 +51,7 @@ class ChatService
 
         } else {
 
-            $socket->emit('conversationList', [
+            $io->emit($data['user_id'].'-conversationList', [
                 'result' => 'success',
                 'message' => 'No Conversation Found',
                 'data' => []
@@ -256,7 +256,7 @@ class ChatService
                 $getReceiverConversation = $this->chatService->findUserChat($data['receiver_id']);
 
                 if (sizeof($getReceiverConversation) > 0) {
-                    return $socket->emit('conversationList', [
+                    return $io->emit($getReceiver->socket_id.'-conversationList', [
                             'result' => 'success',
                             'message' => 'Conversation Found',
                             'data' => $getReceiverConversation
