@@ -92,7 +92,6 @@ class ChatService
             }
         }
 
-        dd($roomPeopleCount);
 
         $chatHistory = $this->chatService->fetchPreviousChat($data['conversation_id']);
 
@@ -188,9 +187,6 @@ class ChatService
                 $roomPeopleCount = $roomPeopleCount+1;
             }
         }
-
-        dd($roomPeopleCount);
-
 
         try {
 
