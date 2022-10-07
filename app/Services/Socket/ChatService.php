@@ -77,15 +77,16 @@ class ChatService
 
         if (isset($data['conversation_id'])) {
             //get all room this socket is connected to
-//            foreach ($io->sockets->adapter->sids[$socket->id] as $key => $item) {
-//                $socket->leave($key);
-//            }
+            foreach ($io->sockets->adapter->sids[$socket->id] as $key => $item) {
+                $socket->leave($key);
+            }
 
             $socket->join($this->room . $data['conversation_id']);
         }
 
         //get total people in room
         $roomPeopleCount = 0;
+        dd($io->sockets->adapter->rooms);
         foreach ($io->sockets->adapter->rooms as $key => $item) {
             if ($key == $this->room . $data['conversation_id']) {
                 $roomPeopleCount++;
@@ -172,9 +173,9 @@ class ChatService
         }
 
         //get all room this socket is connected to
-//        foreach ($io->sockets->adapter->sids[$socket->id] as $key => $item) {
-//            $socket->leave($key);
-//        }
+        foreach ($io->sockets->adapter->sids[$socket->id] as $key => $item) {
+            $socket->leave($key);
+        }
 
         //join room
         $socket->join($this->room . $data['conversation_id']);
