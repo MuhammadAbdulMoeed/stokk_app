@@ -77,6 +77,7 @@ class ChatService
 
         if (isset($data['conversation_id'])) {
             //get all room this socket is connected to
+            dd($io->sockets->adapter->sids[$socket->id]);
             foreach ($io->sockets->adapter->sids[$socket->id] as $key => $item) {
                 $socket->leave($key);
             }
