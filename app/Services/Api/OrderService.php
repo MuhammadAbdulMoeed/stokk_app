@@ -252,7 +252,9 @@ class OrderService
                 'order_status' => $orderRequest->order_status,
                 'images' => $image,
                 'product_id' => $orderRequest->product_id,
-                'conversation_id' => $conversation_id
+                'conversation_id' => $conversation_id,
+                'user_id' => $orderRequest->created_by,
+                'user_name' => $orderRequest->user->first_name.' '.$orderRequest->user->last_name
             ];
         }
 
