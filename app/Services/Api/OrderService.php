@@ -4,6 +4,7 @@
 namespace App\Services\Api;
 
 
+use App\Models\Chat;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\ShippingAddress;
@@ -209,7 +210,6 @@ class OrderService
     public function getNewOrderForApproval()
     {
 
-
         $getUserProductOrder = Product::where('created_by', Auth::user()->id)->pluck('id')
             ->toArray();
 
@@ -226,6 +226,22 @@ class OrderService
                 $image[] = ['image' => $productImage->image];
             }
 
+
+            //findUserChat
+            $userChat = Chat::with(['firstUser', 'secondUser'])->where(function ($query) use ($orderRequest) {
+                $query->where('user_1', Auth::user()->id)->where('user_2', $orderRequest->created_by);
+            })->orwhere(function ($query) use ($orderRequest) {
+                $query->where('user_1', $orderRequest->created_by)->where('user_2', Auth::user()->id);
+            })
+                ->first();
+
+            $conversation_id = null;
+            if($userChat)
+            {
+                $conversation_id = $userChat->id;
+            }
+
+
             $pendingOrders[] = ['product_name' => $orderRequest->product->name,
                 'category_name' => $orderRequest->category->name,
                 'sub_category_name' => $orderRequest->category->name,
@@ -235,7 +251,8 @@ class OrderService
 //                'order_detail' => json_decode($orderRequest->detail_json),
                 'order_status' => $orderRequest->order_status,
                 'images' => $image,
-                'product_id' => $orderRequest->product_id
+                'product_id' => $orderRequest->product_id,
+                'conversation_id' => $conversation_id
             ];
         }
 
