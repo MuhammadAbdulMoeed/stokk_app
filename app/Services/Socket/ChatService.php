@@ -27,9 +27,9 @@ class ChatService
             ]);
         }
 
-//        foreach ($io->sockets->adapter->sids[$socket->id] as $key => $item) {
-//            $socket->leave($key);
-//        }
+        foreach ($io->sockets->adapter->sids[$socket->id] as $key => $item) {
+            $socket->leave($key);
+        }
 
         $conversations = $this->chatService->findUserChat($data['user_id']);
 
@@ -77,9 +77,9 @@ class ChatService
 
         if (isset($data['conversation_id'])) {
             //get all room this socket is connected to
-            foreach ($io->sockets->adapter->sids[$socket->id] as $key => $item) {
-                $socket->leave($key);
-            }
+//            foreach ($io->sockets->adapter->sids[$socket->id] as $key => $item) {
+//                $socket->leave($key);
+//            }
 
             $socket->join($this->room . $data['conversation_id']);
         }
