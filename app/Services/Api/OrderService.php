@@ -288,6 +288,20 @@ class OrderService
                 $image[] = ['image' => $productImage->image];
             }
 
+            //findUserChat
+            $userChat = Chat::with(['firstUser', 'secondUser'])->where(function ($query) use ($orderRequest) {
+                $query->where('user_1', Auth::user()->id)->where('user_2', $orderRequest->created_by);
+            })->orwhere(function ($query) use ($orderRequest) {
+                $query->where('user_1', $orderRequest->created_by)->where('user_2', Auth::user()->id);
+            })
+                ->first();
+
+            $conversation_id = null;
+            if($userChat)
+            {
+                $conversation_id = $userChat->id;
+            }
+
             $acceptOrders[] = ['product_name' => $orderRequest->product->name,
                 'category_name' => $orderRequest->category->name,
                 'sub_category_name' => $orderRequest->category->name,
@@ -297,7 +311,10 @@ class OrderService
 //                'order_detail' => json_decode($orderRequest->detail_json),
                 'order_status' => $orderRequest->order_status,
                 'images' => $image,
-                'product_id' => $orderRequest->product_id
+                'product_id' => $orderRequest->product_id,
+                'user_id' => $orderRequest->created_by,
+                'conversation_id' => $conversation_id,
+                'user_name' => $orderRequest->user->first_name.' '.$orderRequest->user->last_name
             ];
         }
 
@@ -331,6 +348,20 @@ class OrderService
                 $image[] = ['image' => $productImage->image];
             }
 
+            //findUserChat
+            $userChat = Chat::with(['firstUser', 'secondUser'])->where(function ($query) use ($orderRequest) {
+                $query->where('user_1', Auth::user()->id)->where('user_2', $orderRequest->created_by);
+            })->orwhere(function ($query) use ($orderRequest) {
+                $query->where('user_1', $orderRequest->created_by)->where('user_2', Auth::user()->id);
+            })
+                ->first();
+
+            $conversation_id = null;
+            if($userChat)
+            {
+                $conversation_id = $userChat->id;
+            }
+
             $completeOrders[] = ['product_name' => $orderRequest->product->name,
                 'category_name' => $orderRequest->category->name,
                 'sub_category_name' => $orderRequest->category->name,
@@ -340,7 +371,10 @@ class OrderService
 //                'order_detail' => json_decode($orderRequest->detail_json),
                 'order_status' => $orderRequest->order_status,
                 'images' => $image,
-                'product_id' => $orderRequest->product_id
+                'product_id' => $orderRequest->product_id,
+                'conversation_id' => $conversation_id,
+                'user_id' => $orderRequest->created_by,
+                'user_name' => $orderRequest->user->first_name.' '.$orderRequest->user->last_name
             ];
         }
 
