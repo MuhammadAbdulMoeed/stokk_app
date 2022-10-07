@@ -107,6 +107,20 @@ class OrderService
                 $image[] = ['image' => $productImage->image];
             }
 
+            //findUserChat
+            $userChat = Chat::with(['firstUser', 'secondUser'])->where(function ($query) use ($order) {
+                $query->where('user_1', Auth::user()->id)->where('user_2', $order->product->created_by);
+            })->orwhere(function ($query) use ($order) {
+                $query->where('user_1',  $order->product->created_by)->where('user_2', Auth::user()->id);
+            })
+                ->first();
+
+            $conversation_id = null;
+            if($userChat)
+            {
+                $conversation_id = $userChat->id;
+            }
+
 
             $myOrders[] = ['product_name' => $order->product->name,
                 'category_name' => $order->category->name,
@@ -116,7 +130,10 @@ class OrderService
                 'price_type' => $order->price_type,
 //                'order_detail' => json_decode($order->detail_json),
                 'order_status' => $order->order_status,
-                'images' => $image
+                'images' => $image,
+                'conversation_id' => $conversation_id,
+                'user_id' => $order->product->created_by,
+                'user_name' =>  $order->product->user->first_name.' '.$order->product->user->last_name
             ];
         }
 
@@ -145,6 +162,20 @@ class OrderService
                 $image[] = ['image' => $productImage->image];
             }
 
+            //findUserChat
+            $userChat = Chat::with(['firstUser', 'secondUser'])->where(function ($query) use ($order) {
+                $query->where('user_1', Auth::user()->id)->where('user_2', $order->product->created_by);
+            })->orwhere(function ($query) use ($order) {
+                $query->where('user_1',  $order->product->created_by)->where('user_2', Auth::user()->id);
+            })
+                ->first();
+
+            $conversation_id = null;
+            if($userChat)
+            {
+                $conversation_id = $userChat->id;
+            }
+
             $myOrders[] = ['product_name' => $order->product->name,
                 'category_name' => $order->category->name,
                 'sub_category_name' => $order->category->name,
@@ -153,7 +184,10 @@ class OrderService
                 'price_type' => $order->price_type,
 //                'order_detail' => json_decode($order->detail_json),
                 'order_status' => $order->order_status,
-                'images' => $image
+                'images' => $image,
+                'conversation_id' => $conversation_id,
+                'user_id' => $order->product->created_by,
+                'user_name' =>  $order->product->user->first_name.' '.$order->product->user->last_name
 
             ];
         }
@@ -182,6 +216,19 @@ class OrderService
                 $image[] = ['image' => $productImage->image];
             }
 
+            //findUserChat
+            $userChat = Chat::with(['firstUser', 'secondUser'])->where(function ($query) use ($order) {
+                $query->where('user_1', Auth::user()->id)->where('user_2', $order->product->created_by);
+            })->orwhere(function ($query) use ($order) {
+                $query->where('user_1',  $order->product->created_by)->where('user_2', Auth::user()->id);
+            })
+                ->first();
+
+            $conversation_id = null;
+            if($userChat)
+            {
+                $conversation_id = $userChat->id;
+            }
 
             $myOrders[] = ['product_name' => $order->product->name,
                 'category_name' => $order->category->name,
@@ -191,7 +238,10 @@ class OrderService
                 'price_type' => $order->price_type,
 //                'order_detail' => json_decode($order->detail_json),
                 'order_status' => $order->order_status,
-                'images' => $image
+                'images' => $image,
+                'conversation_id' => $conversation_id,
+                'user_id' => $order->product->created_by,
+                'user_name' =>  $order->product->user->first_name.' '.$order->product->user->last_name
             ];
         }
 
