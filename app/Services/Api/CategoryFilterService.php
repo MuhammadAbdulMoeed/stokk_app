@@ -143,15 +143,21 @@ class CategoryFilterService
             $getFieldRecord = CustomField::find($filter['id']);
 
 
+
+
             $operator = '=';
 
             if($getFieldRecord->type == 'custom_field' && $getFieldRecord->field_type == 'number_field')
             {
                 $operator = '=';
             }
-            elseif($getFieldRecord->field_type == 'multi_select_option')
+            elseif($getFieldRecord->filter_field_type == 'multi_select_option')
             {
                 $operator = 'IN';
+            }
+            elseif($getFieldRecord->filter_field_type == 'simple_select_option')
+            {
+                $operator = '=';
             }
 
 
@@ -159,7 +165,7 @@ class CategoryFilterService
             {
                 $whereStatement[$key] = "(custom_field_id = " . $filter['id'] . " AND value ".$operator.''. $filter['value'] . ")";
             }
-            elseif(sizeof($request->filters) == $i &&  $operator == 'IN')
+            elseif(sizeof($request->filters) == $i && $operator == 'IN')
             {
                 if($key == 0)
                 {
