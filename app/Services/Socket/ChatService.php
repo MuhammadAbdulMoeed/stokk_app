@@ -199,7 +199,8 @@ class ChatService
                     'data' => []
                 ]);
             }
-        } catch (\Exception $e) {
+        }
+        catch (\Exception $e) {
             $socket->emit('saveMessage', [
                 'result' => 'error',
                 'message' => 'Error in Saving Chat Message: ' . $e,

@@ -91,7 +91,7 @@
                                        onchange="readURL(this,'image_2');">
                             </div>
                         </div>
-                    </div>
+                    </div>x
 
                 </div>
 

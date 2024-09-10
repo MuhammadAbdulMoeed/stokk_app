@@ -54,32 +54,28 @@ class CategoryFilterService
                             ->select('name', 'id')
                             ->where('is_active', 1)
                             ->get()->toArray();
-                    }
-                    else if ($customField->value_taken_from == 'additional_options' || $customField->value_taken_from == 'item_conditions') {
+                    } else if ($customField->value_taken_from == 'additional_options' || $customField->value_taken_from == 'item_conditions') {
                         $getSubCategories = DB::table($customField->value_taken_from)
                             ->select('name', 'id')
                             ->where('is_active', 1)
                             ->get()->toArray();
-                    }
-                    else if ($customField->value_taken_from == 'brands') {
+                    } else if ($customField->value_taken_from == 'brands') {
                         $getCategoriesBrands = DB::table($customField->value_taken_from)
-                            ->select('name', 'id','icon')
+                            ->select('name', 'id', 'icon')
                             ->where('is_active', 1)
-                            ->where('parent_category_id',$request->category_id)
+                            ->where('parent_category_id', $request->category_id)
                             ->get()->toArray();
 
                         $getSubCategoriesBrands = DB::table($customField->value_taken_from)
-                            ->select('name', 'id','icon')
+                            ->select('name', 'id', 'icon')
                             ->where('is_active', 1)
-                            ->whereIn('category_id',$getCategory->subCategory->pluck('id')->toArray())
+                            ->whereIn('category_id', $getCategory->subCategory->pluck('id')->toArray())
                             ->get()->toArray();
 
-                        $getSubCategories = array_merge_recursive_distinct($getCategoriesBrands,$getSubCategoriesBrands);
+                        $getSubCategories = array_merge_recursive_distinct($getCategoriesBrands, $getSubCategoriesBrands);
 
 
-
-                    }
-                    else {
+                    } else {
                         $getSubCategories = DB::table($customField->value_taken_from)
                             ->select('name', 'id', 'icon')
                             ->whereIn('category_id', $getCategory->subCategory->pluck('id')->toArray())
@@ -90,8 +86,7 @@ class CategoryFilterService
                     $filterRecords = $getSubCategories;
 
 
-                }
-                elseif ($customField->type == 'custom_field') {
+                } elseif ($customField->type == 'custom_field') {
                     $filter = ['name' => $customField->name, 'type' => $customField->filter_field_type,
                         'id' => $customField->id, 'slug' => $customField->slug,
                         'min' => $customField->min, 'max' => $customField->max
@@ -125,11 +120,9 @@ class CategoryFilterService
 
         $i = 1;
 
-        if (empty($getFilterRecords))
-        {
-            return makeResponse('error','Filters For That Category Does not Exist',500);
+        if (empty($getFilterRecords)) {
+            return makeResponse('error', 'Filters For That Category Does not Exist', 500);
         }
-
 
 
         foreach ($request->filters as $key => $filter) {
@@ -143,60 +136,40 @@ class CategoryFilterService
             $getFieldRecord = CustomField::find($filter['id']);
 
 
-
-
             $operator = '=';
 
-            if($getFieldRecord->type == 'custom_field' && $getFieldRecord->field_type == 'number_field')
-            {
+            if ($getFieldRecord->type == 'custom_field' && $getFieldRecord->field_type == 'number_field') {
                 $operator = '=';
-            }
-            elseif($getFieldRecord->filter_field_type == 'multi_select_option')
-            {
+            } elseif ($getFieldRecord->filter_field_type == 'multi_select_option') {
                 $operator = 'IN';
-            }
-            elseif($getFieldRecord->filter_field_type == 'simple_select_option')
-            {
+            } elseif ($getFieldRecord->filter_field_type == 'simple_select_option') {
                 $operator = '=';
             }
 
 
-            if($key == 0 &&  $operator != 'IN')
-            {
-                $whereStatement[$key] = "(custom_field_id = " . $filter['id'] . " AND value ".$operator.''. $filter['value'] . ")";
-            }
-            elseif(sizeof($request->filters) == $i && $operator == 'IN')
-            {
-                if($key == 0)
-                {
-                    $whereStatement[$key] = "(custom_field_id = " . $filter['id'] . " AND value ".$operator.' ('. implode(',',$filter['value']) . "))";
-                }
-                else{
-                    $whereStatement[$key] = "OR (custom_field_id = " . $filter['id'] . " AND value ".$operator.' ('. implode(',',$filter['value']) . "))";
+            if ($key == 0 && $operator != 'IN') {
+                $whereStatement[$key] = "(custom_field_id = " . $filter['id'] . " AND value " . $operator . '' . $filter['value'] . ")";
+            } elseif (sizeof($request->filters) == $i && $operator == 'IN') {
+                if ($key == 0) {
+                    $whereStatement[$key] = "(custom_field_id = " . $filter['id'] . " AND value " . $operator . ' (' . implode(',', $filter['value']) . "))";
+                } else {
+                    $whereStatement[$key] = "OR (custom_field_id = " . $filter['id'] . " AND value " . $operator . ' (' . implode(',', $filter['value']) . "))";
                 }
 
-            }
-            else {
+            } else {
 
 //                dd((sizeof($request->filters) == $i || $key != 0) &&  $operator != 'IN');
-                if ((sizeof($request->filters) == $i || $key != 0) &&  $operator != 'IN') {
-                    $whereStatement[$key] = "OR (custom_field_id = " . $filter['id'] . " AND value  ".$operator.'' . $filter['value'] . ")";
-                }
-                elseif($operator == 'IN')
-                {
-                    $whereStatement[$key] = "(custom_field_id = " . $filter['id'] . " AND value ".$operator.' ('. implode(',',$filter['value']) . "))";
-                }
-
-                else {
-                    $whereStatement[$key] = "(custom_field_id = " . $filter['id'] . " AND value ".$operator.'' . $filter['value'] . ")";
+                if ((sizeof($request->filters) == $i || $key != 0) && $operator != 'IN') {
+                    $whereStatement[$key] = "OR (custom_field_id = " . $filter['id'] . " AND value  " . $operator . '' . $filter['value'] . ")";
+                } elseif ($operator == 'IN') {
+                    $whereStatement[$key] = "(custom_field_id = " . $filter['id'] . " AND value " . $operator . ' (' . implode(',', $filter['value']) . "))";
+                } else {
+                    $whereStatement[$key] = "(custom_field_id = " . $filter['id'] . " AND value " . $operator . '' . $filter['value'] . ")";
                 }
             }
 
             $i++;
         }
-
-
-
 
 
         $products = Product::where('category_id', $request->category_id);
@@ -215,7 +188,6 @@ class CategoryFilterService
 //        dd($statement);
 
         $record = PivotProductCustomField::select('product_id')->whereRaw($statement)->distinct()->get();
-
 
 
         foreach ($record as $singleRecord) {
